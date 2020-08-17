@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="filter-bg chart-card">
     <div class="chart-card-header">
       <div class="meta">
         <span class="chart-card-title">{{ title }}</span>
@@ -10,6 +10,7 @@
       <div class="total">
         <span>{{ total }}</span>
       </div>
+      <div class="other"><slot name="ext"></slot></div>
     </div>
     <div class="chart-card-content">
       <div class="content-fix">
@@ -21,12 +22,18 @@
 
 <script>
 export default {
-  name: "ChartCard",
-  props: ["title", "total", "loading"],
+  name: 'ChartCard',
+  props: ['title', 'total', 'loading'],
 };
 </script>
 
 <style scoped lang="less">
+.chart-card {
+  position: relative;
+  margin: 10px;
+  padding: 10px;
+  width: auto;
+}
 .chart-card-header {
   position: relative;
   overflow: hidden;
@@ -75,5 +82,12 @@ export default {
   bottom: 0;
   width: 100%;
   color: #fff;
+}
+.other {
+  font-size: 18px;
+  color: #fff;
+  position: absolute;
+  top: 40px;
+  right: 20px;
 }
 </style>

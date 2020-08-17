@@ -1,64 +1,45 @@
 <template>
-  <div id="pieTable">
-    <div id="pie_table"></div>
+  <div class="content-with-title">
+    <div class="title">{{ title }}</div>
+    <ve-histogram
+      :data="chartData"
+      :settings="chartSettings"
+      :theme="theme"
+    ></ve-histogram>
   </div>
 </template>
 <script>
-import { Pie } from "@antv/g2plot";
-const data = [
-  {
-    type: "分类一",
-    value: 27,
-  },
-  {
-    type: "分类二",
-    value: 25,
-  },
-  {
-    type: "分类三",
-    value: 18,
-  },
-  {
-    type: "分类四",
-    value: 15,
-  },
-  {
-    type: "分类五",
-    value: 10,
-  },
-  {
-    type: "其它",
-    value: 5,
-  },
-];
-
 export default {
-  name: "pieTable",
+  props: {
+    theme: {},
+  },
   data() {
     return {
-      tableData: data,
+      title: '设施类型统计图',
+      chartSettings: {
+        itemStyle: {
+          color: '#72ccff',
+        },
+      },
+      chartData: {
+        columns: ['type', 'count'],
+        rows: [
+          { type: '1/1', count: 1393 },
+          { type: '1/2', count: 3530 },
+          { type: '1/3', count: 2923 },
+          { type: '1/4', count: 1723 },
+          { type: '1/5', count: 3792 },
+          { type: '1/6', count: 4593 },
+        ],
+      },
     };
   },
-  mounted: function () {
-    const piePlot = new Pie("pie_table", {
-      forceFit: true,
-     height:250,
-      radius: 0.8,
-      title: {
-        visible: true,
-        text: "基础条形图",
-      },
-      data,
-      angleField: "value",
-      colorField: "type",
-      label: {
-        visible: true,
-        type: "inner",
-      },
-    });
-
-    piePlot.render();
+  methods: {
+    async getDiseaseTypeCount() {
+      const data = await this.$Http.getDiseaseTypeCount();
+      this.statiticData.facilitiesCount = data[0].facilitiesCount;
+    },
   },
+  mounted: function () {},
 };
 </script>
-<style scoped></style>

@@ -12,13 +12,35 @@
             'statistic-box',
           ]"
         >
-          <!-- <statistic-table-one></statistic-table-one> -->
-          <rank-list :title="'病害类型排行'" :list="rankList"></rank-list>
-          <!-- <statistic-table-three></statistic-table-three> -->
-          <rank-list :title="'病害道路排行'" :list="rankList"></rank-list>
+          <div class="filter-bg">
+            <!-- <statistic-table-four :theme="theme"></statistic-table-four> -->
+            <!-- <statistic-table-two :theme="theme"></statistic-table-two> -->
+            <mini-statistic-line
+              :title="'人员出勤统计图'"
+            ></mini-statistic-line>
+            <mini-statistic-smooth
+              :title="'人员出勤统计图'"
+            ></mini-statistic-smooth>
+          </div>
           <div class="boxfoot"></div>
         </div>
-
+        <div
+          :class="[
+            IsHideRank ? 'statistic1-hide' : '',
+            'statistic2',
+            'boxall',
+            'statistic-box',
+          ]"
+        >
+          <div class="filter-bg">
+            <!-- <statistic-table-one :theme="theme"></statistic-table-one> -->
+            <!-- <statistic-table-three :theme="theme"></statistic-table-three> -->
+            <!-- <mini-statistic-pie :title="'设施统计图'"></mini-statistic-pie> -->
+            <mini-statistic-bar :title="'事故统计图'"></mini-statistic-bar>
+            <mini-statistic-line2 :title="'设施统计图'"></mini-statistic-line2>
+          </div>
+          <div class="boxfoot"></div>
+        </div>
         <div
           :class="[
             IsHideRank ? 'statistic3-hide' : '',
@@ -27,12 +49,26 @@
             'statistic-box',
           ]"
         >
-          <div class="bg">
-              <rank-list :title="'病害标段排行'" :list="rankList"></rank-list>
-              <!-- <statistic-table-four></statistic-table-four> -->
-              <rank-list :title="'考核分数排行'" :list="rankList"></rank-list>
+          <div class="filter-bg">
+            <rank-list :title="'病害标段排行'" :type="'facility'"></rank-list>
+            <!-- <statistic-table-four></statistic-table-four> -->
+            <rank-list :title="'考核分数排行'" :type="'disease'"></rank-list>
           </div>
           <!-- <statistic-table-two></statistic-table-two> -->
+          <div class="boxfoot"></div>
+        </div>
+        <div
+          :class="[
+            IsHideRank ? 'statistic3-hide' : '',
+            'statistic4',
+            'boxall',
+            'statistic-box',
+          ]"
+        >
+          <div class="filter-bg">
+            <rank-list :title="'病害类型排行'" :type="'road'"></rank-list>
+            <rank-list :title="'病害道路排行'" :type="'disease'"></rank-list>
+          </div>
           <div class="boxfoot"></div>
         </div>
         <div
@@ -41,6 +77,7 @@
           <detail-card />
           <div class="boxfoot"></div>
         </div>
+        <div class="setting"><setting-view /></div>
       </div>
     </div>
     <div class="header">
@@ -50,39 +87,54 @@
   </div>
 </template>
 <script>
-import Map from "./Map.vue";
-// import StatisticTableOne from "./components/StatisticTableOne";
-// import StatisticTableTwo from "./components/StatisticTableTwo";
-// import StatisticTableThree from "./components/StatisticTableThree";
-// import StatisticTableFour from "./components/StatisticTableFour";
-import StatisticHeader from "./StatisticHeader";
-import PageHeader from "./PageHeader";
-import RankList from "./RankingList";
-import DetailCard from "./DetailCard";
+import Map from './Map.vue';
+import StatisticHeader from './StatisticHeader';
+import PageHeader from './PageHeader';
+import RankList from './RankingList';
+import DetailCard from './DetailCard';
+import StatisticTableOne from './StatisticTableOne';
+import StatisticTableTwo from './StatisticTableTwo';
+import StatisticTableThree from './StatisticTableThree';
+import StatisticTableFour from './StatisticTableFour';
+import MiniStatisticBar from './MiniStatisticBar';
+import MiniStatisticPie from './MiniStatisticPie';
+import MiniStatisticSmooth from './MiniStatisticSmooth';
+import MiniStatisticLine from './MiniStatisticLine';
+import MiniStatisticLine2 from './MiniStatisticLine2';
+import SettingView from './SettingView';
 
 export default {
-  name: "app",
+  name: 'app',
   data() {
+    this.theme = this.$ChartTheme;
     return {
-      rankList: [
-        { name: 1, total: 50 },
-        { name: 2, total: 48 },
-        { name: 3, total: 40 },
-      ],
       RankState: true,
     };
   },
   components: {
     Map,
-    // StatisticTableOne,
-    // StatisticTableTwo,
-    // StatisticTableThree,
-    // StatisticTableFour,
+    // eslint-disable-next-line vue/no-unused-components
+    StatisticTableOne,
+    // eslint-disable-next-line vue/no-unused-components
+    StatisticTableTwo,
+    // eslint-disable-next-line vue/no-unused-components
+    StatisticTableThree,
+    // eslint-disable-next-line vue/no-unused-components
+    StatisticTableFour,
     StatisticHeader,
     PageHeader,
     RankList,
     DetailCard,
+    MiniStatisticBar,
+    // eslint-disable-next-line vue/no-unused-components
+    MiniStatisticPie,
+    MiniStatisticSmooth,
+    MiniStatisticLine,
+    // eslint-disable-next-line vue/no-unused-components
+    MiniStatisticLine2,
+    SettingView,
   },
+  mounted() {},
   computed: {
     IsHideRank: function () {
       return !this.$store.state.showRankList;
@@ -97,7 +149,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@primaryColor: #06095d;
 .map-bg {
   width: 100%;
   float: left;
@@ -110,8 +161,8 @@ export default {
   transition: all ease 0.2s;
 }
 .statistic2 {
-  bottom: 10px;
-  left: 0px;
+  bottom: 0px;
+  left: 21%;
   transition: all ease 0.2s;
 }
 .statistic3 {
@@ -120,13 +171,13 @@ export default {
   transition: all ease 0.2s;
 }
 .statistic4 {
-  bottom: 10px;
-  right: 0px;
+  bottom: 0px;
+  right: 21%;
   transition: all ease 0.2s;
 }
 .statistic-box {
   position: absolute;
-  width: 25%;
+  width: 20%;
   height: 70%;
   margin: 10px;
 }
@@ -142,8 +193,8 @@ export default {
   transition: all ease 0.2s 0.2s;
 }
 .boxall {
-  border: 1px solid rgba(25, 186, 139, 0.17);
-  background: rgba(255, 255, 255, 0.04) url("../assets/img/line.png");
+  //   border: 1px solid rgba(25, 186, 139, 0.17);
+  background: url('../assets/img/line.png');
   background-size: 100% auto;
   margin-bottom: 0.15rem;
 }
@@ -152,9 +203,10 @@ export default {
   position: absolute;
   width: 1.1rem;
   height: 1.1rem;
-  content: "";
+  content: '';
   border-top: 2px solid #02a6b5;
   top: 0;
+  z-index: 2;
 }
 .boxall:before,
 .boxfoot:before {
@@ -177,24 +229,14 @@ export default {
   position: absolute;
   width: 1.1rem;
   height: 1.1rem;
-  content: "";
+  content: '';
   border-bottom: 2px solid #02a6b5;
   bottom: 0;
 }
 .show-detail {
   display: none;
 }
-// .bg:after {
-//   content: "";
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: #808080;
-//   filter: blur(20px);
-//   z-index: 2;
-// }
+
 .header {
   position: absolute;
   top: 0px;
@@ -231,5 +273,13 @@ export default {
   // width: 0px;
   // height: 0px;
   display: none;
+}
+.setting {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  margin-left: -40px;
+  width: 80px;
+  height: 36px;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="bg_header">
         <div class="header_nav fl t_title">
-          长宁区市政设施展示平台
+          <img src="../assets/img/title_name.png" class="title" />
         </div>
       </div>
     </div>
@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: "pageHeader",
+  name: 'pageHeader',
   data() {
     return {};
   },
@@ -20,12 +20,12 @@ export default {
 <style scoped>
 .header {
   width: 100%;
-  height: 80px;
+  height: 160px;
 }
 .bg_header {
   width: 100%;
-  height: 80px;
-  background: url(../assets/img/head_bg.png) no-repeat;
+  height: 165px;
+  background: #000000 url(../assets/img/navi_bg.png) no-repeat;
   background-size: 100% 100%;
 }
 .t_title {
@@ -33,7 +33,10 @@ export default {
   height: 100%;
   text-align: center;
   font-size: 2.5em;
-  line-height: 80px;
+  line-height: 140px;
   color: rgb(255, 255, 255);
+}
+.title {
+  width: 20%;
 }
 </style>

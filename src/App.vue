@@ -1,25 +1,26 @@
 <template>
   <a-locale-provider :locale="zh_CN">
-     <router-view></router-view>
+    <router-view></router-view>
   </a-locale-provider>
 </template>
 
 <script>
-import zh_CN from "ant-design-vue/lib/locale-provider/zh_CN";
+// eslint-disable-next-line camelcase
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
 export default {
-  name: "app",
+  name: 'app',
   data() {
     return {
       zh_CN,
     };
-  }
+  },
 };
 </script>
 
 <style lang="less">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -28,6 +29,4 @@ export default {
   width: 100%;
   overflow: hidden;
 }
-
-
 </style>

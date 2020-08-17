@@ -1,40 +1,47 @@
 const DATA_API = {
   getFacilitiesCount: {
     method: 'get',
-    url: '/getFacilitiesCount'
+    url: '/getFacilitiesCount',
   },
   getDiseaseCount: {
     method: 'get',
-    url: '/getDiseaseCount'
+    url: '/getDiseaseCount',
   },
   getRepairCount: {
     method: 'get',
-    url: '/getRepairCount'
+    url: '/getRepairCount',
   },
   getDiseaseTypeCount: {
     method: 'get',
-    url: '/getDiseaseTypeCount'
+    url: '/getDiseaseTypeCount',
   },
   getMonthRepairCount: {
     method: 'get',
-    url: '/getMonthRepairCount'
+    url: '/getMonthRepairCount',
   },
   getMonthAttendance: {
     method: 'get',
-    url: '/getMonthAttendance'
+    url: '/getMonthAttendance',
   },
   getDiseaseTypeRank: {
     method: 'get',
-    url: '/getDiseaseTypeRank'
+    url: '/getDiseaseTypeRank',
   },
   getDiseaseRoadRank: {
     method: 'get',
-    url: '/getDiseaseRoadRank'
+    url: '/getDiseaseRoadRank',
   },
   getScoreRank: {
     method: 'get',
-    url: '/getScoreRank'
-  }
-
-}
-export default DATA_API
+    url: '/getScoreRank',
+  },
+  getFacilitiesTypeCount: {
+    method: 'get',
+    url: '/getFacilitiesTypeCount',
+  },
+  getFacilitiesPoint: {
+    method: 'get',
+    url: '/getFacilitiesPoint',
+  },
+};
+export default DATA_API;

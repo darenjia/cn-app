@@ -1,11 +1,11 @@
 <template>
   <div class="rank">
-    <div class="title">{{ title }}<span class="detail">更多详情</span></div>
+    <div class="title">{{ title }}<span class="detail"></span></div>
     <ul class="list">
       <li :key="index" v-for="(item, index) in list">
         <span :class="index < 3 ? 'active' : null">{{ index + 1 }}</span>
-        <span>{{ item.name }}</span>
-        <span>{{ item.total }}</span>
+        <span>{{ item.type }}</span>
+        <span>{{ item.nums }}</span>
       </li>
     </ul>
   </div>
@@ -13,23 +13,62 @@
 
 <script>
 export default {
-  name: "RankingList",
-  props: ["title", "list"],
+  name: 'RankingList',
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      dataList: [],
+    };
+  },
+  computed: {
+    list: function () {
+      return this.dataList;
+    },
+  },
+  mounted() {
+    this.getRankList();
+  },
+  methods: {
+    async getRankList() {
+      let data;
+      if (this.type === 'disease') {
+        data = await this.$Http.getDiseaseTypeRank();
+      } else if (this.type === 'road') {
+        data = await this.$Http.getDiseaseRoadRank();
+      } else if (this.type === 'score') {
+        data = await this.$Http.getScoreRank();
+      }
+
+      this.dataList = data;
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
+@textColor: #fff;
 .rank {
   padding: 12px;
+  position: relative;
   .title {
     font-size: 18px;
     font-weight: 500;
+    color: @textColor;
     .detail {
       cursor: pointer;
       position: absolute;
       top: 12px;
       right: 20px;
-      color: #a5a5a5;
+      color: @textColor;
       font-size: 13px;
     }
   }
@@ -40,7 +79,7 @@ export default {
     li {
       margin-top: 16px;
       span {
-        color: #808080;
+        color: @textColor;
         font-size: 14px;
         line-height: 22px;
       }
