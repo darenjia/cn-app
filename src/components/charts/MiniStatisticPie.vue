@@ -73,22 +73,13 @@ export default {
 </script>
 <style lang="less" scoped>
 @textColor: #ffffff;
-.chart {
-  padding: 10px;
-  width: 100%;
-  position: relative;
-  .title {
-    font-size: 18px;
-    font-weight: 500;
-    color: @textColor;
-    .detail {
-      cursor: pointer;
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      color: @textColor;
-      font-size: 13px;
-    }
-  }
+.detail {
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  color: @textColor;
+  font-size: 13px;
+  display: none;
 }
 </style>

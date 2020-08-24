@@ -6,8 +6,22 @@
   top: 0px;
   left: 0px;
   backdrop-filter: blur(4px) brightness(100%);
-  border: 2px solid #2a2a2a;
-  background-color: rgba(7, 23, 56, 0.13);
+  background-image: url(../assets/img/1140_1800.png);
+  background-size: 100% 100%;
+}
+.stistic-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: @textTitlColor;
+  background-image: url(../assets/img/1108_88.png);
+  background-size: 100% 100%;
+  padding: 10px;
+}
+.chart {
+  margin: 10px;
+  padding: 10px;
+  background-image: url(../assets/img/bgb.png);
+  background-size: 100% 100%;
 }
 .content-with-title{
   padding: 12px;
@@ -18,12 +32,22 @@
     .detail {
       cursor: pointer;
       position: absolute;
-      top: 12px;
-      right: 20px;
+      top: 20px;
+      right: 40px;
       color: @textColor;
-      font-size: 13px;
+      font-size: 14px;
     }
   }
 }
+.statistic-number{
+  color: @textTitlColor;
+}
+.statistic-number1{
+  color: #d40e0e;
+}
+.statistic-number2{
+  color: #15e665;
+}
 @textColor: #fff;
 @primaryColor: #06095d;
+@textTitlColor:#08dee6;

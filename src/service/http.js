@@ -38,6 +38,7 @@ for (const key in service) {
 instance.interceptors.request.use(
   config => {
     // config.headers = { 'Access-Control-Allow-Origin': '*' };
+    // console.log(config);
     return config;
   },
   error => {

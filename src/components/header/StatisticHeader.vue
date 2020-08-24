@@ -26,10 +26,12 @@
             巡检发现<span style="margin-right: 16px;"> 541 件</span>
             网格发现<span> 5410 件</span>
           </div> -->
-          <span slot="ext">
+          <span slot="ext1">
             <!-- <mini-statistic-one /> -->
-            巡检:<span>{{ inspectCount }}</span
-            ><a-divider type="vertical" />网格:<span>{{ gridCount }}</span>
+            巡检:<span>{{ inspectCount }}</span>
+          </span>
+          <span slot="ext2">
+            网格:<span>{{ gridCount }} </span>
           </span>
         </chart-card></a-col
       >
@@ -44,12 +46,13 @@
             正在维修<span style="margin-right: 16px;"> 541 件</span>
             维修完成<span> 5410 件</span>
           </div> -->
-          <span slot="ext">
+          <span slot="ext1">
             <!-- <mini-statistic-one /> -->
-            维修中: <span>{{ runningTaskCount }}</span
-            ><a-divider type="vertical" /> 已完成:
-            <span>{{ completedTaskCount }}</span>
+            维修中: <span>{{ runningTaskCount }}</span>
           </span>
+          <span slot="ext2"
+            >已完成: <span>{{ completedTaskCount }}</span></span
+          >
         </chart-card></a-col
       >
       <!-- <a-col :span="6"
@@ -107,31 +110,31 @@ export default {
   },
   computed: {
     isHidden: function () {
-      return !this.$store.state.showRankList;
+      return !this.$store.state.showStatistic;
     },
     statiticDatas: function () {
       return this.statiticData;
     },
     facilityCount: function () {
-      return this.statiticData.facilitiesCount + ' 个';
+      return this.statiticData.facilitiesCount;
     },
     diseaseCount: function () {
-      return this.statiticData.diseaseCount + ' 个';
+      return this.statiticData.diseaseCount;
     },
     taskCount: function () {
-      return this.statiticData.repairCount + ' 个';
+      return this.statiticData.repairCount;
     },
     inspectCount: function () {
-      return this.statiticData.inspect + ' 个';
+      return this.statiticData.inspect;
     },
     gridCount: function () {
-      return this.statiticData.grid + ' 个';
+      return this.statiticData.grid;
     },
     runningTaskCount: function () {
-      return this.statiticData.repairLoading + ' 个';
+      return this.statiticData.repairLoading;
     },
     completedTaskCount: function () {
-      return this.statiticData.repairComplete + ' 个';
+      return this.statiticData.repairComplete;
     },
   },
   components: {

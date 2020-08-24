@@ -1,20 +1,22 @@
 <template>
-  <div class="filter-bg chart-card">
+  <div class="chart-card">
     <div class="chart-card-header">
       <div class="meta">
-        <span class="chart-card-title">{{ title }}</span>
+        <div class="chart-card-title">{{ title }}</div>
         <span class="chart-card-action">
           <slot name="action"></slot>
         </span>
       </div>
-      <div class="total">
-        <span>{{ total }}</span>
-      </div>
-      <div class="other"><slot name="ext"></slot></div>
     </div>
     <div class="chart-card-content">
-      <div class="content-fix">
-        <slot></slot>
+      <div class="statistic-content">
+        <div class="total">
+          <span class="statistic-number">{{ total }}</span>
+        </div>
+        <div class="other">
+          <div class="statistic-number1"><slot name="ext1"></slot></div>
+          <div class="statistic-number2"><slot name="ext2"></slot></div>
+        </div>
       </div>
     </div>
   </div>
@@ -31,8 +33,13 @@ export default {
 .chart-card {
   position: relative;
   margin: 10px;
-  padding: 10px;
+  padding: 20px 40px;
   width: auto;
+  background-image: url(../../assets/img/unselected_white.png);
+  background-size: 100% 100%;
+}
+.chart-card:hover {
+  background-image: url(../../assets/img/selected_white.png);
 }
 .chart-card-header {
   position: relative;
@@ -46,6 +53,12 @@ export default {
   color: #ffffff;
   font-size: 14px;
   line-height: 22px;
+  .chart-card-title {
+    text-align: center;
+    font-size: 18px;
+    padding: 6px 0px;
+    font-weight: 600;
+  }
 }
 .chart-card-action {
   cursor: pointer;
@@ -64,6 +77,7 @@ export default {
   line-height: 38px;
   height: 38px;
   color: #fff;
+  display: inline-block;
 }
 .chart-card-footer {
   border-top: 1px solid #808080;
@@ -75,6 +89,9 @@ export default {
   position: relative;
   // height: 46px;
   width: 100%;
+  .statistic-content {
+    text-align: center;
+  }
 }
 .chart-card-content .content-fix {
   position: absolute;
@@ -86,8 +103,8 @@ export default {
 .other {
   font-size: 18px;
   color: #fff;
-  position: absolute;
-  top: 40px;
-  right: 20px;
+  display: inline-block;
+  padding: 0px 8px;
+  text-align: left;
 }
 </style>

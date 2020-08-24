@@ -15,6 +15,7 @@
 </template>
 <script>
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
+import styleObject from '../theme/icon-style';
 // eslint-disable-next-line no-undef
 /* global AMap */
 
@@ -29,12 +30,14 @@ const positions = [
   [121.51211, 31.138639],
 ];
 let flag = 0;
+let massMarks;
 export default {
   name: 'amap',
   data() {
     return {
       map: {},
       Icon: {},
+      facilityPoints: [],
     };
   },
   methods: {
@@ -45,43 +48,28 @@ export default {
       marker.setMap(this.map);
     },
     addPoints(data) {
-      // 创建样式对象
-      const styleObject = [
-        {
-          url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
-          anchor: new AMap.Pixel(6, 6),
-          size: new AMap.Size(11, 11),
-        },
-        {
-          url: 'https://a.amap.com/jsapi_demos/static/images/mass1.png',
-          anchor: new AMap.Pixel(4, 4),
-          size: new AMap.Size(7, 7),
-        },
-        {
-          url: 'https://a.amap.com/jsapi_demos/static/images/mass2.png',
-          anchor: new AMap.Pixel(3, 3),
-          size: new AMap.Size(5, 5),
-        },
-      ];
-
-      const massMarks = new AMap.MassMarks(
-        //  'https://a.amap.com/jsapi_demos/static/citys.js',
-        // 'http://47.103.63.36:8084/FtpFile/getFacilitiesPoint.json',
-        [],
-        {
-          zIndex: 5, // 海量点图层叠加的顺序
-          zooms: [5, 20], // 在指定地图缩放级别范围内展示海量点图层
-          style: styleObject, // 设置样式对象
-        },
-      );
+      if (!massMarks) {
+        massMarks = new AMap.MassMarks(
+          //  'https://a.amap.com/jsapi_demos/static/citys.js',
+          // 'http://47.103.63.36:8084/FtpFile/getFacilitiesPoint.json',
+          [],
+          {
+            zIndex: 5, // 海量点图层叠加的顺序
+            zooms: [14, 20], // 在指定地图缩放级别范围内展示海量点图层
+            style: styleObject(), // 设置样式对象
+          },
+        );
+        massMarks.setMap(this.map);
+        console.log('initmap');
+      }
+      massMarks.clear();
       massMarks.setData(data);
-      massMarks.setMap(this.map);
-      var marker = new AMap.Marker({ content: ' ', map: this.map });
+      // var marker = new AMap.Marker({ content: ' ', map: this.map });
 
-      massMarks.on('mouseover', function (e) {
-        marker.setPosition(e.data.lnglat);
-        marker.setLabel({ content: e.data.name });
-      });
+      // massMarks.on('mouseover', function (e) {
+      //   marker.setPosition(e.data.lnglat);
+      //   marker.setLabel({ content: e.data.guid });
+      // });
       // massMarks.show();
       // massMarks.hide();
     },
@@ -117,9 +105,88 @@ export default {
       const i = ++flag % 5;
       return new AMap.LngLat(positions[i][0], positions[i][1]);
     },
-    async getFacilitiesPoint() {
+    creatBounds(x, y, x1, y1) {
+      return new AMap.Bounds(new AMap.LngLat(x, y), new AMap.LngLat(x1, y1));
+    },
+    async getFacilitiesPoint(params) {
+      const data = await this.$Http.getFacilitiesPoint({
+        params: params,
+      });
+      console.log(data.length);
+      this.facilityPoints = data;
+      this.addPoints(data);
+    },
+    async getDiseasePosition() {
       const data = await this.$Http.getFacilitiesPoint();
       this.addPoints(data);
+    },
+    addMapCover() {
+      new AMap.DistrictSearch({
+        extensions: 'all',
+        subdistrict: 0,
+      }).search('长宁区', function (status, result) {
+        // 外多边形坐标数组和内多边形坐标数组
+        var outer = [
+          new AMap.LngLat(-360, 90, true),
+          new AMap.LngLat(-360, -90, true),
+          new AMap.LngLat(360, -90, true),
+          new AMap.LngLat(360, 90, true),
+        ];
+        var holes = result.districtList[0].boundaries;
+
+        var pathArray = [outer];
+        pathArray.push.apply(pathArray, holes);
+        var polygon = new AMap.Polygon({
+          pathL: pathArray,
+          strokeColor: '#00eeff',
+          strokeWeight: 3,
+          strokeOpacity: 0.5,
+          fillColor: '#000000',
+          fillOpacity: 0.35,
+        });
+        polygon.setPath(pathArray);
+        var polygon2 = new AMap.Polygon({
+          pathL: pathArray,
+          strokeColor: '#00eeef',
+          strokeWeight: 10,
+          strokeOpacity: 0.05,
+          fillColor: '#000000',
+          fillOpacity: 0.35,
+        });
+        polygon.setPath(pathArray);
+        polygon2.setPath(pathArray);
+        viewInstance.map.add(polygon2);
+        viewInstance.map.add(polygon);
+      });
+    },
+  },
+  computed: {
+    showMassMarks() {
+      return this.$store.state.mapShowFacility;
+    },
+    facilityType() {
+      return this.$store.state.mapMode;
+    },
+  },
+  watch: {
+    showMassMarks: function (newState, oldState) {
+      if (newState) {
+        if (massMarks !== undefined) {
+          massMarks.show();
+        } else {
+          // viewInstance.getFacilitiesPoint();
+        }
+      } else {
+        if (massMarks !== undefined) {
+          massMarks.hide();
+        }
+      }
+    },
+    facilityType: function (newData) {
+      console.log(newData);
+      if (this.showMassMarks) {
+        this.getFacilitiesPoint(this.$store.state.facilityType);
+      }
     },
   },
   mounted: function () {
@@ -127,22 +194,33 @@ export default {
     lazyAMapApiLoaderInstance.load().then(() => {
       // console.log('-----');
       viewInstance.map = this.map = new AMap.Map('amap-demo1', {
-        center: [121.35782904062722, 31.198521967336713],
+        center: [121.387843, 31.217981],
         zoom: 14,
-        mapStyle: 'amap://styles/e5456c58202cf2aaebfbf84992528316',
+        mapStyle: 'amap://styles/bdb73a3499c1514a95d915c898dba7ce',
+        viewMode: '3D',
+        zooms: [10, 18],
       });
+      // viewInstance.map.setBounds(
+      //   this.creatBounds(122.602519, 32.13992, 120.083903, 30.559067),
+      // );
+      viewInstance.map.setLimitBounds(
+        this.creatBounds(121.288666, 31.164399, 121.511139, 31.26335),
+      );
       this.Icon = new AMap.Icon({
-        size: new AMap.Size(25, 34),
+        size: new AMap.Size(32, 32),
         image:
-          '//a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
-        imageSize: new AMap.Size(135, 40),
-        imageOffset: new AMap.Pixel(-95, -3),
+          '//47.103.63.36:8084/FtpFile/images/%E5%A4%A7%E7%90%86%E7%9F%B3%E7%90%83.png',
+        imageSize: new AMap.Size(32, 32),
+        imageOffset: new AMap.Pixel(0, 0),
       });
       viewInstance.getMap();
-      viewInstance.addPoints();
+      // viewInstance.addPoints();
       // viewInstance.setPersonLocation();
+      viewInstance.addMapCover();
     });
-    this.getFacilitiesPoint();
+    if (this.showMassMarks) {
+      this.getFacilitiesPoint();
+    }
   },
 };
 </script>

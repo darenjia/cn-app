@@ -4,53 +4,24 @@
     <div class="time-filter">
       <a-month-picker placeholder="选择月份" @change="onChange" />
     </div>
-    <ve-pie
-      :data="chartData"
-      :settings="chartSettings"
-      :theme="theme"
-      :legend-visible="true"
-      :extend="chartExtend"
-      :loading="loading"
-      :dataEmpty="dataEmpty"
-    ></ve-pie>
+    <chart-pie></chart-pie>
   </div>
 </template>
 <script>
+import ChartPie from './ChartPie';
 export default {
   props: {
     theme: {},
   },
   data() {
     return {
-      loading: true,
-      dataEmpty: false,
       title: '设施类型分类统计',
-      chartExtend: {
-        legend: {
-          icon: 'rect',
-          bottom: 0,
-        },
-      },
-      chartSettings: {
-        // roseType: 'area',
-      },
-      chartData: {
-        columns: ['type', 'nums'],
-        rows: [],
-      },
     };
   },
+  components: {
+    ChartPie,
+  },
   methods: {
-    async getDiseaseTypeCount() {
-      const data = await this.$Http.getFacilitiesTypeCount();
-      console.log(data);
-      if (data.length > 0) {
-        this.chartData.rows = data;
-      } else {
-        this.dataEmpty = true;
-      }
-      this.loading = false;
-    },
     onChange(date, dateString) {
       console.log(date, dateString);
     },

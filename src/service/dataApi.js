@@ -37,11 +37,31 @@ const DATA_API = {
   },
   getFacilitiesTypeCount: {
     method: 'get',
-    url: '/getFacilitiesTypeCount',
+    url: '/facilitiesType',
+  },
+  getFacilitiesDetailTypeCount: {
+    method: 'get',
+    url: '/childrenType',
+  },
+  getFacilitiesDetailType: {
+    method: 'get',
+    url: '/sectionType',
   },
   getFacilitiesPoint: {
     method: 'get',
     url: '/getFacilitiesPoint',
+  },
+  getSectionRank: {
+    method: 'get',
+    url: '/getSectionRank',
+  },
+  getDiseasePosition: {
+    method: 'get',
+    url: '/getDiseasePosition',
+  },
+  getDiseaseType: {
+    method: 'get',
+    url: '/diseaseType',
   },
 };
 export default DATA_API;

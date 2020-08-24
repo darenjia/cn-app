@@ -1,13 +1,13 @@
 <template>
   <div>
-    <statistic-table-three></statistic-table-three>
+    <chart-pie></chart-pie>
   </div>
 </template>
 <script>
-import StatisticTableThree from './StatisticTableThree';
+import ChartPie from './charts/ChartPie';
 export default {
   components: {
-    StatisticTableThree,
+    ChartPie,
   },
   data() {
     return {};

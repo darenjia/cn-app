@@ -1,13 +1,13 @@
 <template>
   <div>
-    <statistic-table-four></statistic-table-four>
+    <chart-bar></chart-bar>
   </div>
 </template>
 <script>
-import StatisticTableFour from './StatisticTableFour';
+import ChartBar from './charts/ChartBar';
 export default {
   components: {
-    StatisticTableFour,
+    ChartBar,
   },
   data() {
     return {};

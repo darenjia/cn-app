@@ -1,6 +1,8 @@
 <template>
-  <div class="rank">
-    <div class="title">{{ title }}<span class="detail"></span></div>
+  <div class="rank chart">
+    <div class="title stistic-title">
+      {{ title }}<span class="detail"></span>
+    </div>
     <ul class="list">
       <li :key="index" v-for="(item, index) in list">
         <span :class="index < 3 ? 'active' : null">{{ index + 1 }}</span>
@@ -46,6 +48,8 @@ export default {
         data = await this.$Http.getDiseaseRoadRank();
       } else if (this.type === 'score') {
         data = await this.$Http.getScoreRank();
+      } else {
+        data = await this.$Http.getSectionRank();
       }
 
       this.dataList = data;

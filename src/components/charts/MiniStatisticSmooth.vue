@@ -1,18 +1,17 @@
 <template>
   <div class="chart">
-    <div class="title">
-      {{ title }}<span class="detail"><a @click="showDetail(2)">详情</a></span>
+    <div class="stistic-title">
+      {{ title }}<span class="detail"><a @click="showDetail(3)">详情</a></span>
     </div>
-    <div class="chart-content" :style="{ height: 260 }">
+    <div class="chart-content">
       <v-chart
-        :forceFit="true"
+        :force-fit="true"
         :height="height"
         :data="data"
         :padding="[36, 5, 18, 5]"
       >
-        <v-axis v-if="showAxis" />
         <v-tooltip />
-        <v-bar position="x*y" />
+        <v-smooth-area position="x*y" />
       </v-chart>
     </div>
   </div>
@@ -57,10 +56,9 @@ export default {
   props: {
     title: {},
   },
-  name: 'MiniStatisticOne',
+  name: 'MiniStatisticTwo',
   data() {
     return {
-      showAxis: false,
       data,
       scale,
       tooltip,
@@ -80,22 +78,13 @@ export default {
 
 <style lang="less" scoped>
 @textColor: #ffffff;
-.chart {
-  padding: 10px;
-  position: relative;
-  width: 100%;
-  .title {
-    font-size: 18px;
-    font-weight: 500;
-    color: @textColor;
-    .detail {
-      cursor: pointer;
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      color: @textColor;
-      font-size: 12px;
-    }
-  }
+.detail {
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  color: @textColor;
+  font-size: 12px;
+  display: none;
 }
 </style>

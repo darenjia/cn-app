@@ -5,7 +5,7 @@
       <a-divider type="vertical" />
       <a-icon type="unordered-list" style="color: #ffffff; font-size: 18px;" />
     </div>
-    <div :class="[{ hide: menuState }, 'show-setting']">
+    <div :class="[{ hide: !menuState }, 'show-setting']">
       <div class="filter-bg setting-content">
         <p>
           <span>显示排行榜</span>
@@ -13,7 +13,7 @@
             ><a-switch
               checked-children="开"
               un-checked-children="关"
-              default-checked
+              v-model="showRankList"
               @change="rankStateChange"
           /></span>
         </p>
@@ -23,7 +23,7 @@
             ><a-switch
               checked-children="开"
               un-checked-children="关"
-              default-checked
+              v-model="showStatistic"
               @change="statisticStateChange"
           /></span>
         </p>
@@ -33,7 +33,7 @@
             <a-switch
               checked-children="开"
               un-checked-children="关"
-              default-checked
+              v-model="showStatisticGraph"
               @change="statisticGraphStateChange"
             />
           </span>
@@ -69,10 +69,31 @@ export default {
   name: 'SettingView',
   data() {
     return {
-      isMenuShow: true,
-      checkedList: ['设施'],
+      isMenuShow: false,
+      showRankList: true,
+      showStatistic: true,
+      showStatisticGraph: true,
+      checkedList: [],
       plainOptions: ['设施', '病害', '维修', '人员'],
     };
+  },
+  created() {
+    const store = this.$store.state;
+    if (store.mapShowFacility) {
+      this.checkedList.push('设施');
+    }
+    if (store.mapShowDisease) {
+      this.checkedList.push('病害');
+    }
+    if (store.mapShowTask) {
+      this.checkedList.push('维修');
+    }
+    if (store.mapShowPerson) {
+      this.checkedList.push('人员');
+    }
+    this.showRankList = store.showRankList;
+    this.showStatistic = store.showStatistic;
+    this.showStatisticGraph = store.showStatisticGraph;
   },
   computed: {
     menuState() {
@@ -80,21 +101,8 @@ export default {
     },
   },
   methods: {
-    onChange(checkedValues) {
-      console.log(this.checkedList);
-      this.$store.commit(
-        'changeMapFaciity',
-        checkedValues.indexof('设施') === -1,
-      );
-      this.$store.commit(
-        'changeMapDisease',
-        checkedValues.indexof('病害') === -1,
-      );
-      this.$store.commit('changeMapTask', checkedValues.indexof('维修') === -1);
-      this.$store.commit(
-        'changeMapPerson',
-        checkedValues.indexof('人员') === -1,
-      );
+    onChange(checkedValue) {
+      this.$store.commit('changeMapType', checkedValue.toString());
     },
     rankStateChange(checked) {
       this.$store.commit('changeRankListState', checked);

@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <div class="title">
+    <div class="stistic-title">
       {{ title }}<span class="detail"><a @click="showDetail(4)">详情</a></span>
     </div>
     <div class="chart-content">
@@ -79,22 +79,13 @@ export default {
 
 <style lang="less" scoped>
 @textColor: #ffffff;
-.chart {
-  padding: 10px;
-  width: 100%;
-  position: relative;
-  .title {
-    font-size: 18px;
-    font-weight: 500;
-    color: @textColor;
-    .detail {
-      cursor: pointer;
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      color: @textColor;
-      font-size: 12px;
-    }
-  }
+.detail {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  color: @textColor;
+  font-size: 14px;
+  display: none;
 }
 </style>
