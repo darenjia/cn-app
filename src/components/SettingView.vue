@@ -119,6 +119,9 @@ export default {
     statisticGraphStateChange(checked) {
       this.$store.commit('changeStatisticGraphState', checked);
     },
+    hideMenu() {
+      this.isMenuShow = false;
+    },
   },
 };
 </script>

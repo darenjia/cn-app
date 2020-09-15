@@ -1,17 +1,20 @@
 <template>
-  <div style="height: 250px;">
+  <div style="height: 270px;">
     <v-chart :options="options" autoresize @click="onDetailChange" />
   </div>
 </template>
 <script>
 import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/pie';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/grid';
+import 'echarts/lib/component/graphic';
 
 const color = [
-  '#00ffff',
-  '#00cfff',
-  '#006ced',
-  '#ffe000',
+  '#00AF8B',
+  '#E18872',
+  '#647E9B',
+  '#735382',
   '#ffa800',
   '#ff5b00',
   '#ff3000',
@@ -30,8 +33,7 @@ export default {
   },
   watch: {
     chartData: function (newData) {
-      console.log(newData);
-      this.options = this.createOptions(newData);
+      this.options = this.createOptions(this.chartData);
     },
   },
   methods: {
@@ -62,8 +64,9 @@ export default {
             name: chartData[i].type,
             itemStyle: {
               normal: {
-                borderWidth: 5,
-                shadowBlur: 20,
+                color: color[i],
+                borderWidth: 1,
+                shadowBlur: 10,
                 borderColor: color[i],
                 shadowColor: color[i],
               },
@@ -94,8 +97,8 @@ export default {
           name: '',
           type: 'pie',
           clockWise: false,
-          radius: [60, 68],
-          hoverAnimation: false,
+          radius: ['50%', '60%'],
+          hoverAnimation: true,
           itemStyle: {
             normal: {
               label: {
@@ -120,15 +123,16 @@ export default {
 
       return {
         title: {
-          text: '标段',
-          top: '46%',
-          textAlign: 'center',
-          left: '49%',
+          text: '各标段设施占比',
           textStyle: {
             color: '#fff',
-            fontSize: 20,
+            fontSize: 14,
             fontWeight: '400',
           },
+        },
+        grid: {
+          rigth: '50%',
+          left: '40%',
         },
         graphic: {
           elements: [
@@ -137,8 +141,8 @@ export default {
               z: 3,
               style: {
                 image: img,
-                width: 50,
-                height: 50,
+                width: 98,
+                height: 98,
               },
               left: 'center',
               top: 'center',
@@ -149,15 +153,12 @@ export default {
           show: true,
         },
         legend: {
-          icon: 'circle',
-          orient: 'horizontal',
-          // x: 'left',
-          data: ['高级教师', '一级教师', '二级教师', '三级教师'],
-          align: 'right',
+          show: false,
+          bottom: '0',
+          orient: 'vertical',
           textStyle: {
             color: '#fff',
           },
-          itemGap: 20,
         },
         toolbox: {
           show: false,

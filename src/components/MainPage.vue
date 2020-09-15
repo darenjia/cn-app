@@ -16,7 +16,9 @@
           'statistic-box',
         ]"
       >
-        <div class="filter-bg"></div>
+        <div class="filter-bg">
+          <statistic-disease-detail></statistic-disease-detail>
+        </div>
       </div>
       <div
         :class="[
@@ -55,10 +57,13 @@
           <rank-list :title="'病害道路排行'" :type="'disease'"></rank-list>
         </div>
       </div>
-      <div class="detail-content show-detail">
+      <div :class="['detail-content', { 'hide-detail': !isShowPointDetail }]">
         <detail-card />
       </div>
       <div class="setting"><setting-view /></div>
+      <div class="legend">
+        <legend-card></legend-card>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +75,8 @@ import RankList from './RankingList';
 import DetailCard from './DetailCard';
 import StatisticFacilityDetail from './StatisticFacilityDetail';
 import SettingView from './SettingView';
+import StatisticDiseaseDetail from './StatisticDiseaseDetail';
+import LegendCard from './LegendCard';
 
 export default {
   name: 'app',
@@ -87,6 +94,8 @@ export default {
     DetailCard,
     StatisticFacilityDetail,
     SettingView,
+    StatisticDiseaseDetail,
+    LegendCard,
   },
   mounted() {},
   computed: {
@@ -95,6 +104,9 @@ export default {
     },
     isShowStatistic() {
       return this.$store.state.showStatisticGraph;
+    },
+    isShowPointDetail() {
+      return this.$store.state.showPointDetail;
     },
   },
   methods: {
@@ -121,19 +133,22 @@ export default {
 .statistic-box {
   position: absolute;
   width: 20%;
-  margin: 10px;
+  margin: 0px 10px;
   bottom: 0px;
-  top: 120px;
+  top: 50%;
+  height: 800px;
+  margin-top: -345px;
   transition: all ease 0.2s;
 }
 
 .detail-content {
-  width: 25%;
+  width: 45%;
   bottom: 0px;
   position: absolute;
-  top: 85px;
-  right: 10px;
-  bottom: 10px;
+  top: 150px;
+  left: 50%;
+  margin-left: -20%;
+  bottom: 45px;
   //   background: @primaryColor;
   transition: all ease 0.2s 0.2s;
 }
@@ -178,7 +193,7 @@ export default {
   border-bottom: 2px solid #02a6b5;
   bottom: 0;
 }
-.show-detail {
+.hide-detail {
   display: none;
 }
 
@@ -226,6 +241,13 @@ export default {
   margin-left: -40px;
   width: 80px;
   height: 36px;
+}
+.legend {
+  position: absolute;
+  bottom: 2px;
+  right: 20%;
+  width: 100px;
+  height: 100px;
 }
 .statistic-header {
   position: absolute;

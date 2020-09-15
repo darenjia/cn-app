@@ -1,8 +1,19 @@
-import Vuex from 'vuex';
-import Vue from 'vue';
+"use strict";
 
-Vue.use(Vuex);
-const store = new Vuex.Store({
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _vuex = _interopRequireDefault(require("vuex"));
+
+var _vue = _interopRequireDefault(require("vue"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+_vue["default"].use(_vuex["default"]);
+
+var store = new _vuex["default"].Store({
   state: {
     currentPointID: '',
     currentShow: -1,
@@ -17,14 +28,17 @@ const store = new Vuex.Store({
     mapShowTask: false,
     mapShowPerson: false,
     mapShowDisease: false,
-    facilityType: { type: '道路' },
+    facilityType: {
+      type: '道路'
+    },
     diseaseType: {},
-    currentPointGuid: '',
+    currentPointGuid: ''
   },
   mutations: {
-    changeCurrentShow(state, id) {
+    changeCurrentShow: function changeCurrentShow(state, id) {
       state.currentShow = id;
       state.mapMode = id;
+
       if (id > 0) {
         state.showRankList = false;
         state.showStatistic = false;
@@ -34,6 +48,7 @@ const store = new Vuex.Store({
         state.showStatistic = true;
         state.showStatisticGraph = true;
       }
+
       if (id === 1) {
         state.mapShowFacility = true;
         state.mapShowDisease = false;
@@ -56,53 +71,53 @@ const store = new Vuex.Store({
         state.mapShowPerson = true;
       }
     },
-    changeStatisticState(state, type) {
+    changeStatisticState: function changeStatisticState(state, type) {
       state.showStatistic = type;
     },
-    changeStatisticGraphState(state, type) {
+    changeStatisticGraphState: function changeStatisticGraphState(state, type) {
       state.showStatisticGraph = type;
     },
-    changeRankListState(state, type) {
+    changeRankListState: function changeRankListState(state, type) {
       state.showRankList = type;
     },
-    changeMapFaciity(state, type) {
+    changeMapFaciity: function changeMapFaciity(state, type) {
       state.mapShowFacility = type;
     },
-    changeMapPerson(state, type) {
+    changeMapPerson: function changeMapPerson(state, type) {
       state.mapShowPerson = type;
     },
-    changeMapDisease(state, type) {
+    changeMapDisease: function changeMapDisease(state, type) {
       state.mapShowDisease = type;
     },
-    changeMapTask(state, type) {
+    changeMapTask: function changeMapTask(state, type) {
       state.mapShowTask = type;
     },
-    changeMapMode(state, type) {
+    changeMapMode: function changeMapMode(state, type) {
       state.mapMode = type;
     },
-    changeMapFacilityType(state, type) {
+    changeMapFacilityType: function changeMapFacilityType(state, type) {
       state.facilityType.type = type;
       state.facilityType.name = '';
       state.facilityType.fq = '';
       state.mapMode++;
     },
-    changeMapFacilityDetailType(state, type) {
+    changeMapFacilityDetailType: function changeMapFacilityDetailType(state, type) {
       state.facilityType.name = type;
       state.facilityType.fq = '';
       state.mapMode++;
     },
-    changeMapFacilityDetailSectionType(state, type) {
+    changeMapFacilityDetailSectionType: function changeMapFacilityDetailSectionType(state, type) {
       state.facilityType.fq = type;
       state.mapMode++;
     },
-    changePointDetail(state, type) {
+    changePointDetail: function changePointDetail(state, type) {
       state.currentPointID = type;
       state.showPointDetail = true;
     },
-    changePointDetailState(state, type) {
+    changePointDetailState: function changePointDetailState(state, type) {
       state.showPointDetail = type;
     },
-    changeMapType(state, type) {
+    changeMapType: function changeMapType(state, type) {
       if (type.length > 0) {
         state.mapShowFacility = type.indexOf('设施') >= 0;
         state.mapShowPerson = type.indexOf('人员') >= 0;
@@ -115,14 +130,15 @@ const store = new Vuex.Store({
         state.mapShowTask = false;
       }
     },
-    changeMapDiseaseType(state, type) {
+    changeMapDiseaseType: function changeMapDiseaseType(state, type) {
       state.diseaseType = type;
     },
-    changeCurrentPointLocation(state, type) {
+    changeCurrentPointLocation: function changeCurrentPointLocation(state, type) {
       state.currentPointGuid = type;
     },
-    changeTabMode(state, type) {
+    changeTabMode: function changeTabMode(state, type) {
       state.tabMode = type;
+
       if (type === 0) {
         state.showStatisticGraph = true;
         state.showPointDetail = false;
@@ -135,7 +151,8 @@ const store = new Vuex.Store({
         state.showPointDetail = false;
         state.showTrackPage = false;
       }
-    },
-  },
+    }
+  }
 });
-export default store;
+var _default = store;
+exports["default"] = _default;

@@ -14,6 +14,12 @@ import {
   Popover,
   Switch,
   Checkbox,
+  Radio,
+  Skeleton,
+  Descriptions,
+  Steps,
+  Spin,
+  Timeline,
 } from 'ant-design-vue';
 
 Vue.component(LocaleProvider.name, LocaleProvider);
@@ -38,3 +44,13 @@ Vue.component(Popover.name, Popover);
 Vue.component(Switch.name, Switch);
 Vue.component(Checkbox.name, Checkbox);
 Vue.component(Checkbox.Group.name, Checkbox.Group);
+Vue.component(Radio.Group.name, Radio.Group);
+Vue.component(Radio.Button.name, Radio.Button);
+Vue.component(Skeleton.name, Skeleton);
+Vue.component(Descriptions.name, Descriptions);
+Vue.component(Descriptions.Item.name, Descriptions.Item);
+Vue.component(Steps.name, Steps);
+Vue.component(Steps.Step.name, Steps.Step);
+Vue.component(Spin.name, Spin);
+Vue.component(Timeline.name, Timeline);
+Vue.component(Timeline.Item.name, Timeline.Item);

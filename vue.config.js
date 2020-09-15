@@ -21,5 +21,25 @@ module.exports = {
       },
     },
   },
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      template: 'src/index.html',
+    },
+  },
   transpileDependencies: ['vue-echarts', 'resize-detector'],
+  // css: {
+  //   loaderOptions: {
+  //     less: {
+  //       lessOptions: {
+  //         modifyVars: {
+  //           'primary-color': '#1DA57A',
+  //           'link-color': '#1DA57A',
+  //           'border-radius-base': '2px',
+  //         },
+  //         javascriptEnabled: true,
+  //       },
+  //     },
+  //   },
+  // },
 };

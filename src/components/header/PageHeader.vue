@@ -3,7 +3,8 @@
     <div class="header">
       <div class="bg_header">
         <div class="header_nav fl t_title">
-          <img src="../../assets/img/title_name.png" class="title" />
+          <!-- <img src="../../assets/img/title_name.png" class="title" /> -->
+          <span class="title-txt">长宁永达市政设施展示平台</span>
         </div>
         <div class="tabs">
           <main-tab-view></main-tab-view>
@@ -45,15 +46,18 @@ export default {
   text-align: center;
   font-size: 2.5em;
   line-height: 58px;
-  color: rgb(255, 255, 255);
+  font-weight: 900;
+  color: rgb(72 227 247);
 }
 .title {
   width: 20%;
 }
+.title-txt {
+}
 .tabs {
   margin-left: 10px;
   position: absolute;
-  top: 3px;
+  top: 15px;
   left: 0px;
 }
 .clock {

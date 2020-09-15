@@ -20,13 +20,14 @@ VueAMap.initAMapApiLoader({
   // key: '139a7523bd0818d4bb50450f74d58cdc',
   key: '39cd02837fed49ae1be5cbc914d86b26',
   plugin: [
-    'AMap.Scale',
+    // 'AMap.Scale',
     'AMap.OverView',
-    'AMap.ToolBar',
-    'AMap.MapType',
+    // 'AMap.ToolBar',
+    // 'AMap.MapType',
     'AMap.DistrictSearch',
+    'AMap.Heatmap',
   ],
-  uiVersion: '1.0', // ui库版本，不配置不加载,
+  // uiVersion: '1.0', // ui库版本，不配置不加载,
   v: '1.4.4',
 });
 
@@ -37,4 +38,4 @@ new Vue({
   store,
   router,
   render: h => h(App),
-}).$mount('#app');
+}).$mount('#app-box');

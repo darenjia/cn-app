@@ -60,12 +60,13 @@ p {
 }
 
 .clock-time {
-  font-family: 'Share Tech Mono', monospace;
+  // font-family: 'Share Tech Mono', monospace;
   color: #ffffff;
   text-align: right;
   color: #daf6ff;
   line-height: 80px;
-  text-shadow: 0 0 10px #08dee6, 0 0 10px rgba(10, 175, 230, 0);
+  font-weight: 600;
+  // text-shadow: 0 0 10px #08dee6, 0 0 10px rgba(10, 175, 230, 0);
   .time {
     letter-spacing: 0.05em;
     font-size: 18px;

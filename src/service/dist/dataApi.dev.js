@@ -1,95 +1,102 @@
-const DATA_API = {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var DATA_API = {
   getFacilitiesCount: {
     method: 'get',
-    url: '/getFacilitiesCount',
+    url: '/getFacilitiesCount'
   },
   getDiseaseCount: {
     method: 'get',
-    url: '/getDiseaseCount',
+    url: '/getDiseaseCount'
   },
   getDiseaseTypeCount: {
     method: 'get',
-    url: '/getDiseaseTypeCount',
+    url: '/getDiseaseTypeCount'
   },
   getMonthRepairCount: {
     method: 'get',
-    url: '/getMonthRepairCount',
+    url: '/getMonthRepairCount'
   },
   getMonthAttendance: {
     method: 'get',
-    url: '/getMonthAttendance',
+    url: '/getMonthAttendance'
   },
   getDiseaseTypeRank: {
     method: 'get',
-    url: '/getDiseaseTypeRank',
+    url: '/getDiseaseTypeRank'
   },
   getDiseaseRoadRank: {
     method: 'get',
-    url: '/getDiseaseRoadRank',
+    url: '/getDiseaseRoadRank'
   },
   getScoreRank: {
     method: 'get',
-    url: '/getScoreRank',
+    url: '/getScoreRank'
   },
   getFacilitiesTypeCount: {
     method: 'get',
-    url: '/facilitiesType',
+    url: '/facilitiesType'
   },
   getFacilitiesDetailTypeCount: {
     method: 'get',
-    url: '/childrenType',
+    url: '/childrenType'
   },
   getFacilitiesDetailType: {
     method: 'get',
-    url: '/sectionType',
+    url: '/sectionType'
   },
   getFacilitiesPoint: {
     method: 'get',
-    url: '/getFacilitiesPoint',
+    url: '/getFacilitiesPoint'
   },
   getSectionRank: {
     method: 'get',
-    url: '/getSectionRank',
+    url: '/getSectionRank'
   },
   getDiseasePosition: {
     method: 'get',
-    url: '/diseasePosition',
+    url: '/diseasePosition'
   },
   getDiseaseType: {
     method: 'get',
-    url: '/diseaseType',
+    url: '/diseaseType'
   },
   getRepairCount: {
     method: 'get',
-    url: '/repairType',
+    url: '/repairType'
   },
   getDiseaseWithRepair: {
     method: 'get',
-    url: '/diseaseTypeRepair',
+    url: '/diseaseTypeRepair'
   },
   getDiseaseDetailInfo: {
     method: 'get',
-    url: '/getDiseaseInfo',
+    url: '/getDiseaseInfo'
   },
   getRepairDetailInfo: {
     method: 'get',
-    url: '/getRepairInfo',
+    url: '/getRepairInfo'
   },
   getTimeLine: {
     method: 'get',
-    url: '/getTimeLine',
+    url: '/getTimeLine'
   },
   getFacilitiesLine: {
     method: 'get',
-    url: '/getFacilitiesLine',
+    url: '/getFacilitiesLine'
   },
   getFacilitiesArea: {
     method: 'get',
-    url: '/getFacilitiesArea',
+    url: '/getFacilitiesArea'
   },
   recentlyOfRepair: {
     method: 'get',
-    url: '/recentlyOfRepair',
-  },
+    url: '/recentlyOfRepair'
+  }
 };
-export default DATA_API;
+var _default = DATA_API;
+exports["default"] = _default;

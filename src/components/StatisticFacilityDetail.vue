@@ -5,45 +5,61 @@
         <div class="header-number">
           <div class="type">
             <div
-              class="type-bg type-road"
+              :class="[
+                'type-bg',
+                'type-road',
+                { active: currentType === '道路' },
+              ]"
               @click="showDetail(facilityCount[0].type)"
             >
               <div class="type-content">
                 <span>{{ facilityCount[0].type }}</span>
-                <span>{{ facilityCount[0].nums }}</span>
+                <span class="number">{{ facilityCount[0].nums }} ㎡</span>
               </div>
             </div>
           </div>
           <div class="type">
             <div
-              class="type-bg type-facility"
+              :class="[
+                'type-bg',
+                'type-facility',
+                { active: currentType === '附属设施' },
+              ]"
               @click="showDetail(facilityCount[1].type)"
             >
               <div class="type-content">
                 <span>{{ facilityCount[1].type }}</span>
-                <span>{{ facilityCount[1].nums }}</span>
+                <span class="number">{{ facilityCount[1].nums }} 个</span>
               </div>
             </div>
           </div>
           <div class="type">
             <div
-              class="type-bg type-sewer"
+              :class="[
+                'type-bg',
+                'type-sewer',
+                { active: currentType === '下水道' },
+              ]"
               @click="showDetail(facilityCount[2].type)"
             >
               <div class="type-content">
                 <span>{{ facilityCount[2].type }}</span>
-                <span>{{ facilityCount[2].nums }}</span>
+                <span class="number">{{ facilityCount[2].nums }} 个</span>
               </div>
             </div>
           </div>
           <div class="type">
             <div
-              class="type-bg type-other"
+              :class="[
+                'type-bg',
+                'type-other',
+                { active: currentType === '其他' },
+              ]"
               @click="showDetail(facilityCount[3].type)"
             >
               <div class="type-content">
                 <span>{{ facilityCount[3].type }}</span>
-                <span>{{ facilityCount[3].nums }}</span>
+                <span class="number">{{ facilityCount[3].nums }} 个</span>
               </div>
             </div>
           </div>
@@ -94,6 +110,9 @@ export default {
     subTitleString() {
       return this.subTitle + '设施详情';
     },
+    currentType() {
+      return this.subTitle;
+    },
   },
   methods: {
     async getFacilitiesTypeCount() {
@@ -127,8 +146,9 @@ export default {
   height: 100%;
   padding: 10px;
   .header-content {
-    font-size: 16px;
-    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ddd;
     .header-number {
       position: relative;
       width: 100%;
@@ -140,7 +160,7 @@ export default {
         padding: 4px;
         .type-bg {
           text-align: center;
-          background: #11545685;
+          background: #1154562b;
           border: 1px solid #19676a;
           border-radius: 5px;
           width: 100%;
@@ -153,7 +173,15 @@ export default {
               width: 100%;
               line-height: 1.2em;
             }
+            .number {
+              font-size: 18px;
+            }
           }
+        }
+        .active {
+          // background: #21868a93;
+          color: #00faff;
+          border-color: #00faff;
         }
       }
       .type-bg:hover {
@@ -168,6 +196,7 @@ export default {
       .type-road {
       }
       .center-title {
+        font-size: 16px;
         position: absolute;
         width: 46px;
         height: 46px;
@@ -188,7 +217,8 @@ export default {
   margin-left: -40px;
   height: 80px;
   width: 80px;
-  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  // background-image: linear-gradient(135deg, #ffcf71 10%, #2376dd 100%);
   border-radius: 50%;
   animation: rotate 4s linear infinite;
   .inner-circle {
@@ -204,8 +234,9 @@ export default {
       position: absolute;
       height: 80px;
       width: 80px;
-      background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
-      filter: blur(5px);
+      background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+      // background-image: linear-gradient(135deg, #ffcf71 10%, #2376dd 100%);
+      filter: blur(10px);
       border-radius: 50%;
     }
     span:nth-child(1) {

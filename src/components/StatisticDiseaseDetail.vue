@@ -1,122 +1,62 @@
 <template>
   <div class="facility-detail">
     <div class="facility-detail-header">
+      <div class="header-title"></div>
       <div class="header-content">
-        <div class="header-number">
-          <div class="type">
-            <div
-              class="type-bg type-road"
-              @click="showDetail(facilityCount[0].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[0].type }}</span>
-                <span>{{ facilityCount[0].nums }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="type">
-            <div
-              class="type-bg type-facility"
-              @click="showDetail(facilityCount[1].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[1].type }}</span>
-                <span>{{ facilityCount[1].nums }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="type">
-            <div
-              class="type-bg type-sewer"
-              @click="showDetail(facilityCount[2].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[2].type }}</span>
-                <span>{{ facilityCount[2].nums }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="type">
-            <div
-              class="type-bg type-other"
-              @click="showDetail(facilityCount[3].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[3].type }}</span>
-                <span>{{ facilityCount[3].nums }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="outer-circle">
-            <div class="inner-circle"></div>
-            <span></span>
-            <!-- <span></span>
-            <span></span>
-            <span></span> -->
-          </div>
-          <span class="center-title">设施分类</span>
-        </div>
+        <statistic-right-header
+          :chartData="diseaseCountData"
+        ></statistic-right-header>
       </div>
     </div>
-    <div class="chart" style="height: 360px;">
-      <div class="sub-title">{{ subTitleString }}</div>
-      <!-- <new-chart :chartData="facilityChildData"></new-chart> -->
-      <facility-statistic-bar
-        :chartData="facilityChildData"
-        :section="subTitle"
-      ></facility-statistic-bar>
+    <div style="height: 300px;">
+      <disease-statistic-cloud
+        :chartData="DiseaseChildData"
+        :diseaseType="subTitle"
+      ></disease-statistic-cloud>
+    </div>
+    <div>
+      <news-card></news-card>
     </div>
   </div>
 </template>
 <script>
-import FacilityStatisticBar from './charts/FacilityStatisticBar';
+import DiseaseStatisticCloud from './charts/DiseaseStatisticCloud';
+import StatisticRightHeader from './charts/StatisticRightHeader';
+import NewsCard from './NewsCard';
+
 export default {
   components: {
-    FacilityStatisticBar,
+    DiseaseStatisticCloud,
+    StatisticRightHeader,
+    NewsCard,
   },
   data() {
     return {
       subTitle: '',
-      title: '设施分类总览',
-      facilityTypeData: [
-        { type: '道路', nums: 0 },
-        { type: '附属设施', nums: 0 },
-        { type: '下水道', nums: 0 },
-        { type: '其他', nums: 0 },
-      ],
-      facilityChildData: [],
+      title: '病害数量总览',
+      diseaseCountData: [],
+      DiseaseChildData: [],
     };
   },
   computed: {
-    facilityCount: function () {
-      return this.facilityCountData;
+    diseaseCount: function () {
+      return this.diseaseCountData;
     },
     subTitleString() {
-      return this.subTitle + '设施详情';
+      return this.subTitle + '病害详情';
     },
   },
   methods: {
     async getDiseaseType() {
-      const data = await this.$Http.getDiseaseType();
-      this.facilityTypeData = data;
-      this.subTitle = data[0].type;
-      this.getFacilitiesDetailTypeCount(this.subTitle);
-    },
-    async getFacilitiesDetailTypeCount(typeStr) {
-      const data = await this.$Http.getFacilitiesDetailTypeCount({
-        params: {
-          type: typeStr,
-        },
-      });
-      this.facilityChildData = data;
+      const data = await this.$Http.getDiseaseWithRepair();
+      this.diseaseCountData = data;
     },
     showDetail(type) {
       this.subTitle = type;
-      this.getFacilitiesDetailTypeCount(type);
     },
   },
   mounted: function () {
-    this.getFacilitiesTypeCount();
+    this.getDiseaseType();
   },
 };
 </script>
@@ -141,7 +81,7 @@ export default {
           text-align: center;
           background: #11545685;
           border: 1px solid #19676a;
-          border-radius: 5px;
+          border-radius: 50%;
           width: 100%;
           height: 100%;
           .type-content {
@@ -168,16 +108,22 @@ export default {
       }
       .center-title {
         position: absolute;
-        width: 46px;
-        height: 46px;
+        width: 50%;
+        height: 80px;
         top: 50%;
         left: 50%;
-        margin-top: -24px;
-        margin-left: -24px;
+        margin-top: -40px;
+        margin-left: -25%;
         text-align: center;
       }
     }
   }
+}
+.header-title {
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-size: 20px;
 }
 .outer-circle {
   position: absolute;
