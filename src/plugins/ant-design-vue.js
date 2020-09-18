@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import 'ant-design-vue/dist/antd.css';
+import './my-antd.css';
 import {
   Layout,
   Button,

@@ -1,13 +1,6 @@
 <template>
   <div class="news-content">
     <h3>最新情况</h3>
-    <!-- <a-timeline mode="alternate">
-      <a-timeline-item v-for="(item, index) in news" :key="index"
-        ><p>{{ item.dateTime }}</p>
-        <p>{{ item.diseaseType + item.diseasename }}</p>
-        <p>{{ item.address }}</p></a-timeline-item
-      >
-    </a-timeline> -->
     <transition-group name="list-complete" tag="ul">
       <li
         v-for="item in news"
@@ -35,6 +28,7 @@
 </template>
 <script>
 let temp;
+let interval;
 export default {
   data() {
     return {
@@ -48,7 +42,10 @@ export default {
       this.setScroll();
     },
     setScroll() {
-      setInterval(() => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      interval = setInterval(() => {
         if (temp) {
           this.infos.push(temp);
         }
@@ -56,7 +53,6 @@ export default {
       }, 3000);
     },
     click(item) {
-      console.log(item);
       this.$store.commit('changeCurrentPointLocation', item.patrolPointGuid);
     },
   },
@@ -92,9 +88,6 @@ export default {
         font-weight: 700;
       }
     }
-    span {
-      // line-height: 32px;
-    }
     .type {
       float: right;
     }
@@ -117,8 +110,8 @@ export default {
   opacity: 0;
   transform: translateY(-10px);
 }
-.list-complete-enter {
-}
+// .list-complete-enter {
+// }
 .list-complete-move {
   transition: transform 1s;
 }

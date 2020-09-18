@@ -19,12 +19,12 @@
     </div>
     <a-row>
       <a-col :span="12">
-        <div style="height: 300px;">
+        <div style="height: 270px;">
           <v-chart :options="options1" autoresize @click="onDetailClick1" />
         </div>
       </a-col>
       <a-col :span="12">
-        <div style="height: 300px;">
+        <div style="height: 270px;">
           <v-chart :options="options2" autoresize @click="onDetailClick2" />
         </div>
       </a-col>
@@ -43,17 +43,15 @@ import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/grid';
 import 'echarts/lib/component/title';
-import RepairStatisticBar from './RepairStatisticBar';
 
 const color = ['#F28797', '#C0B1A3', '#FCE392', '#C3DACB', '#B3E6F4'];
 // const color1 = ['#ffb349', '#70e9fc', '#4aa4ff'];
 export default {
-  props: ['diseaseType'],
+  props: ['diseaseType', 'dateRange'],
   components: {
     'v-chart': ECharts,
-    // eslint-disable-next-line vue/no-unused-components
-    RepairStatisticBar,
   },
+  name: 'DiseaseTypeStatistic',
   data() {
     return {
       diseaseDetailData: [],
@@ -93,6 +91,9 @@ export default {
       this.changeMapState();
       // }
     },
+    dateRange(newData) {
+      this.getChartData();
+    },
   },
   methods: {
     getFilterParams() {
@@ -119,7 +120,6 @@ export default {
       this.$store.commit('changeMapDiseaseType', this.getFilterParams());
     },
     createOptions(chartData, title) {
-      console.log(chartData);
       if (chartData) {
         const data = [];
         const dataBackground = [];
@@ -343,19 +343,13 @@ export default {
         this.changeMapState();
       }
     },
-    async getRepairCount() {
-      const params = this.getFilterParams();
-      const data = await this.$Http.getRepairCount({
-        params: params,
-      });
-      this.repairData = data;
-    },
     async getDiseaseDetailTypeCount(type) {
-      const params = {};
+      let params = {};
       params.type = type;
       if (this.diseaseType) {
         params.facilitiesname = this.diseaseType;
       }
+      params = Object.assign(params, this.dateRange);
       const data = await this.$Http.getDiseaseWithRepair({
         params: params,
       });

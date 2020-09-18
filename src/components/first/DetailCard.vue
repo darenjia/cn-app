@@ -1,120 +1,125 @@
 <template>
-  <div class="card-content">
-    <div class="title-style">
-      {{ title
-      }}<span class="close" @click="closePage"
-        ><a-icon type="close-circle" style="color: #fff; font-size: 24px;"
-      /></span>
-    </div>
-    <div class="content">
-      <a-row>
-        <a-skeleton
-          :loading="facilityLoadingState"
-          :active="facilityLoadingState"
-        >
-          <a-descriptions title="病害信息">
-            <a-descriptions-item label="任务编号">{{
-              diseaseTaskID
-            }}</a-descriptions-item>
-            <a-descriptions-item label="任务类型">{{
-              taskType
-            }}</a-descriptions-item>
-            <a-descriptions-item label="设施名称">{{
-              facilityType
-            }}</a-descriptions-item>
-            <a-descriptions-item label="所在位置" :span="3">{{
-              diseaseLocation
-            }}</a-descriptions-item>
-            <a-descriptions-item label="病害面积">{{
-              diseaseArea
-            }}</a-descriptions-item>
-            <a-descriptions-item label="病害类型">{{
-              diseaseType
-            }}</a-descriptions-item>
-            <a-descriptions-item label="维修期限">{{
-              diseaseLevel
-            }}</a-descriptions-item>
-            <a-descriptions-item label="情况描述">{{
-              diseaseRemark
-            }}</a-descriptions-item>
-            <a-descriptions-item label="发现人员">{{
-              patroluser
-            }}</a-descriptions-item>
-            <a-descriptions-item label="上报时间">{{
-              reportTime
-            }}</a-descriptions-item>
-            <a-descriptions-item label="现场详情">
-              <!-- <img
+  <div>
+    <div class="card-content">
+      <div class="title-style">
+        {{ title
+        }}<span class="close" @click="closePage"
+          ><a-icon type="close-circle" style="color: #fff; font-size: 24px;"
+        /></span>
+      </div>
+      <div class="content">
+        <a-row>
+          <a-skeleton
+            :loading="facilityLoadingState"
+            :active="facilityLoadingState"
+          >
+            <a-descriptions title="病害信息">
+              <a-descriptions-item label="任务编号">{{
+                diseaseTaskID
+              }}</a-descriptions-item>
+              <a-descriptions-item label="任务类型">{{
+                taskType
+              }}</a-descriptions-item>
+              <a-descriptions-item label="设施名称">{{
+                facilityType
+              }}</a-descriptions-item>
+              <a-descriptions-item label="所在位置" :span="3">{{
+                diseaseLocation
+              }}</a-descriptions-item>
+              <a-descriptions-item label="病害面积">{{
+                diseaseArea
+              }}</a-descriptions-item>
+              <a-descriptions-item label="病害类型">{{
+                diseaseType
+              }}</a-descriptions-item>
+              <a-descriptions-item label="维修期限">{{
+                diseaseLevel
+              }}</a-descriptions-item>
+              <a-descriptions-item label="情况描述">{{
+                diseaseRemark
+              }}</a-descriptions-item>
+              <a-descriptions-item label="发现人员">{{
+                patroluser
+              }}</a-descriptions-item>
+              <a-descriptions-item label="上报时间">{{
+                reportTime
+              }}</a-descriptions-item>
+              <a-descriptions-item label="现场详情">
+                <!-- <img
                 v-for="item in diseaseImages"
                 class="image-style"
                 :key="item"
                 :src="'http://47.103.63.36:8084/FtpFile/' + item"
               /> -->
-              <gallery
-                id="gallery1"
-                :images="diseaseImages"
-                :index="index"
-                @close="index = null"
-              ></gallery>
-              <img
-                v-for="(item, itemIndex) in diseaseImages"
-                class="image-style"
-                :key="itemIndex"
-                @click="index = itemIndex"
-                :src="item"
-              />
-            </a-descriptions-item> </a-descriptions
-        ></a-skeleton>
-      </a-row>
-      <a-divider />
-      <a-row>
-        <a-skeleton :loading="repairLoadingState" :active="repairLoadingState">
-          <a-descriptions title="维修信息">
-            <a-descriptions-item label="接单时间">{{
-              repairOrderTime
-            }}</a-descriptions-item>
-            <a-descriptions-item label="维修人员">{{
-              repairPerson
-            }}</a-descriptions-item>
-            <a-descriptions-item label="维修面积">{{
-              repairArea
-            }}</a-descriptions-item>
-            <!-- <a-descriptions-item label="维修备注">{{
+                <gallery
+                  id="gallery1"
+                  :images="diseaseImages"
+                  :index="index"
+                  @close="index = null"
+                ></gallery>
+                <img
+                  v-for="(item, itemIndex) in diseaseImages"
+                  class="image-style"
+                  :key="itemIndex"
+                  @click="index = itemIndex"
+                  :src="item"
+                />
+              </a-descriptions-item> </a-descriptions
+          ></a-skeleton>
+        </a-row>
+        <a-divider />
+        <a-row>
+          <a-skeleton
+            :loading="repairLoadingState"
+            :active="repairLoadingState"
+          >
+            <a-descriptions title="维修信息">
+              <a-descriptions-item label="接单时间">{{
+                repairOrderTime
+              }}</a-descriptions-item>
+              <a-descriptions-item label="维修人员">{{
+                repairPerson
+              }}</a-descriptions-item>
+              <a-descriptions-item label="维修面积">{{
+                repairArea
+              }}</a-descriptions-item>
+              <!-- <a-descriptions-item label="维修备注">{{
               repairRemark
             }}</a-descriptions-item> -->
 
-            <a-descriptions-item label="维修现场">
-              <gallery
-                id="gallery2"
-                :images="repairImages"
-                :index="repairIndex"
-                @close="repairIndex = null"
-              ></gallery>
-              <img
-                v-for="(item, itemIndex) in repairImages"
-                class="image-style"
-                :key="itemIndex"
-                @click="repairIndex = itemIndex"
-                :src="item"
-              />
-            </a-descriptions-item> </a-descriptions
-        ></a-skeleton>
-      </a-row>
-    </div>
-    <div class="footer-step">
-      <a-spin :spinning="timeLineLoadingState">
-        <a-steps :current="currentStep" status="process">
-          <a-step title="发起" :description="timeline_discoverTime">
-            <a-icon slot="icon" type="search" />
-          </a-step>
-          <a-step title="维修" :description="timeline_repairTime">
-            <a-icon slot="icon" type="clock-circle"
-          /></a-step>
-          <a-step title="完成" :description="timeline_checkTime">
-            <a-icon slot="icon" type="check-circle" />
-          </a-step>
-        </a-steps>
-      </a-spin>
+              <a-descriptions-item label="维修现场">
+                <gallery
+                  id="gallery2"
+                  :images="repairImages"
+                  :index="repairIndex"
+                  @close="repairIndex = null"
+                ></gallery>
+                <img
+                  v-for="(item, itemIndex) in repairImages"
+                  class="image-style"
+                  :key="itemIndex"
+                  @click="repairIndex = itemIndex"
+                  :src="item"
+                />
+              </a-descriptions-item> </a-descriptions
+          ></a-skeleton>
+        </a-row>
+      </div>
+      <div class="footer-step">
+        <a-spin :spinning="timeLineLoadingState">
+          <a-steps :current="currentStep" status="process">
+            <a-step title="发起" :description="timeline_discoverTime">
+              <a-icon slot="icon" type="search" />
+            </a-step>
+            <a-step title="维修" :description="timeline_repairTime">
+              <a-icon slot="icon" type="clock-circle"
+            /></a-step>
+            <a-step title="完成" :description="timeline_checkTime">
+              <a-icon slot="icon" type="check-circle" />
+            </a-step>
+          </a-steps>
+        </a-spin>
+      </div>
     </div>
   </div>
 </template>
@@ -355,6 +360,7 @@ export default {
   background: linear-gradient(90deg, #d4d3d3 25%, #999898 37%, #d4d3d3 63%);
   background-size: 400% 100%;
   -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+  animation: ant-skeleton-loading 1.4s ease infinite;
 }
 /deep/ .ant-descriptions-bordered .ant-descriptions-item-label {
   background-color: #ffffff00;

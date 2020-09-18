@@ -1,41 +1,55 @@
 <template>
-  <div class="facility-detail">
-    <div class="facility-detail-header">
-      <div class="header-title"></div>
-      <div class="header-content">
-        <statistic-right-header
-          :chartData="diseaseCountData"
-        ></statistic-right-header>
+  <div class="filter-bg">
+    <div class="pager-content-detail">
+      <date-view @dateRangeChanged="dateChange"></date-view>
+      <div class="facility-detail-header">
+        <div class="header-content">
+          <statistic-right-header
+            :chartData="diseaseCountData"
+          ></statistic-right-header>
+        </div>
       </div>
-    </div>
-    <div style="height: 300px;">
-      <disease-statistic-cloud
-        :chartData="DiseaseChildData"
-        :diseaseType="subTitle"
-      ></disease-statistic-cloud>
-    </div>
-    <div>
-      <news-card></news-card>
+      <div style="height: 270px;">
+        <disease-type-statistic
+          :chartData="DiseaseChildData"
+          :diseaseType="subTitle"
+          :dateRange="dateRange"
+        ></disease-type-statistic>
+      </div>
+      <div>
+        <news-card></news-card>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import DiseaseStatisticCloud from './charts/DiseaseStatisticCloud';
-import StatisticRightHeader from './charts/StatisticRightHeader';
+import DateView from '../DateView';
+import DiseaseTypeStatistic from './DiseaseTypeStatistic';
+import StatisticRightHeader from './StatisticRightHeader';
 import NewsCard from './NewsCard';
+import mixin from '../../plugins/mixins-today';
+import listener from '../../plugins/mixins-listener';
 
 export default {
   components: {
-    DiseaseStatisticCloud,
+    DiseaseTypeStatistic,
     StatisticRightHeader,
     NewsCard,
+    DateView,
   },
+  mixins: [mixin, listener],
   data() {
+    const today = this.getTodayDate();
+    const date = {
+      startTime: today,
+      endTime: today,
+    };
     return {
       subTitle: '',
       title: '病害数量总览',
       diseaseCountData: [],
       DiseaseChildData: [],
+      date: date,
     };
   },
   computed: {
@@ -45,26 +59,45 @@ export default {
     subTitleString() {
       return this.subTitle + '病害详情';
     },
+    dateRange() {
+      return this.date;
+    },
+  },
+  watch: {
+    dateRange(newValue) {
+      this.changeDateRange();
+      this.getDiseaseType();
+    },
   },
   methods: {
     async getDiseaseType() {
-      const data = await this.$Http.getDiseaseWithRepair();
+      const data = await this.$Http.getDiseaseWithRepair({
+        params: this.dateRange,
+      });
       this.diseaseCountData = data;
     },
     showDetail(type) {
       this.subTitle = type;
     },
+    dateChange(date) {
+      this.date = date;
+    },
+    changeDateRange() {
+      this.$store.commit('changeDateRange', this.date);
+    },
+    updateData() {
+      console.log('refreshData');
+      this.getDiseaseType();
+    },
   },
   mounted: function () {
+    this.changeDateRange();
     this.getDiseaseType();
   },
 };
 </script>
 <style lang="less" scoped>
-.facility-detail {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
+.pager-content-detail {
   .header-content {
     font-size: 16px;
     color: white;
@@ -97,14 +130,6 @@ export default {
       }
       .type-bg:hover {
         border-color: #04f9fe;
-      }
-      .type-other {
-      }
-      .type-sewer {
-      }
-      .type-facility {
-      }
-      .type-road {
       }
       .center-title {
         position: absolute;

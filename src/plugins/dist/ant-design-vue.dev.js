@@ -2,6 +2,10 @@
 
 var _vue = _interopRequireDefault(require("vue"));
 
+require("ant-design-vue/dist/antd.css");
+
+require("./my-antd.css");
+
 var _antDesignVue = require("ant-design-vue");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

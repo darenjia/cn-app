@@ -96,7 +96,11 @@ instance.interceptors.request.use(function (config) {
   console.log(error);
 });
 instance.interceptors.response.use(function (res) {
-  return res.data;
+  if (res.data) {
+    return res.data;
+  }
+
+  return [];
 }, function () {
   return [];
 });

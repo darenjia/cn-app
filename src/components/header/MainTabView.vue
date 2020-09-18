@@ -23,13 +23,7 @@
         :class="['sub-title', { active: currentActive === 3 }]"
         @click="choose(3)"
       >
-        地图界面
-      </div>
-      <div
-        :class="['sub-title', { active: currentActive === 4 }]"
-        @click="choose(4)"
-      >
-        网格热线平台
+        网格热线
       </div>
     </div>
   </div>
@@ -45,6 +39,24 @@ export default {
     choose(type) {
       this.isActive = type;
       this.$store.commit('changeTabMode', type);
+    },
+  },
+  watch: {
+    isActive: function (value, oldValue) {
+      console.log(value);
+      let name;
+      if (value === 0) {
+        name = 'first';
+      } else if (value === 1) {
+        name = 'second';
+      } else if (value === 2) {
+        name = 'third';
+      } else if (value === 3) {
+        name = 'fourth';
+      } else if (value === 4) {
+        name = 'fifth';
+      }
+      this.$router.replace(name);
     },
   },
   computed: {

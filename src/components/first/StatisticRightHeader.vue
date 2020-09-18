@@ -1,14 +1,14 @@
 <template>
   <div class="right-header">
     <a-row>
-      <a-col :span="12">
+      <a-col :span="13">
         <div class="header">
           <v-chart :options="options" autoresize @click="clickChart" />
         </div>
       </a-col>
       <!-- </a-row>
     <a-row> -->
-      <a-col :span="12">
+      <a-col :span="11">
         <div class="header">
           <ul class="num-ul">
             <li

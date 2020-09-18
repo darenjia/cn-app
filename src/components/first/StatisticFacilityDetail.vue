@@ -1,91 +1,93 @@
 <template>
-  <div class="facility-detail">
-    <div class="facility-detail-header">
-      <div class="header-content">
-        <div class="header-number">
-          <div class="type">
-            <div
-              :class="[
-                'type-bg',
-                'type-road',
-                { active: currentType === '道路' },
-              ]"
-              @click="showDetail(facilityCount[0].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[0].type }}</span>
-                <span class="number">{{ facilityCount[0].nums }} ㎡</span>
+  <div class="filter-bg">
+    <div class="pager-content-detail">
+      <div class="facility-detail-header">
+        <div class="header-content">
+          <div class="header-number">
+            <div class="type">
+              <div
+                :class="[
+                  'type-bg',
+                  'type-road',
+                  { active: currentType === '道路' },
+                ]"
+                @click="showDetail(facilityCount[0].type)"
+              >
+                <div class="type-content">
+                  <span>{{ facilityCount[0].type }}</span>
+                  <span class="number">{{ facilityCount[0].nums }} ㎡</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="type">
-            <div
-              :class="[
-                'type-bg',
-                'type-facility',
-                { active: currentType === '附属设施' },
-              ]"
-              @click="showDetail(facilityCount[1].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[1].type }}</span>
-                <span class="number">{{ facilityCount[1].nums }} 个</span>
+            <div class="type">
+              <div
+                :class="[
+                  'type-bg',
+                  'type-facility',
+                  { active: currentType === '附属设施' },
+                ]"
+                @click="showDetail(facilityCount[1].type)"
+              >
+                <div class="type-content">
+                  <span>{{ facilityCount[1].type }}</span>
+                  <span class="number">{{ facilityCount[1].nums }} 个</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="type">
-            <div
-              :class="[
-                'type-bg',
-                'type-sewer',
-                { active: currentType === '下水道' },
-              ]"
-              @click="showDetail(facilityCount[2].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[2].type }}</span>
-                <span class="number">{{ facilityCount[2].nums }} 个</span>
+            <div class="type">
+              <div
+                :class="[
+                  'type-bg',
+                  'type-sewer',
+                  { active: currentType === '下水道' },
+                ]"
+                @click="showDetail(facilityCount[2].type)"
+              >
+                <div class="type-content">
+                  <span>{{ facilityCount[2].type }}</span>
+                  <span class="number">{{ facilityCount[2].nums }} 个</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="type">
-            <div
-              :class="[
-                'type-bg',
-                'type-other',
-                { active: currentType === '其他' },
-              ]"
-              @click="showDetail(facilityCount[3].type)"
-            >
-              <div class="type-content">
-                <span>{{ facilityCount[3].type }}</span>
-                <span class="number">{{ facilityCount[3].nums }} 个</span>
+            <div class="type">
+              <div
+                :class="[
+                  'type-bg',
+                  'type-other',
+                  { active: currentType === '其他' },
+                ]"
+                @click="showDetail(facilityCount[3].type)"
+              >
+                <div class="type-content">
+                  <span>{{ facilityCount[3].type }}</span>
+                  <span class="number">{{ facilityCount[3].nums }} 个</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="outer-circle">
-            <div class="inner-circle"></div>
-            <span></span>
-            <!-- <span></span>
+            <div class="outer-circle">
+              <div class="inner-circle"></div>
+              <span></span>
+              <!-- <span></span>
             <span></span>
             <span></span> -->
+            </div>
+            <span class="center-title">设施分类</span>
           </div>
-          <span class="center-title">设施分类</span>
         </div>
       </div>
-    </div>
-    <div style="height: 300px; margin-top: 20px;">
-      <!-- <div class="sub-title">{{ subTitleString }}</div> -->
-      <!-- <new-chart :chartData="facilityChildData"></new-chart> -->
-      <facility-statistic-bar
-        :chartData="facilityChildData"
-        :section="subTitle"
-      ></facility-statistic-bar>
+      <div style="height: 300px; margin-top: 20px;">
+        <!-- <div class="sub-title">{{ subTitleString }}</div> -->
+        <!-- <new-chart :chartData="facilityChildData"></new-chart> -->
+        <facility-statistic-bar
+          :chartData="facilityChildData"
+          :section="subTitle"
+        ></facility-statistic-bar>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import FacilityStatisticBar from './charts/FacilityStatisticBar';
+import FacilityStatisticBar from '../charts/FacilityStatisticBar';
 export default {
   components: {
     FacilityStatisticBar,
@@ -141,10 +143,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.facility-detail {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
+.pager-content-detail {
   .header-content {
     font-size: 18px;
     font-weight: 700;
@@ -186,14 +185,6 @@ export default {
       }
       .type-bg:hover {
         border-color: #04f9fe;
-      }
-      .type-other {
-      }
-      .type-sewer {
-      }
-      .type-facility {
-      }
-      .type-road {
       }
       .center-title {
         font-size: 16px;

@@ -17,9 +17,11 @@ const store = new Vuex.Store({
     mapShowTask: false,
     mapShowPerson: false,
     mapShowDisease: false,
+    dateRange: {},
     facilityType: { type: '道路' },
     diseaseType: {},
     currentPointGuid: '',
+    updateDataFlag: 0,
   },
   mutations: {
     changeCurrentShow(state, id) {
@@ -115,6 +117,9 @@ const store = new Vuex.Store({
         state.mapShowTask = false;
       }
     },
+    changeDateRange(state, type) {
+      state.dateRange = type;
+    },
     changeMapDiseaseType(state, type) {
       state.diseaseType = type;
     },
@@ -123,18 +128,9 @@ const store = new Vuex.Store({
     },
     changeTabMode(state, type) {
       state.tabMode = type;
-      if (type === 0) {
-        state.showStatisticGraph = true;
-        state.showPointDetail = false;
-      } else if (type === 1) {
-        state.showStatisticGraph = false;
-        state.showPointDetail = false;
-        state.showTrackPage = true;
-      } else {
-        state.showStatisticGraph = false;
-        state.showPointDetail = false;
-        state.showTrackPage = false;
-      }
+    },
+    changeUpdateDataFlag(state, type) {
+      state.updateDataFlag++;
     },
   },
 });

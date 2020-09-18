@@ -248,6 +248,11 @@ export default {
         heatmap.hide();
       }
     },
+    hideDiseasePoint() {
+      if (diseaseMassMarks !== undefined) {
+        diseaseMassMarks.hide();
+      }
+    },
     showPolyline() {
       if (lineLayer) {
         lineLayer.show();
@@ -303,7 +308,7 @@ export default {
       const data = await this.$Http.getDiseaseDetailInfo({
         params: { PatrolPointGuid: id },
       });
-      if (data[0]) {
+      if (data[0] && data[0].tempgaodexy) {
         const pos = data[0].tempgaodexy.split(',');
         console.log(data[0].tempgaodexy);
         this.addCurrentPoint(
@@ -341,7 +346,8 @@ export default {
       }
     },
     async getDiseasePosition(params) {
-      const data = await this.$Http.getDiseasePosition({ params: params });
+      const param = Object.assign(params, this.dateRange);
+      const data = await this.$Http.getDiseasePosition({ params: param });
       console.log('getDiseasePosition', data.length);
       this.addDiseasePoints(data);
     },
@@ -434,6 +440,12 @@ export default {
 
       polygonLayer.render();
     },
+    clearMap() {
+      this.hideDiseasePoint();
+      this.hidePolylineLayer();
+      this.hidePolygonLayer();
+      this.hidePoint();
+    },
   },
   computed: {
     // showMassMarks() {
@@ -454,6 +466,12 @@ export default {
     diseaseGuid() {
       return this.$store.state.currentPointGuid;
     },
+    tabMode() {
+      return this.$store.state.tabMode;
+    },
+    dateRange() {
+      return this.$store.state.dateRange;
+    },
   },
   watch: {
     showFacility: function (newState, oldState) {
@@ -469,21 +487,21 @@ export default {
       }
     },
     showDiseaseMassMarks: function (newState, oldState) {
-      if (newState) {
-        if (diseaseMassMarks !== undefined) {
-          diseaseMassMarks.show();
-        } else {
-          // viewInstance.getFacilitiesPoint();
-        }
-      } else {
-        if (diseaseMassMarks !== undefined) {
-          diseaseMassMarks.hide();
-        }
+      if (!newState) {
+        this.hideDiseasePoint();
       }
     },
     facilityType: function (newData) {
       if (this.showFacility) {
         this.getFacilitiesPoint(this.$store.state.facilityType);
+      }
+    },
+    tabMode: function (newState, oldState) {
+      this.clearMap();
+    },
+    dateRange: function () {
+      if (this.showDiseaseMassMarks) {
+        this.getDiseasePosition(this.diseaseType);
       }
     },
     diseaseType: function (newData) {

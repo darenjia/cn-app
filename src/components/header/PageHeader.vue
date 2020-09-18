@@ -4,7 +4,7 @@
       <div class="bg_header">
         <div class="header_nav fl t_title">
           <!-- <img src="../../assets/img/title_name.png" class="title" /> -->
-          <span class="title-txt">长宁永达市政设施展示平台</span>
+          <span class="title-txt">长宁区市政设施养护展示平台</span>
         </div>
         <div class="tabs">
           <main-tab-view></main-tab-view>
@@ -51,8 +51,6 @@ export default {
 }
 .title {
   width: 20%;
-}
-.title-txt {
 }
 .tabs {
   margin-left: 10px;

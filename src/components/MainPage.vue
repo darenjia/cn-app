@@ -5,61 +5,25 @@
       <div class="header">
         <page-header></page-header>
       </div>
-      <div class="statistic-header">
+      <!-- <div class="statistic-header">
         <statistic-header></statistic-header>
-      </div>
+      </div> -->
       <!-- <div class="map-container"></div> -->
-      <div
-        :class="[
-          isShowStatistic ? '' : 'statistic1-hide',
-          'statistic3',
-          'statistic-box',
-        ]"
-      >
-        <div class="filter-bg">
-          <statistic-disease-detail></statistic-disease-detail>
-        </div>
-      </div>
-      <div
-        :class="[
-          isShowStatistic ? '' : 'statistic1-hide',
-          'statistic1',
-          'statistic-box',
-        ]"
-      >
-        <div class="filter-bg">
-          <statistic-facility-detail></statistic-facility-detail>
-        </div>
-      </div>
-      <div
-        :class="[
-          isShowRank ? '' : 'statistic3-hide',
-          'statistic3',
-          'statistic-box',
-        ]"
-      >
-        <div class="filter-bg">
-          <rank-list :title="'病害标段排行'" :type="'facility'"></rank-list>
-          <!-- <statistic-table-four></statistic-table-four> -->
-          <rank-list :title="'考核分数排行'" :type="'disease'"></rank-list>
-        </div>
-        <!-- <statistic-table-two></statistic-table-two> -->
-      </div>
-      <div
-        :class="[
-          isShowRank ? '' : 'statistic3-hide',
-          'statistic1',
-          'statistic-box',
-        ]"
-      >
-        <div class="filter-bg">
-          <rank-list :title="'病害类型排行'" :type="'road'"></rank-list>
-          <rank-list :title="'病害道路排行'" :type="'disease'"></rank-list>
-        </div>
-      </div>
-      <div :class="['detail-content', { 'hide-detail': !isShowPointDetail }]">
-        <detail-card />
-      </div>
+      <transition name="slide-left">
+        <router-view class="statistic1 statistic-box" name="left"></router-view>
+      </transition>
+      <transition name="slide-right"
+        ><router-view
+          class="statistic3 statistic-box"
+          name="right"
+        ></router-view
+      ></transition>
+
+      <router-view
+        :class="['detail-content', { 'hide-detail': !isShowPointDetail }]"
+        name="center"
+      ></router-view>
+
       <div class="setting"><setting-view /></div>
       <div class="legend">
         <legend-card></legend-card>
@@ -69,17 +33,15 @@
 </template>
 <script>
 import Map from './Map.vue';
-import StatisticHeader from './header/StatisticHeader';
 import PageHeader from './header/PageHeader';
-import RankList from './RankingList';
-import DetailCard from './DetailCard';
-import StatisticFacilityDetail from './StatisticFacilityDetail';
 import SettingView from './SettingView';
-import StatisticDiseaseDetail from './StatisticDiseaseDetail';
 import LegendCard from './LegendCard';
+import minxins from '../plugins/mixins';
 
 export default {
   name: 'app',
+  mixins: [minxins],
+  openMqTT: true,
   data() {
     this.theme = this.$ChartTheme;
     return {
@@ -88,13 +50,8 @@ export default {
   },
   components: {
     Map,
-    StatisticHeader,
     PageHeader,
-    RankList,
-    DetailCard,
-    StatisticFacilityDetail,
     SettingView,
-    StatisticDiseaseDetail,
     LegendCard,
   },
   mounted() {},
@@ -112,6 +69,9 @@ export default {
   methods: {
     changeRankShow: function () {
       this.RankState = !this.RankState;
+    },
+    receiveMessageSuccess() {
+      this.$store.commit('changeUpdateDataFlag');
     },
   },
 };
