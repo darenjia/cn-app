@@ -20,9 +20,14 @@ require("./theme/theme.less");
 
 var _mainStore = _interopRequireDefault(require("./store/main-store"));
 
+require("bootstrap");
+
+var _jquery = _interopRequireDefault(require("jquery"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // import Viser from 'viser-vue';
+// eslint-disable-next-line no-unused-vars
 _vue["default"].use(_vueRouter["default"]); // Vue.use(Viser);
 
 

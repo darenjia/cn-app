@@ -19,26 +19,18 @@
               <i class="divider"></i>
               <span class="content name">{{ item.type }}</span>
               <span class="content num"
-                ><i class="mark1">{{ item.count }}</i
-                ><i style="color: #8f8d8d;"> |</i
-                ><i class="mark">{{ item.nums }}</i></span
-              >
+                ><active-number
+                  class="mark1"
+                  :number="item.count"
+                ></active-number>
+                <i style="color: #8f8d8d;"> |</i>
+                <active-number class="mark" :number="item.nums"></active-number
+              ></span>
             </li>
           </ul>
         </div>
       </a-col>
     </a-row>
-
-    <!-- <div class="header chart-right">
-      <v-chart :options="options" autoresize />
-    </div>
-    <div class="header statistic">
-      <ul>
-        <li v-for="item in chartDatas" :key="item.type">
-          <span>{{ item.type }}</span>
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>
 <script>
@@ -48,16 +40,18 @@ import 'echarts/lib/chart/pie';
 import 'echarts/lib/component/polar';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
+import ActiveNumber from '../ActiveNumber';
 
 let allCount = 0;
 let allRepairCount = 0;
 let count = 0;
 let typeCount = 0;
-
+let interval;
 export default {
   props: ['chartData'],
   components: {
     'v-chart': ECharts,
+    ActiveNumber,
   },
   data() {
     return {
@@ -71,7 +65,6 @@ export default {
         allRepairCount = newData[0].count;
       }
       this.options = this.createOptions(this.newData);
-      this.startToggleTitle();
     },
   },
   computed: {
@@ -84,6 +77,12 @@ export default {
       }
       return array;
     },
+  },
+  mounted() {
+    this.startToggleTitle();
+  },
+  beforeDestroy() {
+    clearInterval(interval);
   },
   methods: {
     createOptions(chartData) {
@@ -223,7 +222,6 @@ export default {
       };
     },
     clickChart(chart) {
-      console.log('??');
       this.$parent.showDetail('');
     },
     clickDetail(type) {
@@ -232,7 +230,10 @@ export default {
     startToggleTitle() {
       const chart = this.options;
       let title = {};
-      setInterval(function () {
+      if (interval) {
+        clearInterval(interval);
+      }
+      interval = setInterval(function () {
         if (count % 8 === 0) {
           if (typeCount % 2 === 0) {
             title = {
@@ -343,6 +344,7 @@ export default {
           width: 65px;
           position: absolute;
           right: -5px;
+          background-color: transparent;
         }
         .mark1 {
           width: 50px;
@@ -375,7 +377,5 @@ export default {
       }
     }
   }
-}
-.chart-right {
 }
 </style>

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 module.exports = {
   assetsDir: './',
   publicPath: '',
@@ -47,5 +48,14 @@ module.exports = {
         },
       },
     },
+  },
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery', // 创建 '$'、'jQuery'、'window.jQuery' 三个变量指向依赖jquery
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+      }),
+    ],
   },
 };

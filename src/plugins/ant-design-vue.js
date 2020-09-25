@@ -22,6 +22,7 @@ import {
   Steps,
   Spin,
   Timeline,
+  Tabs,
 } from 'ant-design-vue';
 
 Vue.component(LocaleProvider.name, LocaleProvider);
@@ -56,3 +57,5 @@ Vue.component(Steps.Step.name, Steps.Step);
 Vue.component(Spin.name, Spin);
 Vue.component(Timeline.name, Timeline);
 Vue.component(Timeline.Item.name, Timeline.Item);
+Vue.component(Tabs.name, Tabs);
+Vue.component(Tabs.TabPane.name, Tabs.TabPane);

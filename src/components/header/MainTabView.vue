@@ -32,7 +32,7 @@
 export default {
   data() {
     return {
-      isActive: 0,
+      isActive: this.$store.state.tabMode,
     };
   },
   methods: {

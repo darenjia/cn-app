@@ -9,6 +9,9 @@ import routers from './router/config';
 import Http from './service/http';
 import './theme/theme.less';
 import store from './store/main-store';
+import 'bootstrap';
+// eslint-disable-next-line no-unused-vars
+import $ from 'jquery';
 
 Vue.use(Router);
 // Vue.use(Viser);

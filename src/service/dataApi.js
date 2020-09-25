@@ -91,5 +91,57 @@ const DATA_API = {
     method: 'get',
     url: '/recentlyOfRepair',
   },
+  Road_GetRoadCount: {
+    method: 'get',
+    url: '/getRoadCount',
+  },
+  Road_GetRoadCountByMonthPlan: {
+    method: 'get',
+    url: '/getRoadCountByMonthPlan',
+  },
+  Road_GetAreaByMonthPlan: {
+    method: 'get',
+    url: '/getAreaByMonthPlan',
+  },
+  Grid_GetCaseCount: {
+    method: 'get',
+    url: '/getCaseCount',
+  },
+  Grid_GetNewCaseByDay: {
+    method: 'get',
+    url: '/getNewCaseByDay',
+  },
+  Grid_GetNewFinallyByDay: {
+    method: 'get',
+    url: '/getNewFinallyByDay',
+  },
+  Grid_GetOverOfWarn: {
+    method: 'get',
+    url: '/overOfWarn',
+  },
+  First_Road: {
+    method: 'get',
+    url: '/getCNLuduan',
+  },
+  Road_GetRoadFacilitiesInspect: {
+    method: 'get',
+    url: '/getRoadFacilitiesInspect',
+  },
+  Road_GetRoadFacilitiesGrid: {
+    method: 'get',
+    url: '/getRoadFacilitiesGrid',
+  },
+  Road_GetRoadPlanSchedule: {
+    method: 'get',
+    url: '/getRoadPlanSchedule',
+  },
+  Grid_GetSewerFacilitiesGrid: {
+    method: 'get',
+    url: '/getSewerFacilitiesGrid',
+  },
+  First_GetFacilitiesData: {
+    method: 'get',
+    url: '/facilitiesData',
+  },
 };
 export default DATA_API;

@@ -57,13 +57,13 @@
                   :index="index"
                   @close="index = null"
                 ></gallery>
-                <img
+                <photo-card
                   v-for="(item, itemIndex) in diseaseImages"
                   class="image-style"
                   :key="itemIndex"
-                  @click="index = itemIndex"
-                  :src="item"
-                />
+                  @showDetail="() => (index = itemIndex)"
+                  :img="item"
+                ></photo-card>
               </a-descriptions-item> </a-descriptions
           ></a-skeleton>
         </a-row>
@@ -125,10 +125,12 @@
 </template>
 <script>
 import VueGallery from 'vue-gallery';
+import PhotoCard from '../PhotoCard';
 export default {
   name: 'DetailCard',
   components: {
     gallery: VueGallery,
+    PhotoCard,
   },
   data() {
     return {
@@ -338,10 +340,10 @@ export default {
   margin: 5px 0px !important;
 }
 .image-style {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   margin-right: 10px;
-  border: 1px solid #fff;
+  border: 0px solid #fff;
   border-radius: 8px;
 }
 .footer-step {

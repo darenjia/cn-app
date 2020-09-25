@@ -73,3 +73,7 @@ _vue["default"].component(_antDesignVue.Spin.name, _antDesignVue.Spin);
 _vue["default"].component(_antDesignVue.Timeline.name, _antDesignVue.Timeline);
 
 _vue["default"].component(_antDesignVue.Timeline.Item.name, _antDesignVue.Timeline.Item);
+
+_vue["default"].component(_antDesignVue.Tabs.name, _antDesignVue.Tabs);
+
+_vue["default"].component(_antDesignVue.Tabs.TabPane.name, _antDesignVue.Tabs.TabPane);

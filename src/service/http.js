@@ -4,7 +4,6 @@ import service from './dataApi';
 
 const instance = axios.create({
   baseURL: '/api',
-  // baseURL: 'http://180.167.216.66:8111/',
   timeout: 8000,
 });
 const Http = {};

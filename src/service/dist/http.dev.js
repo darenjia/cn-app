@@ -14,7 +14,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // import qs from 'qs'
 var instance = _axios["default"].create({
   baseURL: '/api',
-  // baseURL: 'http://180.167.216.66:8111/',
   timeout: 8000
 });
 

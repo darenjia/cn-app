@@ -1,7 +1,7 @@
 <template>
   <div class="filter-bg">
     <div class="pager-content-detail">
-      <date-view @dateRangeChanged="dateChange"></date-view>
+      <date-view :currentMode="2"></date-view>
       <div class="facility-detail-header">
         <div class="header-content">
           <statistic-right-header
@@ -39,17 +39,11 @@ export default {
   },
   mixins: [mixin, listener],
   data() {
-    const today = this.getTodayDate();
-    const date = {
-      startTime: today,
-      endTime: today,
-    };
     return {
       subTitle: '',
       title: '病害数量总览',
       diseaseCountData: [],
       DiseaseChildData: [],
-      date: date,
     };
   },
   computed: {
@@ -58,15 +52,6 @@ export default {
     },
     subTitleString() {
       return this.subTitle + '病害详情';
-    },
-    dateRange() {
-      return this.date;
-    },
-  },
-  watch: {
-    dateRange(newValue) {
-      this.changeDateRange();
-      this.getDiseaseType();
     },
   },
   methods: {
@@ -79,20 +64,14 @@ export default {
     showDetail(type) {
       this.subTitle = type;
     },
-    dateChange(date) {
-      this.date = date;
-    },
-    changeDateRange() {
-      this.$store.commit('changeDateRange', this.date);
-    },
     updateData() {
       console.log('refreshData');
       this.getDiseaseType();
     },
   },
   mounted: function () {
-    this.changeDateRange();
-    this.getDiseaseType();
+    // this.changeDateRange();
+    // this.getDiseaseType();
   },
 };
 </script>

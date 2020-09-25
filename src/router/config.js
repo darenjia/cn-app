@@ -11,7 +11,7 @@ const router = [
         path: 'first',
         name: '1',
         components: {
-          left: () => import('../components/first/StatisticFacilityDetail.vue'),
+          left: () => import('../components/first/LeftPage.vue'),
           right: () => import('../components/first/StatisticDiseaseDetail.vue'),
           center: DetailCard,
         },
@@ -30,7 +30,7 @@ const router = [
         name: '3',
         components: {
           left: () => import('../components/third/LeftPage.vue'),
-          right: () => import('../components/third/LeftPage.vue'),
+          right: () => import('../components/third/RightPage.vue'),
           center: DetailCard,
         },
       },
@@ -39,7 +39,7 @@ const router = [
         name: '4',
         components: {
           left: () => import('../components/fourth/LeftPage.vue'),
-          right: () => import('../components/fourth/LeftPage.vue'),
+          right: () => import('../components/fourth/RightPage.vue'),
           center: DetailCard,
         },
       },

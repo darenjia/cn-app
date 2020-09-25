@@ -5,10 +5,6 @@
       <div class="header">
         <page-header></page-header>
       </div>
-      <!-- <div class="statistic-header">
-        <statistic-header></statistic-header>
-      </div> -->
-      <!-- <div class="map-container"></div> -->
       <transition name="slide-left">
         <router-view class="statistic1 statistic-box" name="left"></router-view>
       </transition>
@@ -54,7 +50,13 @@ export default {
     SettingView,
     LegendCard,
   },
-  mounted() {},
+  created() {
+    const tab = this.$store.state.tabMode;
+    const path = parseInt(this.$route.name);
+    if (path !== tab) {
+      this.$store.commit('changeTabMode', path - 1);
+    }
+  },
   computed: {
     isShowRank: function () {
       return this.$store.state.showRankList;

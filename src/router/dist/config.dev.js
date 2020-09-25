@@ -28,7 +28,7 @@ var router = [{
     components: {
       left: function left() {
         return Promise.resolve().then(function () {
-          return _interopRequireWildcard(require('../components/first/StatisticFacilityDetail.vue'));
+          return _interopRequireWildcard(require('../components/first/LeftPage.vue'));
         });
       },
       right: function right() {
@@ -65,7 +65,7 @@ var router = [{
       },
       right: function right() {
         return Promise.resolve().then(function () {
-          return _interopRequireWildcard(require('../components/third/LeftPage.vue'));
+          return _interopRequireWildcard(require('../components/third/RightPage.vue'));
         });
       },
       center: _DetailCard["default"]
@@ -81,7 +81,7 @@ var router = [{
       },
       right: function right() {
         return Promise.resolve().then(function () {
-          return _interopRequireWildcard(require('../components/fourth/LeftPage.vue'));
+          return _interopRequireWildcard(require('../components/fourth/RightPage.vue'));
         });
       },
       center: _DetailCard["default"]
