@@ -148,6 +148,10 @@ var DATA_API = {
   First_GetFacilitiesData: {
     method: 'get',
     url: '/facilitiesData'
+  },
+  Sewer_GetSewerFacilitiesByMonth: {
+    method: 'get',
+    url: '/getSewerFacilitiesByMonth'
   }
 };
 var _default = DATA_API;

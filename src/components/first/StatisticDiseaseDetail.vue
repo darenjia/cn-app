@@ -1,22 +1,25 @@
 <template>
   <div class="filter-bg">
     <div class="pager-content-detail">
-      <date-view :currentMode="2"></date-view>
-      <div class="facility-detail-header">
-        <div class="header-content">
-          <statistic-right-header
-            :chartData="diseaseCountData"
-          ></statistic-right-header>
+      <div class="box-with-border-image">
+        <date-view :currentMode="2"></date-view>
+        <div class="facility-detail-header">
+          <div class="header-content">
+            <statistic-right-header
+              :chartData="diseaseCountData"
+            ></statistic-right-header>
+          </div>
+        </div>
+        <div style="height: 270px;">
+          <disease-type-statistic
+            :chartData="DiseaseChildData"
+            :diseaseType="subTitle"
+            :dateRange="dateRange"
+          ></disease-type-statistic>
         </div>
       </div>
-      <div style="height: 270px;">
-        <disease-type-statistic
-          :chartData="DiseaseChildData"
-          :diseaseType="subTitle"
-          :dateRange="dateRange"
-        ></disease-type-statistic>
-      </div>
-      <div>
+
+      <div class="box-with-border-image">
         <news-card></news-card>
       </div>
     </div>

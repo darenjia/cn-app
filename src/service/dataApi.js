@@ -143,5 +143,9 @@ const DATA_API = {
     method: 'get',
     url: '/facilitiesData',
   },
+  Sewer_GetSewerFacilitiesByMonth: {
+    method: 'get',
+    url: '/getSewerFacilitiesByMonth',
+  },
 };
 export default DATA_API;

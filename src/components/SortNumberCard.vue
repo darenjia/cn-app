@@ -27,18 +27,22 @@
         </a-col>
         <a-col :span="14">
           <div class="chart-content">
-            <v-chart :options="option" autoresize ref="child"></v-chart>
+            <!-- <v-chart :options="option" autoresize ref="child"></v-chart> -->
+            <section-statistic-bar
+              :chartData="formatedDataList"
+              ref="child"
+            ></section-statistic-bar>
           </div>
         </a-col>
       </a-row>
       <div class="sort">
         <ul>
-          <li
-            v-for="(item, index) in formatedDataList"
-            :key="index"
-            :style="{ backgroundColor: colors[index] }"
-            :class="[{ 'active-type': currentActive === index }]"
-          >
+          <li v-for="(item, index) in formatedDataList" :key="index">
+            <div
+              class="li-after"
+              :class="[{ 'active-type': currentActive === index }]"
+              :style="{ backgroundColor: colors[index] }"
+            ></div>
             <span>{{ item.name + '标段' }}</span>
           </li>
         </ul>
@@ -141,14 +145,12 @@
   </div>
 </template>
 <script>
-import ECharts from 'vue-echarts';
-import 'echarts/lib/chart/pie';
-import 'echarts/lib/component/tooltip';
+import SectionStatisticBar from './charts/SectionStatisticBar';
 let interval;
 export default {
   name: 'SortNumberCard',
   components: {
-    'v-chart': ECharts,
+    SectionStatisticBar,
   },
   data() {
     return {
@@ -345,7 +347,7 @@ export default {
       }
       console.log(data);
       this.formatedData = data;
-      this.option = this.createOption(data);
+      // this.option = this.createOption(data);
       this.startInterval();
       this.sortDetailData = {
         type1: data[0].type[3].num,
@@ -372,15 +374,16 @@ export default {
     height: 70px;
     li:hover {
       height: 50px;
-      transition: all 0.3s;
     }
     li {
+      position: relative;
       list-style: none;
       width: 25%;
       height: 40px;
       display: inline-block;
       line-height: 40px;
       margin: 2px 0px;
+      transition: all 0.3s ease;
       span {
         margin-left: 20px;
       }
@@ -401,9 +404,23 @@ export default {
         color: #ddd;
       }
     }
-    .active-type {
-      height: 50px;
+    .li-after {
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      z-index: -1;
       transition: all 0.3s ease;
+      background-color: aqua;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 255, 0, 0)
+      );
+    }
+    .active-type {
+      height: 40px;
     }
   }
 }
@@ -645,23 +662,23 @@ export default {
   left: -54px;
 }
 .sort-type1-number {
-  left: 200px;
+  left: 180px;
   top: 2px;
 }
 .sort-type2-number {
-  left: 280px;
+  left: 260px;
   top: 2px;
 }
 .sort-type3-number {
-  left: 200px;
+  left: 180px;
   top: 54px;
 }
 .sort-type4-number {
-  left: 280px;
+  left: 260px;
   top: 54px;
 }
 .sort-type5-number {
-  left: 200px;
+  left: 180px;
   top: 108px;
 }
 </style>

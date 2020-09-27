@@ -12,6 +12,8 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/legend';
 const color = ['#E6688A', '#70B0Bf', '#FDD775', '#8DBE6E', '#4b5966'];
 let interval;
+let flag = 5;
+let dataLength;
 export default {
   props: ['chartData'],
   components: {
@@ -31,14 +33,12 @@ export default {
     createOption(chartData) {
       const data = [];
       const xData = [];
-      const legend = [];
       const data1 = [];
-      const length = chartData.length <= 6 ? 6 : chartData.length;
-      for (let i = 0; i < length; i++) {
+      dataLength = chartData.length >= 6 ? 6 : chartData.length;
+      for (let i = 0; i < dataLength; i++) {
         xData.push(chartData[i].date);
         data.push(this.creatSeries1Data(chartData[i], i));
-        data1.push({ value: chartData[i].nums, name: chartData[i].date });
-        legend.push({ name: chartData[i].date });
+        data1.push(this.creatSeriesData(chartData[i]));
       }
 
       const seriesOption = [
@@ -64,6 +64,7 @@ export default {
           data: data1,
         },
       ];
+      this.addInterval();
       return {
         xAxis: {
           show: true,
@@ -89,6 +90,12 @@ export default {
         series: seriesOption,
       };
     },
+    creatSeriesData(data) {
+      return {
+        value: data.nums,
+        name: data.date,
+      };
+    },
     creatSeries1Data(data, i) {
       return {
         value: data.wancheng,
@@ -108,18 +115,23 @@ export default {
       if (interval) {
         clearInterval(interval);
       }
-      interval = setInterval(() => {
-        var data0 = this.option.series[0].data;
-        var data1 = this.option.series[1].data;
-        data0.shift();
-        data0.push();
-        data1.shift();
-        data1.push();
-        this.option.xAxis[0].data.shift();
-        this.option.xAxis[0].data.push();
-        this.option.xAxis[1].data.shift();
-        this.option.xAxis[1].data.push();
-      }, 1000);
+      if (dataLength >= 6) {
+        interval = setInterval(() => {
+          flag++;
+          if (flag > this.chartData.length - 1) {
+            flag = 0;
+          }
+          const data = this.chartData[flag];
+          var data0 = this.option.series[0].data;
+          var data1 = this.option.series[1].data;
+          data0.shift();
+          data0.push(this.creatSeries1Data(data, flag));
+          data1.shift();
+          data1.push(this.creatSeriesData(data));
+          this.option.xAxis.data.shift();
+          this.option.xAxis.data.push(data.date);
+        }, 1000);
+      }
     },
   },
 };

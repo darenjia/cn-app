@@ -1,6 +1,11 @@
 <template>
   <div style="height: 270px;">
-    <v-chart :options="options" autoresize @click="onDetailChange" />
+    <v-chart
+      :options="options"
+      autoresize
+      @click="onDetailChange"
+      ref="child"
+    />
   </div>
 </template>
 <script>
@@ -49,23 +54,24 @@ export default {
       let total = 0;
       let minCount = 0;
       for (let i = 0; i < chartData.length; i++) {
-        const nums = chartData[i].nums;
+        const nums = chartData[i].type[5].num;
         if (minCount === 0 || nums < minCount) {
           minCount = nums;
         }
         total += nums;
       }
       const gap = minCount / 5;
+      console.log('chartData', chartData);
       for (let i = 0; i < chartData.length; i++) {
-        const nums = chartData[i].nums;
+        const nums = chartData[i].type[5].num;
         data.push(
           {
             value: nums,
-            name: chartData[i].type,
+            name: chartData[i].name + '标段',
             itemStyle: {
               normal: {
                 color: color[i],
-                borderWidth: 1,
+                borderWidth: 5,
                 shadowBlur: 10,
                 borderColor: color[i],
                 shadowColor: color[i],
@@ -97,12 +103,12 @@ export default {
           name: '',
           type: 'pie',
           clockWise: false,
-          radius: ['50%', '60%'],
+          radius: ['58%', '60%'],
           hoverAnimation: true,
           itemStyle: {
             normal: {
               label: {
-                show: true,
+                show: false,
                 position: 'outside',
                 color: '#ddd',
                 formatter: function (params) {
@@ -123,6 +129,7 @@ export default {
 
       return {
         title: {
+          show: false,
           text: '各标段设施占比',
           textStyle: {
             color: '#fff',
@@ -132,7 +139,7 @@ export default {
         },
         grid: {
           rigth: '50%',
-          left: '40%',
+          left: '50%',
         },
         graphic: {
           elements: [
@@ -141,8 +148,8 @@ export default {
               z: 3,
               style: {
                 image: img,
-                width: 98,
-                height: 98,
+                width: 96,
+                height: 96,
               },
               left: 'center',
               top: 'center',

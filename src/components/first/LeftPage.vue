@@ -1,8 +1,12 @@
 <template>
   <div class="filter-bg">
-    <div class="page-content-detail">
-      <number-card></number-card>
-      <sort-number-card></sort-number-card>
+    <div class="pager-content-detail">
+      <div class="box-with-border-image">
+        <number-card></number-card>
+      </div>
+      <div class="box-with-border-image">
+        <sort-number-card></sort-number-card>
+      </div>
     </div>
   </div>
 </template>
@@ -21,3 +25,4 @@ export default {
   mounted() {},
 };
 </script>
+<style lang="less" scoped></style>
