@@ -1,41 +1,56 @@
 <template>
   <div class="sort-all">
     <div>
-      <a-row>
-        <a-col :span="10">
-          <div class="chart-data">
-            <div
-              v-for="(item, index) in formatedDataList"
-              :key="index"
+      <div class="header-number">
+        <h3 class="title-with-bg" style="margin-bottom: 20px;">
+          设施概况
+        </h3>
+        <div
+          v-for="(item, index) in formatedDataList"
+          :key="index"
+          class="type"
+        >
+          <div class="type-bg">
+            <!-- <div
               :class="[
-                'chart-data-sort',
+                'type-color-bg',
                 { 'chart-active': currentActive === index },
               ]"
               :style="{ backgroundColor: colors[index] }"
-            >
-              <div class="chart-data-title">
-                <span>{{ item.name + '标段' }}</span>
-              </div>
-              <div>
-                <p>养护道路数量<br />{{ item.type[6].num }}</p>
-              </div>
-              <div>
-                <p>养护道路面积<br />{{ item.type[5].num }}</p>
+            ></div> -->
+            <div class="type-content">
+              <!-- <div class="type-title-text">{{ item.name + '标段' }}</div> -->
+              <div
+                class="type-content-box type-content-box1"
+                :style="{ backgroundPosition: '' + index * -43.5 + 'px 0px' }"
+              ></div>
+              <div class="type-content-box type-content-box2">
+                <div
+                  :class="[
+                    'type-color-bg',
+                    { 'chart-active': currentActive === index },
+                  ]"
+                ></div>
+                <span class="number" style="color: #3bdce2;"
+                  >{{ item.type[6].num }}<i>km</i></span
+                >
+                <span class="number" style="color: #e38538;"
+                  >{{ item.type[5].num + '万' }}<i>㎡</i></span
+                >
               </div>
             </div>
           </div>
-        </a-col>
-        <a-col :span="14">
-          <div class="chart-content">
-            <!-- <v-chart :options="option" autoresize ref="child"></v-chart> -->
-            <section-statistic-bar
-              :chartData="formatedDataList"
-              ref="child"
-            ></section-statistic-bar>
-          </div>
-        </a-col>
-      </a-row>
-      <div class="sort">
+        </div>
+        <!-- <div class="outer-circle">
+          <div class="inner-circle"></div>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="center-title">设施分类</span> -->
+      </div>
+      <!-- <div class="sort">
         <ul>
           <li v-for="(item, index) in formatedDataList" :key="index">
             <div
@@ -46,7 +61,7 @@
             <span>{{ item.name + '标段' }}</span>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
     <div class="sort-detail">
       <div class="sort-image-box">
@@ -117,10 +132,8 @@
         ]"
       ></div>
       <div class="sort-detail-box">
-        <div class="box box1">设施</div>
-        <div class="box box2">路面</div>
-        <div class="box box3">下水道</div>
-        <div class="sort-type-number sort-type1-number number1">
+        <div class="box box1"></div>
+        <div class="sort-type-number sort-type1-number">
           <span class="number">{{ sortDetail.type1 }}</span
           ><span class="name">检查井</span>
         </div>
@@ -128,30 +141,27 @@
           <span class="number">{{ sortDetail.type2 }}</span
           ><span class="name">雨水口</span>
         </div>
-        <div class="sort-type-number sort-type3-number number2">
+        <div class="sort-type-number sort-type3-number">
           <span class="number">{{ sortDetail.type3 }}</span
-          ><span class="name">车行道</span>
+          ><span class="name">车行道(㎡)</span>
         </div>
         <div class="sort-type-number sort-type4-number">
           <span class="number">{{ sortDetail.type4 }}</span
-          ><span class="name">人行道</span>
+          ><span class="name">人行道(㎡)</span>
         </div>
-        <div class="sort-type-number sort-type5-number number3">
+        <div class="sort-type-number sort-type5-number">
           <span class="number">{{ sortDetail.type5 }}</span
-          ><span class="name">下水道</span>
+          ><span class="name">下水道(km)</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import SectionStatisticBar from './charts/SectionStatisticBar';
 let interval;
 export default {
   name: 'SortNumberCard',
-  components: {
-    SectionStatisticBar,
-  },
+  components: {},
   data() {
     return {
       formatedData: [],
@@ -176,9 +186,6 @@ export default {
     this.getAllData();
   },
   methods: {
-    dispatchAction(type) {
-      this.$refs.child.dispatchAction(type);
-    },
     async getAllData() {
       const data = await this.$Http.First_GetFacilitiesData();
       console.log('First_GetFacilitiesData', data);
@@ -205,16 +212,6 @@ export default {
         if (index > 3) {
           index = 0;
         }
-        this.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: index === 0 ? 3 : index - 1,
-        });
-        this.dispatchAction({
-          type: 'highlight',
-          seriesIndex: 0,
-          dataIndex: index,
-        });
         this.currentActive = index;
         this.sortDetailData = {
           type1: data[index].type[3].num,
@@ -445,6 +442,7 @@ export default {
   position: relative;
   height: 100%;
   bottom: 0px;
+  margin-top: 73px;
 }
 .color1 {
   background-color: #e6688a;
@@ -461,29 +459,29 @@ export default {
 
 .line1 {
   bottom: 0px;
-  left: 112px;
+  left: 92px;
 }
 .line2 {
   bottom: 0px;
-  left: 192px;
+  left: 160px;
 }
 .line3 {
   bottom: 0px;
-  left: 261px;
+  left: 220px;
 }
 .line4 {
   bottom: 0px;
-  left: 320px;
+  left: 270px;
 }
 .line-style {
   position: absolute;
-  width: 2px;
+  width: 3px;
   height: 50px;
   transition: all 2s ease;
   background: linear-gradient(
     to top,
     rgba(255, 0, 0, 0),
-    rgba(49, 134, 241, 1)
+    rgba(253, 254, 13, 1)
   );
 }
 .show-line {
@@ -514,7 +512,7 @@ export default {
   width: 100%;
   height: 300px;
   position: relative;
-  top: 125px;
+  top: 72px;
   transform: rotateX(45deg);
   .sort-image {
     margin-left: -10px;
@@ -587,8 +585,8 @@ export default {
   }
 }
 .box {
-  width: 100px;
-  height: 40px;
+  width: 300px;
+  height: 200px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: absolute;
@@ -599,13 +597,10 @@ export default {
   font-size: 16px;
 }
 .box1 {
-  background-image: url('../assets/img/type_top.png');
-  top: 0px;
-}
-.box2 {
-  background-image: url('../assets/img/type_middle.png');
-  width: 130px;
-  top: 50px;
+  background-image: url('../assets/img/first_sort_cons.png');
+  background-position: -120px 0px;
+  top: -45px;
+  animation: rotate 2s infinite;
 }
 .box3 {
   width: 160px;
@@ -623,12 +618,12 @@ export default {
   .number {
     font-size: 18px;
     font-weight: 700;
-    color: #dcab22;
+    color: #eee;
   }
   .name {
     font-size: 12px;
     margin-top: -6px;
-    color: #579dd0;
+    color: #c0b1a3;
   }
 }
 .number1:after {
@@ -663,22 +658,129 @@ export default {
 }
 .sort-type1-number {
   left: 180px;
-  top: 2px;
+  top: -18px;
 }
 .sort-type2-number {
   left: 260px;
-  top: 2px;
+  top: -18px;
 }
 .sort-type3-number {
   left: 180px;
-  top: 54px;
+  top: 40px;
 }
 .sort-type4-number {
   left: 260px;
-  top: 54px;
+  top: 40px;
 }
 .sort-type5-number {
   left: 180px;
-  top: 108px;
+  top: 100px;
+}
+.header-number {
+  position: relative;
+  width: 100%;
+  color: #eee;
+  min-height: 194px;
+  .type {
+    display: inline-block;
+    width: 50%;
+    padding: 10px;
+
+    .type-bg {
+      // background: url('../assets/img/first_statistic_border.png');
+      // background-size: 100% 100%;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      .type-content {
+        position: relative;
+        .number {
+          font-size: 16px;
+          display: block;
+          padding-left: 20px;
+          width: 100px;
+          line-height: 24px;
+          i {
+            font-style: normal;
+            font-size: 14px;
+            float: right;
+            color: #fff;
+            font-weight: 700;
+          }
+        }
+        .type-content-box {
+          display: inline-block;
+          position: relative;
+          top: 0px;
+          left: 0px;
+        }
+        .type-content-box1 {
+          width: 42px;
+          height: 46px;
+          background-image: url('../assets/img/first_statistic_sort_bg.png');
+          background-size: 412% 100%;
+          background-position: 0px 0px;
+          background-repeat: no-repeat;
+          animation: rotate 60s ease-in-out infinite;
+        }
+        .type-content-box2 {
+          top: -4px;
+        }
+      }
+      .type-color-bg {
+        position: absolute;
+        width: 0px;
+        background: linear-gradient(
+          to right,
+          rgba(95, 95, 95, 1),
+          rgba(95, 95, 95, 0)
+        );
+        transition: all 0.5s;
+        height: 46px;
+        margin-left: -22px;
+        top: 0px;
+        z-index: -1;
+      }
+      .chart-active {
+        width: 140px;
+      }
+    }
+    .active {
+      // background: #21868a93;
+      color: #00faff;
+      border-color: #00faff;
+    }
+  }
+  .type-bg:hover {
+    border-color: #04f9fe;
+  }
+  .center-title {
+    font-size: 16px;
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    top: 50%;
+    left: 50%;
+    margin-top: -24px;
+    margin-left: -24px;
+    text-align: center;
+  }
+  .sub-title {
+    color: #fff;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 </style>

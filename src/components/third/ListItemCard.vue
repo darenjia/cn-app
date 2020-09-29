@@ -1,6 +1,6 @@
 <template>
   <div class="list-content">
-    <div class="content-stistic">
+    <!-- <div class="content-stistic">
       <span class="stistic-type">人行道面积<i>2154</i>平方米</span
       ><span class="stistic-type">车行道面积<i>1545</i>平方米</span>
     </div>
@@ -8,11 +8,11 @@
       <a-col :span="8"><div class="plan-top-title">道路名称</div></a-col>
       <a-col :span="8"><div class="plan-top-title">路段</div></a-col>
       <a-col :span="8"><div class="plan-top-title">完成状态</div></a-col>
-    </a-row>
+    </a-row> -->
     <transition-group name="list-complete" tag="ul">
       <li
         v-for="(item, index) in list"
-        :key="index"
+        :key="item.guid"
         :class="[
           'list-complete-item',
           { 'list-obb': index % 2 !== 0, 'list-even': index % 2 === 0 },
@@ -58,25 +58,27 @@ export default {
   height: 100%;
   overflow: hidden;
   width: 100%;
+  font-size: 12px;
   h3 {
     color: #f9bb0b;
-    font-size: 16px;
+    font-size: 166px;
   }
   ul {
     padding-inline-start: 0px;
   }
 }
-.list-obb {
-  background-color: thistle;
-}
+
 .list-even {
-  background-color: turquoise;
+  // background-color: rgb(26, 56, 53);
+  background-color: #2a2a2a;
 }
 .list-complete-item {
   transition: all 1s;
   display: inline-block;
   width: 100%;
   list-style: none;
+  height: 30px;
+  color: #eee;
 }
 .list-complete-leave-to
 /* .list-complete-leave-active for below version 2.1.8 */ {
@@ -92,22 +94,24 @@ export default {
 .list-complete-leave-active {
   position: absolute;
 }
-.content-stistic {
-  background-color: tomato;
-  line-height: 40px;
-  height: 40px;
-  .stistic-type {
-    width: 50%;
-    display: inline-block;
-    text-align: center;
-    padding: 2px;
-  }
-  .stistic-type2 {
-    width: 50%;
-  }
+.stistic-type {
+  width: 50%;
+  display: inline-block;
+  text-align: center;
+  padding: 2px;
+  font-size: 14px;
+}
+.stistic-type2 {
+  width: 50%;
 }
 .plan-top-title {
   text-align: center;
-  line-height: 36px;
+  line-height: 30px;
+  color: #04b3b3;
+}
+.plan-top-text {
+  text-align: center;
+  line-height: 30px;
+  color: #04b3b3;
 }
 </style>

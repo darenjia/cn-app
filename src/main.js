@@ -9,7 +9,6 @@ import routers from './router/config';
 import Http from './service/http';
 import './theme/theme.less';
 import store from './store/main-store';
-import 'bootstrap';
 // eslint-disable-next-line no-unused-vars
 import $ from 'jquery';
 
@@ -31,7 +30,7 @@ VueAMap.initAMapApiLoader({
     'AMap.Heatmap',
   ],
   // uiVersion: '1.0', // ui库版本，不配置不加载,
-  v: '1.4.4',
+  v: '1.4.15',
 });
 
 const router = new Router({

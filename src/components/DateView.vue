@@ -12,7 +12,7 @@
       >
     </div>
     <a-range-picker
-      :style="{ width: '200px' }"
+      :style="{ width: '190px' }"
       size="small"
       :value="dateValue"
       @change="dateChange"
@@ -81,8 +81,8 @@ export default {
 <style lang="less" scoped>
 .extra-item {
   display: inline-block;
-  margin-right: 20px;
-  margin-left: 12px;
+  margin-right: 16px;
+  margin-left: 4px;
   a:not(:first-child) {
     margin-left: 20px;
   }

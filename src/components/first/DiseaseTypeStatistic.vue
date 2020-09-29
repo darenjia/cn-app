@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="diseaseType">
-      <span class="diseaseTitle"
+      <!-- <span class="diseaseTitle"
         ><span class="disease-name">{{ diseaseTitle }}</span> 病害Top5</span
-      >
+      > -->
       <!-- <div class="diseaseFilter">
         <span
           @click="changeDiseaseType('巡检')"
@@ -378,6 +378,7 @@ export default {
   color: aliceblue;
 }
 .diseaseType {
+  height: 10px;
   .diseaseTitle {
     color: #f9bb0b;
     height: 40px;

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     showTrackPage: false,
     mapMode: 0,
     tabMode: 0,
+    mapFlag: -1,
     mapShowFacility: false,
     mapShowTask: false,
     mapShowPerson: false,
@@ -22,6 +23,10 @@ const store = new Vuex.Store({
     diseaseType: {},
     currentPointGuid: '',
     updateDataFlag: 0,
+    roadPlanMonth: '0',
+    roadPlanGuid: '',
+    sewerPlanData: {},
+    diseaseDetail: {},
   },
   mutations: {
     changeCurrentShow(state, id) {
@@ -109,7 +114,7 @@ const store = new Vuex.Store({
         state.mapShowFacility = type.indexOf('设施') >= 0;
         state.mapShowPerson = type.indexOf('人员') >= 0;
         state.mapShowDisease = type.indexOf('病害') >= 0;
-        state.mapShowTask = type.indexOf('维修') >= 0;
+        state.mapShowTask = type.indexOf('道路') >= 0;
       } else {
         state.mapShowFacility = false;
         state.mapShowPerson = false;
@@ -129,8 +134,23 @@ const store = new Vuex.Store({
     changeTabMode(state, type) {
       state.tabMode = type;
     },
+    changeMapFlag(state, type) {
+      state.mapFlag = type;
+    },
     changeUpdateDataFlag(state, type) {
       state.updateDataFlag++;
+    },
+    changeRoadPlanMonth(state, type) {
+      state.roadPlanMonth = type;
+    },
+    changeRoadPlanGuid(state, type) {
+      state.roadPlanGuid = type;
+    },
+    changeSewerPlanData(state, type) {
+      state.sewerPlanData = type;
+    },
+    changeDiseaseDetail(state, type) {
+      state.diseaseDetail = type;
     },
   },
 });

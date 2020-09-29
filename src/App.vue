@@ -7,8 +7,6 @@
 <script>
 // eslint-disable-next-line camelcase
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
 export default {
   name: 'app',
   data() {

@@ -10,7 +10,7 @@
             ></statistic-right-header>
           </div>
         </div>
-        <div style="height: 270px;">
+        <div style="height: 260px;">
           <disease-type-statistic
             :chartData="DiseaseChildData"
             :diseaseType="subTitle"

@@ -152,6 +152,38 @@ var DATA_API = {
   Sewer_GetSewerFacilitiesByMonth: {
     method: 'get',
     url: '/getSewerFacilitiesByMonth'
+  },
+  Sewer_GetSewerRoadByMonth: {
+    method: 'get',
+    url: '/getSewerRoadByMonth'
+  },
+  Sewer_GetSewerPlanSchedule: {
+    method: 'get',
+    url: '/getSewerPlanSchedule'
+  },
+  Grid_GetGridCount: {
+    method: 'get',
+    url: '/getGridCount'
+  },
+  Map_GetRoadPlanPathByMonth: {
+    method: 'get',
+    url: '/getRoadPlanPathByMonth'
+  },
+  Map_GetRoadPlanPath: {
+    method: 'get',
+    url: '/getRoadPlanPath'
+  },
+  Map_GetSewerPlanPath: {
+    method: 'get',
+    url: '/getSewerPlanPath'
+  },
+  Sewer_GetSewerTypeCount: {
+    method: 'get',
+    url: '/getSewerTypeCount'
+  },
+  Map_GetPointInfo: {
+    method: 'get',
+    url: '/getPointInfo'
   }
 };
 var _default = DATA_API;

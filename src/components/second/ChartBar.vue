@@ -1,6 +1,6 @@
 <template>
   <div class="content-with-title">
-    <v-chart :options="option" autoresize></v-chart>
+    <v-chart :options="option" autoresize @click="onMonthChange"></v-chart>
   </div>
 </template>
 <script>
@@ -11,8 +11,6 @@ import 'echarts/lib/component/grid';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/legend';
 const color = ['#E6688A', '#70B0Bf', '#FDD775', '#8DBE6E', '#4b5966'];
-let interval;
-let flag = 5;
 let dataLength;
 export default {
   props: ['chartData'],
@@ -21,6 +19,8 @@ export default {
   },
   data() {
     return {
+      interval: undefined,
+      flag: 5,
       option: this.createOption([]),
     };
   },
@@ -30,6 +30,10 @@ export default {
     },
   },
   methods: {
+    onMonthChange(params) {
+      console.log('clickMonth', params.data.name);
+      this.$store.commit('changeRoadPlanMonth', params.data.name);
+    },
     createOption(chartData) {
       const data = [];
       const xData = [];
@@ -46,6 +50,13 @@ export default {
           name: '计划月份',
           type: 'bar',
           barMaxWidth: '20%',
+          data: data,
+        },
+        {
+          name: '完成',
+          type: 'line',
+          smooth: true,
+          data: data1,
           itemStyle: {
             normal: {
               label: {
@@ -55,13 +66,39 @@ export default {
               },
             },
           },
-          data: data,
-        },
-        {
-          name: '完成',
-          type: 'line',
-          yAxisIndex: 1,
-          data: data1,
+          markPoint: {
+            symbol: 'circle',
+            symbolSize: 5,
+            itemStyle: {
+              color: '#fff',
+            },
+          },
+
+          lineStyle: {
+            width: 2,
+            // eslint-disable-next-line no-undef
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: '#6a11cb', // 0% 处的颜色
+                },
+                {
+                  offset: 1,
+                  color: '#2575fc', // 100% 处的颜色
+                },
+              ],
+              global: false, // 缺省为 false
+            },
+            shadowColor: 'rgba(158,135,255, 0.3)',
+            shadowBlur: 10,
+            shadowOffsetY: 0,
+          },
         },
       ];
       this.addInterval();
@@ -112,37 +149,46 @@ export default {
       };
     },
     addInterval() {
-      if (interval) {
-        clearInterval(interval);
+      if (this.interval) {
+        clearInterval(this.interval);
       }
       if (dataLength >= 6) {
-        interval = setInterval(() => {
-          flag++;
-          if (flag > this.chartData.length - 1) {
-            flag = 0;
+        this.interval = setInterval(() => {
+          this.flag++;
+          if (this.flag > this.chartData.length - 1) {
+            this.flag = 0;
           }
-          const data = this.chartData[flag];
+          const data = this.chartData[this.flag];
           var data0 = this.option.series[0].data;
           var data1 = this.option.series[1].data;
           data0.shift();
-          data0.push(this.creatSeries1Data(data, flag));
+          data0.push(this.creatSeries1Data(data, this.flag));
           data1.shift();
           data1.push(this.creatSeriesData(data));
           this.option.xAxis.data.shift();
           this.option.xAxis.data.push(data.date);
-        }, 1000);
+        }, 3000);
       }
     },
+  },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   },
 };
 </script>
 <style lang="less" scoped>
 .content-with-title {
   width: 100%;
-  height: 300px;
+  height: 270px;
+  position: relative;
 }
 .echarts {
+  position: absolute;
   width: 100%;
-  height: 100%;
+  height: 320px;
+  top: -40px;
+  left: 0px;
 }
 </style>

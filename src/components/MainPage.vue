@@ -21,9 +21,9 @@
       ></router-view>
 
       <div class="setting"><setting-view /></div>
-      <div class="legend">
+      <!-- <div class="legend">
         <legend-card></legend-card>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -31,7 +31,6 @@
 import Map from './Map.vue';
 import PageHeader from './header/PageHeader';
 import SettingView from './SettingView';
-import LegendCard from './LegendCard';
 import minxins from '../plugins/mixins';
 
 export default {
@@ -48,7 +47,6 @@ export default {
     Map,
     PageHeader,
     SettingView,
-    LegendCard,
   },
   created() {
     const tab = this.$store.state.tabMode;
@@ -94,7 +92,7 @@ export default {
 }
 .statistic-box {
   position: absolute;
-  width: 20%;
+  width: 384px;
   margin: 0px 10px;
   bottom: 0px;
   top: 50%;
@@ -104,13 +102,13 @@ export default {
 }
 
 .detail-content {
-  width: 45%;
   bottom: 0px;
   position: absolute;
-  top: 150px;
-  left: 50%;
-  margin-left: -20%;
-  bottom: 45px;
+  top: 50%;
+  margin-top: -245px;
+  right: 0px;
+  height: 600px;
+  margin-right: 22%;
   //   background: @primaryColor;
   transition: all ease 0.2s 0.2s;
 }

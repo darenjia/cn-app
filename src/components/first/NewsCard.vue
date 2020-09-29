@@ -86,7 +86,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .news-content {
-  height: 250px;
+  height: 252px;
   ul {
     color: #eee;
     padding-inline-start: 0px;

@@ -1,6 +1,6 @@
 <template>
   <div class="list-content">
-    <h3>{{ title }}</h3>
+    <h3 class="title-with-bg">{{ title }}</h3>
     <slot></slot>
   </div>
 </template>

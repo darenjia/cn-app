@@ -2,29 +2,18 @@
   <div class="list-content">
     <transition-group name="list-complete" tag="ul">
       <li
-        v-for="(item, index) in list"
-        :key="item.uuid"
-        :class="[
-          'list-complete-item',
-          { 'list-obb': index % 2 !== 0, 'list-even': index % 2 === 0 },
-        ]"
+        v-for="item in list"
+        :key="item.serialnum"
+        class="list-complete-item"
         @click="click(item)"
         @mouseover="over"
         @mouseleave="leave"
       >
-        <a-row>
-          <a-col :span="8"
-            ><div class="plan-top-title">{{ item.road }}</div></a-col
-          >
-          <a-col :span="8"
-            ><div class="plan-top-title">{{ item.luduan }}</div></a-col
-          >
-          <a-col :span="8"
-            ><div class="plan-top-title">
-              {{ item.style === 0 ? '进行中' : '已完成' }}
-            </div></a-col
-          >
-        </a-row>
+        <span class="time">{{ item.anjianleixing }}</span
+        ><span class="type">{{ item.datetime }}</span>
+        <br />
+        <span>{{ item.anjiandidian }}</span>
+        <span class="type">{{ item.xiangmubu }}</span>
       </li>
     </transition-group>
   </div>
@@ -32,24 +21,21 @@
 <script>
 export default {
   props: ['listData'],
-  computed: {
-    list() {
-      if (this.listData.length > 15) {
-        return this.listData.slice(0, 15);
-      }
-      return this.listData;
-    },
-  },
+  name: 'GridList',
   data() {
     return {
       interval: undefined,
       temp: undefined,
     };
   },
+  computed: {
+    list() {
+      return this.listData;
+    },
+  },
   methods: {
     stopInterval() {
       if (this.temp) {
-        this.listData.push(this.temp);
         this.temp = undefined;
       }
       if (this.interval) {
@@ -68,6 +54,7 @@ export default {
       }, 3000);
     },
     click(item) {
+      console.log('click');
       this.$emit('clickItem', item);
     },
     over() {
@@ -84,17 +71,30 @@ export default {
 </script>
 <style lang="less" scoped>
 .list-content {
-  height: 100%;
+  height: 90%;
   overflow: hidden;
   width: 100%;
   font-size: 12px;
-  h3 {
-    color: #f9bb0b;
-    font-size: 166px;
-  }
   ul {
+    color: #eee;
     padding-inline-start: 0px;
     position: relative;
+    li {
+      font-size: 12px;
+      cursor: pointer;
+      padding: 4px 20px 4px 10px;
+      .time {
+        color: #027fff;
+        font-weight: 700;
+      }
+    }
+    li:hover {
+      transition: all 0.3s linear;
+      transform: scale(1.05);
+    }
+    .type {
+      float: right;
+    }
   }
 }
 
@@ -141,6 +141,5 @@ export default {
   text-align: center;
   line-height: 30px;
   color: #04b3b3;
-  text-overflow: ellipsis;
 }
 </style>

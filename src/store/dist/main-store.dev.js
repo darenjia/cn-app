@@ -24,6 +24,7 @@ var store = new _vuex["default"].Store({
     showTrackPage: false,
     mapMode: 0,
     tabMode: 0,
+    mapFlag: -1,
     mapShowFacility: false,
     mapShowTask: false,
     mapShowPerson: false,
@@ -34,7 +35,11 @@ var store = new _vuex["default"].Store({
     },
     diseaseType: {},
     currentPointGuid: '',
-    updateDataFlag: 0
+    updateDataFlag: 0,
+    roadPlanMonth: '0',
+    roadPlanGuid: '',
+    sewerPlanData: {},
+    diseaseDetail: {}
   },
   mutations: {
     changeCurrentShow: function changeCurrentShow(state, id) {
@@ -124,7 +129,7 @@ var store = new _vuex["default"].Store({
         state.mapShowFacility = type.indexOf('设施') >= 0;
         state.mapShowPerson = type.indexOf('人员') >= 0;
         state.mapShowDisease = type.indexOf('病害') >= 0;
-        state.mapShowTask = type.indexOf('维修') >= 0;
+        state.mapShowTask = type.indexOf('道路') >= 0;
       } else {
         state.mapShowFacility = false;
         state.mapShowPerson = false;
@@ -144,8 +149,23 @@ var store = new _vuex["default"].Store({
     changeTabMode: function changeTabMode(state, type) {
       state.tabMode = type;
     },
+    changeMapFlag: function changeMapFlag(state, type) {
+      state.mapFlag = type;
+    },
     changeUpdateDataFlag: function changeUpdateDataFlag(state, type) {
       state.updateDataFlag++;
+    },
+    changeRoadPlanMonth: function changeRoadPlanMonth(state, type) {
+      state.roadPlanMonth = type;
+    },
+    changeRoadPlanGuid: function changeRoadPlanGuid(state, type) {
+      state.roadPlanGuid = type;
+    },
+    changeSewerPlanData: function changeSewerPlanData(state, type) {
+      state.sewerPlanData = type;
+    },
+    changeDiseaseDetail: function changeDiseaseDetail(state, type) {
+      state.diseaseDetail = type;
     }
   }
 });

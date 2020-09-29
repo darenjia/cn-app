@@ -1,14 +1,14 @@
 <template>
   <div class="right-header">
     <a-row>
-      <a-col :span="13">
+      <a-col :span="12">
         <div class="header">
           <v-chart :options="options" autoresize @click="clickChart" />
         </div>
       </a-col>
       <!-- </a-row>
     <a-row> -->
-      <a-col :span="11">
+      <a-col :span="12">
         <div class="header">
           <ul class="num-ul">
             <li
@@ -18,14 +18,11 @@
             >
               <i class="divider"></i>
               <span class="content name">{{ item.type }}</span>
-              <span class="content num"
-                ><active-number
-                  class="mark1"
-                  :number="item.count"
-                ></active-number>
+              <span class="content num">
+                <span class="mark1"> {{ item.count }}</span>
                 <i style="color: #8f8d8d;"> |</i>
-                <active-number class="mark" :number="item.nums"></active-number
-              ></span>
+                <span class="mark">{{ item.nums }}</span>
+              </span>
             </li>
           </ul>
         </div>
@@ -40,7 +37,6 @@ import 'echarts/lib/chart/pie';
 import 'echarts/lib/component/polar';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
-import ActiveNumber from '../ActiveNumber';
 
 let allCount = 0;
 let allRepairCount = 0;
@@ -51,7 +47,6 @@ export default {
   props: ['chartData'],
   components: {
     'v-chart': ECharts,
-    ActiveNumber,
   },
   data() {
     return {
@@ -65,6 +60,7 @@ export default {
         allRepairCount = newData[0].count;
       }
       this.options = this.createOptions(this.newData);
+      this.startToggleTitle();
     },
   },
   computed: {
@@ -78,9 +74,7 @@ export default {
       return array;
     },
   },
-  mounted() {
-    this.startToggleTitle();
-  },
+  mounted() {},
   beforeDestroy() {
     clearInterval(interval);
   },

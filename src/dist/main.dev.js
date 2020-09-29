@@ -20,8 +20,6 @@ require("./theme/theme.less");
 
 var _mainStore = _interopRequireDefault(require("./store/main-store"));
 
-require("bootstrap");
-
 var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -44,7 +42,7 @@ _vueAmap["default"].initAMapApiLoader({
   // 'AMap.MapType',
   'AMap.DistrictSearch', 'AMap.Heatmap'],
   // uiVersion: '1.0', // ui库版本，不配置不加载,
-  v: '1.4.4'
+  v: '1.4.15'
 });
 
 var router = new _vueRouter["default"]({

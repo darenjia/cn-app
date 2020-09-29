@@ -174,6 +174,7 @@ export default {
     },
     addPolyline(data) {
       console.log('加载line', data.length);
+      this.showPolyline();
       this.addLineLayer(data);
       // data.forEach(element => {
       //   viewInstance.overlay.addOverlay(
@@ -183,6 +184,35 @@ export default {
       //   );
       // });
       // this.overlay.show();
+    },
+    addSingleLine(data) {
+      console.log(data);
+      overlay.clearOverlays();
+      if (data[0]) {
+        data[0].pointData.forEach(element => {
+          const line = viewInstance.createLine(
+            viewInstance.createLnglatArray(element.lnglat),
+          );
+          // line.on('click', function (e) {
+          //   console.log('clickline', e);
+          // });
+          overlay.addOverlay(line);
+        });
+        if (data[0] !== 'null') {
+          data[0].repairData.forEach(element => {
+            const point = viewInstance.createMarker(
+              viewInstance.createLnglat(element.lnglat),
+              element.guid,
+            );
+            point.on('click', function (e) {
+              viewInstance.showPointDetail(e.target.getExtData());
+            });
+            overlay.addOverlay(point);
+          });
+        }
+
+        overlay.show();
+      }
     },
     addPolygon(data) {
       console.log('加载polygon', data.length);
@@ -196,28 +226,41 @@ export default {
       // });
       // this.overlay.show();
     },
-    createMarker(lnglat) {
+    createMarker(lnglat, guid, style) {
       return new AMap.Marker({
         position: lnglat,
-        icon: viewInstance.creatIcon(),
+        icon: viewInstance.createDiffIcon(style),
         offset: new AMap.Pixel(0, 0),
         animation: 'AMAP_ANIMATION_DROP',
         zIndex: 9999,
+        extData: guid,
       });
     },
-    creatIcon() {
+    creatIcon(path) {
       return new AMap.Icon({
         size: new AMap.Size(24, 24),
-        image: '/image/images/icon_location3.png',
+        image: path, // '/image/images/icon_location3.png'
         imageSize: new AMap.Size(24, 24),
       });
+    },
+    createDiffIcon(type) {
+      let path = '/image/images/icon_location_tyle3.png';
+      if (type === 0) {
+        path = '/image/images/icon_location_tyle1.png';
+      } else if (type === 1) {
+        path = '/image/images/icon_location_tyle2.png';
+      } else {
+        path = '/image/images/icon_location_tyle3.png';
+      }
+      return this.creatIcon(path);
     },
     createLine(lnglats) {
       return new AMap.Polyline({
         path: lnglats,
-        strokeColor: '#fff',
-        strokeWeight: 1,
+        strokeColor: '#7168bb',
+        strokeWeight: 2,
         lineJoin: 'round',
+        cursor: 'pointer',
       });
     },
     createPolygon(lnglats) {
@@ -288,6 +331,7 @@ export default {
       return new AMap.LngLat(lnglat[0], lnglat[1]);
     },
     createLnglats(x, y) {
+      console.log('xy', x, y);
       return new AMap.LngLat(x, y);
     },
     creatBounds(x, y, x1, y1) {
@@ -310,10 +354,9 @@ export default {
       });
       if (data[0] && data[0].tempgaodexy) {
         const pos = data[0].tempgaodexy.split(',');
-        console.log(data[0].tempgaodexy);
-        this.addCurrentPoint(
-          this.createLnglats(parseFloat(pos[1]), parseFloat(pos[0])),
-        );
+        const x = parseFloat(pos[1]);
+        const y = parseFloat(pos[0]);
+        this.addCurrentPoint(this.createLnglats(x > y ? x : y, x > y ? y : x));
       }
     },
     async getFacilitiesPoint(params) {
@@ -350,6 +393,23 @@ export default {
       const data = await this.$Http.getDiseasePosition({ params: param });
       console.log('getDiseasePosition', data.length);
       this.addDiseasePoints(data);
+    },
+    async getRoadPlanPathByMonth(params) {
+      const data = await this.$Http.Map_GetRoadPlanPathByMonth({
+        params: params,
+      });
+      console.log('Map_getRoadPlanPathByMonth', data.length);
+      this.addPolyline(data);
+    },
+    async getSewerPlanPath(params) {
+      const data = await this.$Http.Map_GetSewerPlanPath({ params: params });
+      console.log('Map_getSewerPlanPath', data.length);
+      this.addSingleLine(data);
+    },
+    async getRoadPlanPath(params) {
+      const data = await this.$Http.Map_GetRoadPlanPath({ params: params });
+      console.log('Map_GetRoadPlanPath', data.length);
+      this.addSingleLine(data);
     },
     addMapCover() {
       new AMap.DistrictSearch({
@@ -392,21 +452,28 @@ export default {
     },
     addLineLayer(lines) {
       // 点类型图层
-      this.showPolyline();
+      // this.showPolyline();
       if (!lineLayer) {
         lineLayer = new Loca.LineLayer({
           map: viewInstance.map,
+          eventSupport: true,
         });
         lineLayer.setOptions({
           style: {
-            borderWidth: 3,
+            borderWidth: 1,
             opacity: 1,
             color: function (v) {
-              var id = v.value.style;
-              var len = colors.length;
+              const id = v.value.style ?? 0;
+              const len = colors.length;
               return colors[id % len];
             },
           },
+          selectStyle: {
+            color: '#e38538',
+          },
+        });
+        lineLayer.on('click', function (e) {
+          console.log(e.rawData);
         });
       }
       lineLayer.setData(lines, {
@@ -445,6 +512,64 @@ export default {
       this.hidePolylineLayer();
       this.hidePolygonLayer();
       this.hidePoint();
+      overlay.clearOverlays();
+    },
+    showRoadPlan() {
+      let params;
+      if (this.planMonth === '0') {
+        params = {};
+      } else {
+        const months = this.planMonth.split('');
+        params = {
+          month: months[months.length - 1],
+        };
+      }
+      this.getRoadPlanPathByMonth(params);
+    },
+    showRoadPlanDetail() {
+      if (this.planGuid.length > 0) {
+        this.getRoadPlanPath({ guid: this.planGuid });
+      }
+    },
+    showSewerPlanDetail() {
+      if (this.sewerData) {
+        this.getSewerPlanPath(this.sewerData);
+      }
+    },
+    showDiseasePoint() {
+      const data = this.diseaseDetail;
+      if (data.tempgaodexy) {
+        console.log(data.tempgaodexy);
+        const pos = data.tempgaodexy.split(',');
+        let style = 0;
+        if (data.fstatues === '未维修') {
+          style = 0;
+        } else if (data.fstatues === '正在维修') {
+          style = 1;
+        } else {
+          style = 2;
+        }
+        const x = parseFloat(pos[1]);
+        const y = parseFloat(pos[0]);
+        const lnglat = this.createLnglats(
+          parseFloat(x > y ? x : y),
+          parseFloat(x < y ? x : y),
+        );
+
+        overlay.clearOverlays();
+        const marker = this.createMarker(lnglat, data.patrolpointguid, style);
+        marker.on('click', function (e) {
+          viewInstance.showPointDetail(e.target.getExtData());
+        });
+        console.log(this.isShowPointDetail);
+        if (this.isShowPointDetail) {
+          console.log('sss');
+          viewInstance.showPointDetail(data.patrolpointguid);
+        }
+        overlay.addOverlay(marker);
+      } else {
+        viewInstance.showPointDetail(data.patrolpointguid);
+      }
     },
   },
   computed: {
@@ -453,6 +578,9 @@ export default {
     // },
     showFacility() {
       return this.$store.state.mapShowFacility;
+    },
+    showRoad() {
+      return this.$store.state.mapShowTask;
     },
     showDiseaseMassMarks() {
       return this.$store.state.mapShowDisease;
@@ -472,8 +600,32 @@ export default {
     dateRange() {
       return this.$store.state.dateRange;
     },
+    planMonth() {
+      return this.$store.state.roadPlanMonth;
+    },
+    planGuid() {
+      return this.$store.state.roadPlanGuid;
+    },
+    sewerData() {
+      return this.$store.state.sewerPlanData;
+    },
+    diseaseDetail() {
+      return this.$store.state.diseaseDetail;
+    },
+    isShowPointDetail() {
+      return this.$store.state.showPointDetail;
+    },
+    mapFlag() {
+      return this.$store.state.mapFlag;
+    },
   },
   watch: {
+    mapFlag(newValue, oldValue) {
+      if (newValue === 0 && oldValue === -1) {
+        this.clearMap();
+        this.$store.commit('changeMapFlag', -1);
+      }
+    },
     showFacility: function (newState, oldState) {
       this.showMassMark = newState;
       if (!newState) {
@@ -492,11 +644,10 @@ export default {
       }
     },
     facilityType: function (newData) {
-      if (this.showFacility) {
-        this.getFacilitiesPoint(this.$store.state.facilityType);
-      }
+      this.getFacilitiesPoint(this.$store.state.facilityType);
     },
     tabMode: function (newState, oldState) {
+      console.log(newState);
       this.clearMap();
     },
     dateRange: function () {
@@ -513,6 +664,24 @@ export default {
       if (newData !== '') {
         this.getDiseaseDetailInfo(newData);
       }
+    },
+    planMonth() {
+      if (this.showRoad) {
+        this.showRoadPlan();
+      }
+    },
+    planGuid() {
+      if (this.showRoad) {
+        this.showRoadPlanDetail();
+      }
+    },
+    sewerData() {
+      if (this.showRoad) {
+        this.showSewerPlanDetail();
+      }
+    },
+    diseaseDetail() {
+      this.showDiseasePoint();
     },
   },
   mounted: function () {

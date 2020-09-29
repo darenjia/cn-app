@@ -1,29 +1,26 @@
 <template>
   <div class="filter-bg">
     <div class="page-content-detail">
-      <div>
-        <date-view @dateRangeChanged="dateChange"></date-view>
-      </div>
-      <div>
-        <div class="news-content">
-          <list-card>
-            <transition-group name="list-complete" tag="ul">
-              <li
-                v-for="item in DiseaseGridData"
-                :key="item.serialnum"
-                class="list-complete-item"
-                @click="click(item)"
-                @mouseover="over"
-                @mouseleave="leave"
-              >
-                <span class="time">{{ item.anjianleixing }}</span
-                ><span class="type">{{ item.createtime }}</span>
-                <br />
-                <span>{{ item.anjiandidian }}</span>
-                <span class="type">{{ item.xiangmubu }}</span>
-              </li>
-            </transition-group></list-card
-          >
+      <div class="box-with-border-image">
+        <div class="title-with-bg">案件动态</div>
+        <div class="date-view">
+          <date-view :currentMode="1"></date-view>
+        </div>
+
+        <div class="road-news-list">
+          <div class="news-content">
+            <list-card
+              :listData="DiseaseGridDataList"
+              :type="1"
+              ref="child"
+              @clickItem="clickItem"
+            >
+            </list-card>
+          </div>
+        </div>
+        <div class="title-with-bg">案件类型</div>
+        <div class="disease-chart">
+          <chart-bar :chartData="DiseaseTypeData"></chart-bar>
         </div>
       </div>
     </div>
@@ -31,61 +28,97 @@
 </template>
 <script>
 import DateView from '../DateView';
-import ListCard from '../ListCard';
+import ListCard from '../second/RightListItemCard';
 import mixin from '../../plugins/mixins-today';
+import ChartBar from './ChartBar';
+
 export default {
   name: 'ThirdRightPage',
   mixins: [mixin],
-  data() {
-    return { DiseaseGridData: [] };
+  components: {
+    DateView,
+    ListCard,
+    ChartBar,
   },
-  components: { DateView, ListCard },
+  data() {
+    return {
+      DiseaseGridData: [],
+      active: 0,
+      DiseaseTypeData: [],
+    };
+  },
   computed: {
     DiseaseGridDataList() {
       return this.DiseaseGridData;
     },
+    DiseaseTypeDataList() {
+      return this.DiseaseTypeData;
+    },
   },
   methods: {
     async getDiseaseGridData() {
-      console.log(this.dateRange);
       const data = await this.$Http.Grid_GetSewerFacilitiesGrid({
         params: this.dateRange,
       });
-      console.log('Grid_GetSewerFacilitiesGrid', data);
+      console.log('Grid_GetSewerFacilitiesGrid', data, this.dateRange);
       this.DiseaseGridData = data;
+    },
+    async getSewerTypeCount() {
+      const data = await this.$Http.Sewer_GetSewerTypeCount({
+        params: this.dateRange,
+      });
+      console.log('Sewer_GetSewerTypeCount', data, this.dateRange);
+      this.DiseaseTypeData = data;
     },
     updateData() {
       this.getDiseaseGridData();
+      this.getSewerTypeCount();
     },
+    startScroll() {
+      this.$refs.child.startInterval();
+    },
+    clickItem(item) {
+      this.$store.commit('changeDiseaseDetail', item);
+    },
+    click(item) {},
+    over() {},
+    leave() {},
   },
   mounted() {
-    this.updateData();
+    setTimeout(() => {
+      this.startScroll();
+    }, 3000);
+    // this.updateData();
   },
 };
 </script>
 <style lang="less" scoped>
 .news-content {
-  height: 400px;
-  ul {
-    color: #eee;
-    padding-inline-start: 0px;
-    position: relative;
-    li {
-      font-size: 12px;
-      cursor: pointer;
-      padding: 4px 20px 4px 10px;
-      .time {
-        color: #027fff;
-        font-weight: 700;
-      }
-    }
-    li:hover {
-      transition: all 0.3s linear;
-      transform: scale(1.05);
-    }
-    .type {
-      float: right;
-    }
-  }
+  height: 346px;
+}
+.title-with-bg::after {
+  margin-left: 46px;
+}
+.title-with-bg::before {
+  margin-left: -144px;
+}
+.date-view {
+  margin: 20px 0px;
+}
+.road-news-list {
+  height: 100%;
+}
+.disease-chart {
+  width: 100%;
+  height: 300px;
+}
+.sort-type1 {
+  background: linear-gradient(
+    to top,
+    rgba(72, 227, 247, 1),
+    rgba(72, 227, 247, 0.1),
+    rgba(72, 227, 247, 0),
+    rgba(72, 227, 247, 0)
+  );
 }
 </style>

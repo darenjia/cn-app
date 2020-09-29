@@ -1,85 +1,58 @@
 <template>
   <div class="filter-bg">
     <div class="page-content-detail">
-      <div class="summary">
-        <h3>案件数汇总</h3>
-        <div>
-          <ul>
-            <li v-for="(item, index) in summaryData" :key="index">
-              <span>{{ item.type }}</span>
-              <span>{{ item.nums }}</span>
-            </li>
-          </ul>
+      <div class="summary box-with-border-image">
+        <div class="title-with-bg">案件汇总</div>
+        <div v-if="summary.length > 0">
+          <div class="disease-list">
+            <div class="list-item list-type1">{{ summary[0].nums }}</div>
+            <div class="list-item list-header">
+              全年
+            </div>
+
+            <div class="list-item list-type2">{{ summary[1].nums }}</div>
+          </div>
+          <div class="disease-list">
+            <div class="list-item list-type1">{{ summary[2].nums }}</div>
+            <div class="list-item list-header">
+              本月
+            </div>
+
+            <div class="list-item list-type2">{{ summary[3].nums }}</div>
+          </div>
+          <div class="disease-list">
+            <div class="list-item list-type1">{{ summary[4].nums }}</div>
+            <div class="list-item list-header">
+              今天
+            </div>
+
+            <div class="list-item list-type2">{{ summary[5].nums }}</div>
+          </div>
         </div>
       </div>
-      <div class="news-content">
-        <list-card :title="'最新案件'">
-          <transition-group name="list-complete" tag="ul">
-            <li
-              v-for="item in newestTask"
-              :key="item.patrolpointguid"
-              class="list-complete-item"
-              @click="click(item)"
-              @mouseover="over"
-              @mouseleave="leave"
-            >
-              <span class="time">{{ item.anjianleixing }}</span
-              ><span>{{ item.createtime }}</span>
-              <br />
-              <span>{{ item.anjiandidian }}</span>
-              <span class="type">{{ item.xiangmubu }}</span>
-            </li>
-          </transition-group>
+      <div class="news-content box-with-border-image">
+        <div class="title-with-bg">最新案件</div>
+        <list-card
+          :listData="newestTaskData"
+          ref="child0"
+          @clickItem="clickItem"
+        >
         </list-card>
       </div>
-      <div class="news-content">
-        <list-card :title="'最新处置'">
-          <transition-group name="list-complete" tag="ul">
-            <li
-              v-for="item in newestFinishedTask"
-              :key="item.patrolpointguid"
-              class="list-complete-item"
-              @click="click(item)"
-              @mouseover="over"
-              @mouseleave="leave"
-            >
-              <span class="time">{{ item.anjianleixing }}</span
-              ><span>{{ item.createtime }}</span>
-              <br />
-              <span>{{ item.anjiandidian }}</span>
-              <span class="type">{{ item.xiangmubu }}</span>
-            </li>
-          </transition-group>
-        </list-card>
-      </div>
-      <div class="news-content">
-        <list-card :title="'逾期警告'">
-          <transition-group name="list-complete" tag="ul">
-            <li
-              v-for="item in warningTask"
-              :key="item.patrolpointguid"
-              class="list-complete-item"
-              @click="click(item)"
-              @mouseover="over"
-              @mouseleave="leave"
-            >
-              <span class="time">{{ item.anjianleixing }}</span
-              ><span>{{ item.createtime }}</span>
-              <br />
-              <span>{{ item.anjiandidian }}</span>
-              <span class="type">{{ item.xiangmubu }}</span>
-            </li>
-          </transition-group>
-        </list-card>
+      <div class="news-content box-with-border-image news-content1">
+        <div class="title-with-bg">最新处置</div>
+        <list-card
+          :listData="newestFinishedTaskData"
+          ref="child1"
+          @clickItem="clickItem"
+        ></list-card>
       </div>
     </div>
   </div>
 </template>
 <script>
 import listener from '../../plugins/mixins-listener';
-import ListCard from '../ListCard';
-let intervalNewestTask, intervalNewestFinished, intervalWarning;
-let temp1, temp2, temp3;
+import ListCard from './ListItemCard';
 export default {
   name: 'SecondRightPage',
   mixins: [listener],
@@ -96,6 +69,9 @@ export default {
   },
   mounted() {
     this.updateData();
+    setTimeout(() => {
+      this.startScroll();
+    }, 3000);
   },
   computed: {
     summaryData() {
@@ -122,57 +98,24 @@ export default {
     },
     async getNewestFinishedTask() {
       const data = await this.$Http.Grid_GetNewFinallyByDay();
-      this.newestTask = data;
+      this.newestFinishedTask = data;
     },
     async getWarningTask() {
       const data = await this.$Http.Grid_GetOverOfWarn();
       this.warningTask = data;
+    },
+    startScroll() {
+      this.$refs.child0.startInterval();
+      this.$refs.child1.startInterval();
     },
     updateData() {
       console.log('refreshData', 'Grid');
       this.getGridSummary();
       this.getNewestTask();
       this.getNewestFinishedTask();
-      this.getWarningTask();
     },
-    setSummaryInterval() {
-      if (intervalNewestTask) {
-        clearInterval(intervalNewestTask);
-      }
-      intervalNewestTask = setInterval(() => {
-        if (this.infos.length > 0) {
-          if (temp1) {
-            this.infos.push(temp1);
-          }
-          temp1 = this.infos.shift();
-        }
-      }, 3000);
-    },
-    setFinishedInterval() {
-      if (intervalNewestFinished) {
-        clearInterval(intervalNewestFinished);
-      }
-      intervalNewestFinished = setInterval(() => {
-        if (this.infos.length > 0) {
-          if (temp2) {
-            this.infos.push(temp2);
-          }
-          temp2 = this.infos.shift();
-        }
-      }, 3000);
-    },
-    setWarningInterval() {
-      if (intervalWarning) {
-        clearInterval(intervalWarning);
-      }
-      intervalWarning = setInterval(() => {
-        if (this.infos.length > 0) {
-          if (temp3) {
-            this.infos.push(temp3);
-          }
-          temp3 = this.infos.shift();
-        }
-      }, 3000);
+    clickItem(item) {
+      this.$store.commit('changeDiseaseDetail', item);
     },
     click(data) {},
     over() {},
@@ -182,7 +125,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .news-content {
-  height: 200px;
+  height: 320px;
   ul {
     color: #eee;
     padding-inline-start: 0px;
@@ -205,10 +148,37 @@ export default {
     }
   }
 }
+.news-content1 {
+  height: 288px;
+}
 .summary {
   color: #fff;
-  h3 {
-    color: #fff;
+  .disease-list {
+    position: relative;
+    .list-item {
+      display: inline-block;
+      width: 33%;
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      background-repeat: no-repeat;
+    }
+  }
+  .disease-list::after {
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    content: '';
+    top: 2px;
+    left: 0px;
+    z-index: -1;
+    background: linear-gradient(
+      to left,
+      rgba(66, 177, 230, 0),
+      rgba(2, 73, 80, 0.59),
+      rgba(66, 177, 230, 0)
+    );
   }
 }
 </style>

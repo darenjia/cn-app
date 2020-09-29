@@ -6,48 +6,13 @@
       <a-icon type="unordered-list" style="color: #ffffff; font-size: 18px;" />
     </div>
     <div :class="[{ hide: !menuState }, 'show-setting']">
-      <div class="filter-bg setting-content">
+      <div class="filter-bg setting-content box-with-border-image">
         <p>
-          <span>显示排行榜</span>
-          <span class="switch-btn"
-            ><a-switch
-              checked-children="开"
-              un-checked-children="关"
-              v-model="showRankList"
-              @change="rankStateChange"
-          /></span>
-        </p>
-        <p>
-          <span>显示统计量</span>
-          <span class="switch-btn"
-            ><a-switch
-              checked-children="开"
-              un-checked-children="关"
-              v-model="showStatistic"
-              @change="statisticStateChange"
-          /></span>
-        </p>
-        <p>
-          显示统计图
+          <span style="line-height: 24px;">重置地图</span>
           <span class="switch-btn">
-            <a-switch
-              checked-children="开"
-              un-checked-children="关"
-              v-model="showStatisticGraph"
-              @change="statisticGraphStateChange"
-            />
-          </span>
-        </p>
-        <h6 class="divider"></h6>
-        <p>
-          地图移动
-          <span class="switch-btn">
-            <a-switch
-              checked-children="开"
-              un-checked-children="关"
-              default-checked
-              @change="mapStateChange"
-            />
+            <a-button type="default" size="small" @click="mapStateChange">
+              <a-icon type="sync" />
+            </a-button>
           </span>
         </p>
         <p>
@@ -74,26 +39,26 @@ export default {
       showStatistic: true,
       showStatisticGraph: true,
       checkedList: [],
-      plainOptions: ['设施', '病害', '维修', '人员'],
+      plainOptions: ['病害', '道路'],
     };
   },
   created() {
     const store = this.$store.state;
-    if (store.mapShowFacility) {
-      this.checkedList.push('设施');
-    }
+    // if (store.mapShowFacility) {
+    //   this.checkedList.push('设施');
+    // }
     if (store.mapShowDisease) {
       this.checkedList.push('病害');
     }
     if (store.mapShowTask) {
-      this.checkedList.push('维修');
+      this.checkedList.push('道路');
     }
-    if (store.mapShowPerson) {
-      this.checkedList.push('人员');
-    }
-    this.showRankList = store.showRankList;
-    this.showStatistic = store.showStatistic;
-    this.showStatisticGraph = store.showStatisticGraph;
+    // if (store.mapShowPerson) {
+    //   this.checkedList.push('人员');
+    // }
+    // this.showRankList = store.showRankList;
+    // this.showStatistic = store.showStatistic;
+    // this.showStatisticGraph = store.showStatisticGraph;
   },
   computed: {
     menuState() {
@@ -110,8 +75,8 @@ export default {
     statisticStateChange(checked) {
       this.$store.commit('changeStatisticState', checked);
     },
-    mapStateChange(checked) {
-      this.$store.commit('changeMapTask', checked ? 0 : 1);
+    mapStateChange() {
+      this.$store.commit('changeMapFlag', 0);
     },
     showMenu() {
       this.isMenuShow = !this.isMenuShow;
@@ -137,7 +102,7 @@ export default {
 .show-setting {
   width: 160px;
   position: absolute;
-  top: -268px;
+  top: -140px;
   left: -40px;
   color: #ffffff;
   .setting-content {
@@ -146,6 +111,7 @@ export default {
   }
   .switch-btn {
     float: right;
+    margin-right: 10px;
   }
   .divider {
     height: 1px;

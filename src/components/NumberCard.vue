@@ -1,36 +1,41 @@
 <template>
   <div>
-    <div class="title"><h3>道路总数</h3></div>
+    <!-- <div class="title"><h3>道路</h3></div> -->
     <div class="digit">
+      <div class="digit-bg"></div>
       <div class="dataStatistics">
-        <div
-          class="digit_set"
-          v-for="(item, index) in countNumber"
-          :key="index"
-        >
-          <div class="digit active">
-            <div class="digit_top">
-              <span class="digit_wrap">{{ item }}</span>
-            </div>
-            <div class="digit_bottom">
-              <span class="digit_wrap">{{ item }}</span>
+        <span class="title-name">道路总数</span>
+        <div class="digit-box">
+          <div
+            class="digit_set"
+            v-for="(item, index) in countNumber"
+            :key="index"
+          >
+            <div class="digit active">
+              <div class="digit_top">
+                <span class="digit_wrap">{{ item }}</span>
+              </div>
+              <div class="digit_bottom">
+                <span class="digit_wrap">{{ item }}</span>
+              </div>
             </div>
           </div>
         </div>
+        <span class="title-name">条</span>
       </div>
     </div>
 
     <div class="statistic-number">
       <div class="statistic-box">
         <span class="detail-title"
-          >养护长度<i class="num">{{ roadLength }}</i
-          >米</span
+          >养护长度<i class="num" style="color: #3bdce2;">{{ roadLength }}</i
+          >千米</span
         >
       </div>
       <div class="statistic-box rigth-box">
         <span class="detail-title"
           >养护面积<i class="num">{{ roadArea }}</i
-          >平方米</span
+          >万平方米</span
         >
       </div>
     </div>
@@ -69,7 +74,7 @@ export default {
   },
   methods: {
     initNumber(num) {
-      this.num = ('0' + num).toString().split('');
+      this.num = num.toString().split('');
       // for (let index = 0; index < this.count; index++) {
       //   this.num.push(parseInt(this.number / Math.pow(10, this.count - index)));
       // }
@@ -89,31 +94,63 @@ export default {
 @import '../assets/css/style.css';
 .digit {
   position: relative;
-  .dataStatistics {
+  top: 2px;
+  .digit-bg {
+    background-image: url('../assets/img/first_header_bg.png');
+    width: 170px;
+    height: 110px;
+    background-size: 100% 100%;
     position: relative;
+    left: 0px;
+    top: 0px;
+  }
+  .dataStatistics {
+    position: absolute;
     font-size: 30px;
     font-weight: 700;
     line-height: 48px;
     width: auto;
     height: 48px;
-    top: 0px;
+    top: 40px;
     left: 50%;
-    margin-left: -100px;
-    .digit_set {
-      width: 48px;
-      .digit_top {
-        border-radius: 4px 4px 0px 0px;
-        width: 48px;
-        .digit_wrap {
-          line-height: 48px;
+    margin-left: -103px;
+    .title-name {
+      color: #fff;
+      font-size: 20px;
+      float: left;
+    }
+    .digit-box {
+      float: left;
+      height: 40px;
+      margin-left: 20px;
+      margin-bottom: 8px;
+      position: relative;
+      bottom: 6px;
+      .digit_set {
+        width: 40px;
+        font-size: 25px;
+        text-align: center;
+        color: #fff;
+        .digit_top {
+          border-radius: 4px 4px 0px 0px;
+          padding: 0px 4px;
+          width: 30px;
+          background-color: #309fa3;
+          border-color: #309fa3;
+          .digit_wrap {
+            line-height: 40px;
+          }
         }
-      }
-      .digit_bottom {
-        border-radius: 0 0 4px 4px;
-        width: 48px;
-        .digit_wrap {
-          line-height: 48px;
-          margin-top: -132%;
+        .digit_bottom {
+          border-radius: 0 0 4px 4px;
+          padding: 0px 4px;
+          width: 30px;
+          background-color: #da981;
+          border-color: #309fa3;
+          .digit_wrap {
+            line-height: 40px;
+            margin-top: -20px;
+          }
         }
       }
     }
@@ -122,19 +159,20 @@ export default {
 
 .statistic-number {
   position: relative;
-  padding: 0px 2px;
+  padding: 5px 2px;
   text-align: justify;
+  color: #fff;
   .statistic-box {
     display: inline-block;
-    padding: 4px 15px;
+    padding: 4px 1px;
     .detail-title {
       font-size: 14px;
-      font-weight: normal;
       .num {
         font-style: normal;
         margin: 0px 5px;
-        color: #fff;
+        color: #e38538;
         font-size: 18px;
+        font-weight: 600;
       }
     }
   }

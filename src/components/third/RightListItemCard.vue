@@ -2,8 +2,8 @@
   <div class="list-content">
     <transition-group name="list-complete" tag="ul">
       <li
-        v-for="item in list"
-        :key="item.patrolpointguid"
+        v-for="(item, index) in list"
+        :key="index"
         :class="[
           'list-complete-item',
           {
@@ -34,54 +34,16 @@ export default {
   props: ['listData', 'type'],
   computed: {
     list() {
-      if (this.listData.length > 15) {
-        return this.listData.slice(0, 10);
-      }
       return this.listData;
     },
     isType1() {
       return this.type === 1;
     },
   },
-  data() {
-    return {
-      interval: undefined,
-      temp: undefined,
-    };
-  },
   methods: {
-    stopInterval() {
-      if (this.temp) {
-        this.listData.push(this.temp);
-        this.temp = undefined;
-      }
-      if (this.interval) {
-        clearInterval(this.interval);
-      }
-    },
-    startInterval() {
-      this.stopInterval();
-      this.interval = setInterval(() => {
-        if (this.listData && this.listData.length > 0) {
-          if (this.temp) {
-            this.listData.push(this.temp);
-          }
-          this.temp = this.listData.shift();
-        }
-      }, 3000);
-    },
-    click(item) {
-      this.$emit('clickItem', item);
-    },
-    over() {
-      this.stopInterval();
-    },
-    leave() {
-      this.startInterval();
-    },
-  },
-  beforeDestroy() {
-    this.stopInterval();
+    click(item) {},
+    over() {},
+    leave() {},
   },
 };
 </script>
@@ -103,6 +65,7 @@ export default {
       cursor: pointer;
       padding: 4px 20px 4px 10px;
       margin: 4px 0px;
+      position: relative;
       border: 1px solid transparent;
       margin-bottom: -1px;
       .time {
