@@ -65,3 +65,9 @@
 .ant-calendar-range .ant-calendar-input, .ant-calendar-range .ant-calendar-time-picker-input{
     color:#fff;
 }
+.ant-spin-dot-item {
+    background-color: #32a7ab;
+}
+.ant-spin-blur{
+    opacity: 0.1;
+}

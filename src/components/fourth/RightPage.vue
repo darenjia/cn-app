@@ -117,15 +117,12 @@ export default {
     clickItem(item) {
       this.$store.commit('changeDiseaseDetail', item);
     },
-    click(data) {},
-    over() {},
-    leave() {},
   },
 };
 </script>
 <style lang="less" scoped>
 .news-content {
-  height: 320px;
+  height: 360px;
   ul {
     color: #eee;
     padding-inline-start: 0px;
@@ -149,7 +146,7 @@ export default {
   }
 }
 .news-content1 {
-  height: 288px;
+  height: 265px;
 }
 .summary {
   color: #fff;

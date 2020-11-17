@@ -267,7 +267,7 @@ export default {
   top: -40px;
   left: 0px;
   .tab-content {
-    height: 336px;
+    height: 350px;
     overflow: hidden;
   }
 
@@ -314,7 +314,7 @@ export default {
       1 10;
     .plan-top-text {
       text-align: center;
-      line-height: 30px;
+      line-height: 36px;
     }
   }
 }

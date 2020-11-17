@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-vars */
 <template>
   <div>
     <div class="box-with-border-image card-content">
@@ -5,48 +6,103 @@
         案件详情
       </div>
       <div class="content">
-        <div class="content1">
-          <div class="detail">
-            <span class="detail-content"
-              ><span class="des des1">{{ taskType }}</span>
-              <span class="des des2" v-if="facilityType"
-                >{{ facilityType }} </span
-              ><span class="des des3">{{ diseaseType }}</span></span
-            >
+        <a-spin :spinning="dataLoading">
+          <div class="content1">
+            <div class="detail">
+              <span class="detail-content"
+                ><span class="des des1">{{ taskType }}</span>
+                <span class="des des2" v-if="facilityType"
+                  >{{ facilityType }} </span
+                ><span class="des des3">{{ diseaseType }}</span></span
+              >
+            </div>
           </div>
-        </div>
-        <div class="content2">
-          <div class="gallery-box">
-            <div
+          <div :class="['image-content', { content2: detailMode === 1 }]">
+            <div class="gallery-box">
+              <!-- <div
               class="image-style"
               @click="index = 0"
               :style="{ backgroundImage: 'url(' + diseaseImages[0] + ')' }"
-            ></div>
-
-            <div class="base-detail">
-              <span class="base-time">{{ reportTime }}</span>
-              <span class="detail-content">{{ patroluser }}</span>
+            ></div> -->
+              <a-carousel arrows autoplay :dot-position="'top'">
+                <div
+                  slot="prevArrow"
+                  class="custom-slick-arrow"
+                  style="left: 10px; zindex: 1;"
+                >
+                  <a-icon type="left-circle" />
+                </div>
+                <div
+                  slot="nextArrow"
+                  class="custom-slick-arrow"
+                  style="right: 10px;"
+                >
+                  <a-icon type="right-circle" />
+                </div>
+                <div
+                  v-for="(item, i) in diseaseImages"
+                  :key="i"
+                  :class="[
+                    'image-size-normal',
+                    { 'image-size-big': detailMode === 1 },
+                  ]"
+                >
+                  <img :src="item" class="image-style" @click="index = i" />
+                </div>
+              </a-carousel>
+              <div class="base-detail">
+                <span class="base-time">{{ reportTime }}</span>
+                <span class="detail-content">{{ patroluser }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="content2">
-          <div class="gallery-box">
-            <div
-              class="image-style"
-              @click="repairIndex = 0"
-              :style="{ backgroundImage: 'url(' + repairImages[0] + ')' }"
-            ></div>
-            <div class="base-detail">
-              <span class="base-time">{{ repairOrderTime }}</span>
-              <span class="detail-content">{{ repairPerson }}</span>
+          <div :class="['image-content', { content2: detailMode === 1 }]">
+            <div class="gallery-box">
+              <a-carousel arrows autoplay :dot-position="'top'">
+                <div
+                  slot="prevArrow"
+                  class="custom-slick-arrow"
+                  style="left: 10px; zindex: 1;"
+                >
+                  <a-icon type="left-circle" />
+                </div>
+                <div
+                  slot="nextArrow"
+                  class="custom-slick-arrow"
+                  style="right: 10px;"
+                >
+                  <a-icon type="right-circle" />
+                </div>
+                <div v-for="(item, i) in repairImages" :key="i">
+                  <img
+                    :src="item"
+                    :class="[
+                      'image-style',
+                      'image-size-normal',
+                      { 'image-size-big': detailMode === 1 },
+                    ]"
+                    @click="repairIndex = i"
+                  />
+                </div>
+              </a-carousel>
+              <div class="base-detail">
+                <span class="base-time">{{ repairOrderTime }}</span>
+                <span class="detail-content">{{ repairPerson }}</span>
+              </div>
             </div>
           </div>
-        </div>
-
+        </a-spin>
         <div class="title-style" style="text-align: center;">
           {{ diseaseLocation }}
           <span class="close" @click="closePage"
-            ><a-icon type="close" style="color: #0974869e; font-size: 16px;"
+            ><a-icon
+              type="close-square"
+              style="color: #0974869e; font-size: 16px;"
+          /></span>
+          <span class="close" @click="changePageMode" style="right: 52px;"
+            ><a-icon
+              :type="detailMode === 0 ? 'fullscreen' : 'fullscreen-exit'"
+              style="color: #0974869e; font-size: 16px;"
           /></span>
         </div>
       </div>
@@ -61,6 +117,7 @@
       id="gallery1"
       :images="diseaseImages"
       :index="index"
+      :options="options"
       @close="index = null"
     ></gallery>
   </div>
@@ -78,7 +135,11 @@ export default {
       repair: {},
       timeline: {},
       index: null,
+      options: {
+        fullscreen: true,
+      },
       repairIndex: null,
+      dataLoading: true,
     };
   },
   computed: {
@@ -173,7 +234,7 @@ export default {
       //   array[index] = 'http://47.103.63.36:8084/FtpFile/' + array[index];
       // }
       for (const key in array) {
-        array[key] = 'http://47.103.63.36:8084/FtpFile/' + array[key];
+        array[key] = 'image/' + array[key];
       }
       return array;
     },
@@ -182,6 +243,9 @@ export default {
     },
     diseaseData() {
       return this.disease;
+    },
+    detailMode() {
+      return this.$store.state.detailMode;
     },
   },
   watch: {
@@ -192,13 +256,13 @@ export default {
         // } else {
         //   this.getRepairDetailInfo(this.currentFacilityId);
         // }
-        this.disease = {};
+        // this.disease = {};
         this.getDiseaseDetailInfo(this.currentFacilityId);
       }
     },
     currentFacilityId(newState) {
       if (this.currentShowState) {
-        this.disease = {};
+        // this.disease = {};
         this.getDiseaseDetailInfo(this.currentFacilityId);
       }
     },
@@ -207,13 +271,20 @@ export default {
     closePage() {
       this.$store.commit('changePointDetailState', false);
     },
+    changePageMode() {
+      this.$store.commit('changeDetailMode', this.detailMode === 0 ? 1 : 0);
+    },
     async getDiseaseDetailInfo(id) {
+      this.dataLoading = true;
       const data = await this.$Http.Map_GetPointInfo({
         params: { guid: id },
       });
       if (data[0]) {
         this.disease = data[0];
+      } else {
+        this.disease = {};
       }
+      this.dataLoading = false;
     },
   },
 };
@@ -221,7 +292,7 @@ export default {
 <style lang="less" scoped>
 .card-content {
   // background-color: #fff;
-  width: 300px;
+  width: 100%;
   padding: 10px 0px 0px;
   border-radius: 20px;
   backdrop-filter: blur(10px) brightness(100%);
@@ -253,14 +324,13 @@ export default {
 }
 .gallery-box {
   position: relative;
-  height: 200px;
+  height: 100%;
+  overflow: hidden;
 }
 .image-style {
-  position: absolute;
   width: 100%;
   height: 100%;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  max-height: 400px;
 }
 .base-detail {
   height: 40px;
@@ -278,8 +348,6 @@ export default {
 .base-time {
   height: 40px;
   padding: 2px 10px;
-}
-.content1 {
 }
 .title {
   font-size: 16px;
@@ -320,5 +388,37 @@ export default {
       // }
     }
   }
+}
+.image-content {
+  height: 200px;
+  border: 1px solid #121212;
+}
+.content2 {
+  display: inline-block;
+  width: 50%;
+  height: 400px;
+}
+.image-size-normal {
+  height: 198px;
+  max-height: 400px;
+  overflow: hidden;
+}
+.image-size-big {
+  height: 398px;
+}
+/deep/ .ant-carousel .slick-slide {
+  text-align: center;
+  // height: 160px;
+  // line-height: 160px;
+  overflow: hidden;
+}
+.ant-carousel .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+  z-index: 999;
 }
 </style>

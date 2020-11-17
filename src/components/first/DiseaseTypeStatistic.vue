@@ -20,12 +20,22 @@
     <a-row>
       <a-col :span="12">
         <div style="height: 270px;">
-          <v-chart :options="options1" autoresize @click="onDetailClick1" />
+          <v-chart
+            :options="options1"
+            autoresize
+            @click="onDetailClick1"
+            ref="chart1"
+          />
         </div>
       </a-col>
       <a-col :span="12">
         <div style="height: 270px;">
-          <v-chart :options="options2" autoresize @click="onDetailClick2" />
+          <v-chart
+            :options="options2"
+            autoresize
+            @click="onDetailClick2"
+            ref="chart2"
+          />
         </div>
       </a-col>
     </a-row>
@@ -390,7 +400,6 @@ export default {
     }
   }
   .diseaseFilter {
-    display: inline-block;
     height: 40px;
     line-height: 40px;
     cursor: pointer;

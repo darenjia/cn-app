@@ -3,20 +3,22 @@
     <div class="pager-content-detail">
       <div class="box-with-border-image">
         <date-view :currentMode="2"></date-view>
-        <div class="facility-detail-header">
-          <div class="header-content">
-            <statistic-right-header
-              :chartData="diseaseCountData"
-            ></statistic-right-header>
+        <a-spin :spinning="isDataLoading">
+          <div class="facility-detail-header">
+            <div class="header-content">
+              <statistic-right-header
+                :chartData="diseaseCountData"
+              ></statistic-right-header>
+            </div>
           </div>
-        </div>
-        <div style="height: 260px;">
-          <disease-type-statistic
-            :chartData="DiseaseChildData"
-            :diseaseType="subTitle"
-            :dateRange="dateRange"
-          ></disease-type-statistic>
-        </div>
+          <div style="height: 260px;">
+            <disease-type-statistic
+              :chartData="DiseaseChildData"
+              :diseaseType="subTitle"
+              :dateRange="dateRange"
+            ></disease-type-statistic>
+          </div>
+        </a-spin>
       </div>
 
       <div class="box-with-border-image">
@@ -47,6 +49,7 @@ export default {
       title: '病害数量总览',
       diseaseCountData: [],
       DiseaseChildData: [],
+      isDataLoading: true,
     };
   },
   computed: {
@@ -59,10 +62,12 @@ export default {
   },
   methods: {
     async getDiseaseType() {
+      this.isDataLoading = true;
       const data = await this.$Http.getDiseaseWithRepair({
         params: this.dateRange,
       });
       this.diseaseCountData = data;
+      this.isDataLoading = false;
     },
     showDetail(type) {
       this.subTitle = type;

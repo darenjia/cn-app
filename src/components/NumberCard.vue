@@ -4,7 +4,12 @@
     <div class="digit">
       <div class="digit-bg"></div>
       <div class="dataStatistics">
-        <span class="title-name">道路总数</span>
+        <span class="title-name"
+          ><a
+            href="javascript:window.open('http://47.103.63.36:8081/Home/Index');"
+            >道路总数</a
+          ></span
+        >
         <div class="digit-box">
           <div
             class="digit_set"
@@ -118,6 +123,9 @@ export default {
       color: #fff;
       font-size: 20px;
       float: left;
+      a {
+        color: #fff;
+      }
     }
     .digit-box {
       float: left;

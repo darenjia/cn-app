@@ -14,10 +14,10 @@ const store = new Vuex.Store({
     mapMode: 0,
     tabMode: 0,
     mapFlag: -1,
-    mapShowFacility: false,
-    mapShowTask: false,
-    mapShowPerson: false,
-    mapShowDisease: false,
+    mapShowFacility: true,
+    mapShowTask: true,
+    mapShowPerson: true,
+    mapShowDisease: true,
     dateRange: {},
     facilityType: { type: '道路' },
     diseaseType: {},
@@ -27,6 +27,7 @@ const store = new Vuex.Store({
     roadPlanGuid: '',
     sewerPlanData: {},
     diseaseDetail: {},
+    detailMode: 0, // 0 normal 1 big
   },
   mutations: {
     changeCurrentShow(state, id) {
@@ -133,6 +134,7 @@ const store = new Vuex.Store({
     },
     changeTabMode(state, type) {
       state.tabMode = type;
+      state.diseaseType = {};
     },
     changeMapFlag(state, type) {
       state.mapFlag = type;
@@ -151,6 +153,9 @@ const store = new Vuex.Store({
     },
     changeDiseaseDetail(state, type) {
       state.diseaseDetail = type;
+    },
+    changeDetailMode(state, type) {
+      state.detailMode = type;
     },
   },
 });

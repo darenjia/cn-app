@@ -8,23 +8,24 @@
           'list-complete-item',
           { 'list-obb': index % 2 !== 0, 'list-even': index % 2 === 0 },
         ]"
-        @click="click(item)"
         @mouseover="over"
         @mouseleave="leave"
       >
-        <a-row>
-          <a-col :span="8"
-            ><div class="plan-top-title">{{ item.road }}</div></a-col
-          >
-          <a-col :span="8"
-            ><div class="plan-top-title">{{ item.luduan }}</div></a-col
-          >
-          <a-col :span="8"
-            ><div class="plan-top-title">
-              {{ item.style === 0 ? '进行中' : '已完成' }}
-            </div></a-col
-          >
-        </a-row>
+        <a href="javascript:;" @click="click(item)">
+          <a-row>
+            <a-col :span="8"
+              ><div class="plan-top-title">{{ item.road }}</div></a-col
+            >
+            <a-col :span="8"
+              ><div class="plan-top-title">{{ item.luduan }}</div></a-col
+            >
+            <a-col :span="8"
+              ><div class="plan-top-title">
+                {{ item.style === 0 ? '进行中' : '已完成' }}
+              </div></a-col
+            >
+          </a-row>
+        </a>
       </li>
     </transition-group>
   </div>
@@ -58,6 +59,9 @@ export default {
     },
     startInterval() {
       this.stopInterval();
+      if (this.listData.length < 9) {
+        return;
+      }
       this.interval = setInterval(() => {
         if (this.listData && this.listData.length > 0) {
           if (this.temp) {

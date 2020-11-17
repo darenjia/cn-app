@@ -7,7 +7,9 @@
         </div>
         <div class="box-with-border-image">
           <div class="plan-statistic">
-            <h3 class="title-with-bg">本月养护计划</h3>
+            <h3 class="title-with-bg">
+              <a href="javascript:;" @click="showCurrentMonth">本月养护计划</a>
+            </h3>
             <ul v-if="RoadArea.length > 0">
               <li v-for="(item, index) in RoadArea" :key="index" class="plan">
                 <div class="plan-box">
@@ -81,6 +83,7 @@
 <script>
 import NumberCard from '../NumberCard';
 import ListItemCard from './ListItemCard';
+import moment from 'moment';
 export default {
   components: {
     NumberCard,
@@ -121,6 +124,7 @@ export default {
     this.getPlanDetailData();
     setTimeout(() => {
       this.startScroll();
+      this.showCurrentMonth();
     }, 3000);
   },
   methods: {
@@ -152,6 +156,13 @@ export default {
     clickItem(item) {
       this.$store.commit('changeRoadPlanGuid', item.guid);
     },
+    showCurrentMonth() {
+      this.$store.commit('changeRoadPlanMonth', this.getCurrentMonth());
+    },
+    getCurrentMonth() {
+      moment.updateLocale('zh-cn');
+      return moment().format('YYYY-MM');
+    },
   },
 };
 </script>
@@ -170,6 +181,9 @@ export default {
   }
   .title-with-bg::before {
     margin-left: -144px;
+  }
+  a {
+    color: #d6a20d;
   }
   ul {
     padding-inline-start: 0px;
@@ -258,7 +272,7 @@ export default {
       1 10;
     .plan-top-text {
       text-align: center;
-      line-height: 30px;
+      line-height: 36px;
     }
   }
 }

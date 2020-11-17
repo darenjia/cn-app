@@ -61,6 +61,9 @@ export default {
     },
     startInterval() {
       this.stopInterval();
+      if (this.listData.length < 7) {
+        return;
+      }
       this.interval = setInterval(() => {
         if (this.listData && this.listData.length > 0) {
           if (this.temp) {

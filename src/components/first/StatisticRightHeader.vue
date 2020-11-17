@@ -11,18 +11,16 @@
       <a-col :span="12">
         <div class="header">
           <ul class="num-ul">
-            <li
-              v-for="item in chartDatas"
-              :key="item.type"
-              @click="clickDetail(item.type)"
-            >
+            <li v-for="item in chartDatas" :key="item.type">
               <i class="divider"></i>
-              <span class="content name">{{ item.type }}</span>
-              <span class="content num">
-                <span class="mark1"> {{ item.count }}</span>
-                <i style="color: #8f8d8d;"> |</i>
-                <span class="mark">{{ item.nums }}</span>
-              </span>
+              <a href="javascript:;" @click="clickDetail(item.type)"
+                ><span class="content name">{{ item.type }}</span>
+                <span class="content num">
+                  <span class="mark1"> {{ item.count }}</span>
+                  <i style="color: #8f8d8d;"> |</i>
+                  <span class="mark">{{ item.nums }}</span>
+                </span></a
+              >
             </li>
           </ul>
         </div>
@@ -38,7 +36,7 @@ import 'echarts/lib/component/polar';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
 
-let allCount = 0;
+let allCount = 1;
 let allRepairCount = 0;
 let count = 0;
 let typeCount = 0;
@@ -65,11 +63,12 @@ export default {
   },
   computed: {
     chartDatas() {
-      const array = this.chartData.concat();
+      let array = this.chartData.concat();
       if (array && array.length > 5) {
-        array.shift();
-        array.shift();
-        array.shift();
+        // array.shift();
+        // array.shift();
+        // array.shift();
+        array = array.splice(3, 6);
       }
       return array;
     },
@@ -82,16 +81,16 @@ export default {
     createOptions(chartData) {
       return {
         title: {
-          text: '总数',
+          text: '病害',
           textStyle: {
-            color: '#fff',
+            color: '#dddddd',
             fontSize: 18,
             fontWeight: '700',
             lineHeight: 40,
           },
-          subtext: allCount,
+          subtext: 0,
           subtextStyle: {
-            color: '#fff',
+            color: '#dddddd',
             fontSize: 18,
             fontWeight: '600',
           },
@@ -173,7 +172,7 @@ export default {
             data: [
               {
                 name: '病害总数',
-                value: allCount,
+                value: allCount === 0 ? 1 : allCount,
                 itemStyle: {
                   color: '#181818',
                   shadowColor: 'rgba(234, 234, 234, 0.6)',
@@ -232,24 +231,12 @@ export default {
           if (typeCount % 2 === 0) {
             title = {
               text: '病害',
-              textStyle: {
-                color: '#dddddd',
-              },
-              subtext: allCount,
-              subtextStyle: {
-                color: '#dddddd',
-              },
+              subtext: allCount.toString(),
             };
           } else if (typeCount % 2 === 1) {
             title = {
               text: '维修',
-              textStyle: {
-                color: '#dddddd',
-              },
-              subtext: allRepairCount,
-              subtextStyle: {
-                color: '#dddddd',
-              },
+              subtext: allRepairCount.toString(),
             };
           } else if (typeCount % 3 === 2) {
             title = {

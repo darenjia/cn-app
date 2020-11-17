@@ -16,27 +16,27 @@ const cancelAnimationFrame =
 
 function CircleShow(radius, level, point, color, icon, map) {
   console.log(radius);
-  if (!window.map || !window.BMap || !window.BMap.Circle) {
-    return undefined;
-  }
+  // if (!window.map || !window.BMap || !window.BMap.Circle) {
+  //   return undefined;
+  // }
   this.radius = radius;
   this.level = level;
   this.point = point;
   this.color = color;
   // 创建 AMap.Icon 实例：
-  var mapIcon = new AMap.Icon({
-    size: new AMap.Size(20, 20),
-    // 图标尺寸
-    image: icon, // Icon的图像
-    imageSize: new AMap.Size(20, 20), // 根据所设置的大小拉伸或压缩图片
-  });
+  // var mapIcon = new AMap.Icon({
+  //   size: new AMap.Size(20, 20),
+  //   // 图标尺寸
+  //   image: icon, // Icon的图像
+  //   imageSize: new AMap.Size(20, 20), // 根据所设置的大小拉伸或压缩图片
+  // });
   // eslint-disable-next-line no-unused-vars
-  const marker = new AMap.Marker({
-    map: map,
-    icon: mapIcon,
-    position: point,
-    offset: new AMap.Pixel(-14, -5),
-  });
+  // const marker = new AMap.Marker({
+  //   map: map,
+  //   icon: mapIcon,
+  //   position: point,
+  //   offset: new AMap.Pixel(-14, -5),
+  // });
   if (Number.isNaN(this.level)) {
     this.level = 1;
   } // 至少1层
@@ -73,7 +73,7 @@ function CircleShow(radius, level, point, color, icon, map) {
       fillColor: this.color.fillColor, // 圆形填充颜色
       fillOpacity: 0.2, // 填充透明度
       strokeWeight: 1,
-      strokeColor: '#FF4D50', // 线条颜色，为了保证感觉无线条，和填充颜色一致即可
+      strokeColor: this.color.fillColor, // 线条颜色，为了保证感觉无线条，和填充颜色一致即可
       strokeOpacity: 0.2, // 线条透明度，为了保证感觉无线条，和填充颜色透明度一致即可
       zIndex: 50,
     });
@@ -134,10 +134,14 @@ CircleShow.prototype.start = function (distance, t0) {
         Number.parseFloat((_self.speedOpacity * r).toFixed(5)); // 四舍五入小数点后5位
 
       // 设置圆形覆盖物的样式
-      circle.setRadius(r); // 半径
-      circle.setFillOpacity(opacity); // 透明度
-      circle.setStrokeOpacity(opacity); // 透明度
-
+      // circle.setRadius(r); // 半径
+      // circle.setFillOpacity(opacity); // 透明度
+      // circle.setStrokeOpacity(opacity); // 透明度
+      circle.setOptions({
+        fillOpacity: opacity,
+        strokeOpacity: opacity,
+        radius: r,
+      });
       _self.clock[index] = window.requestAnimationFrame(
         animateStart.bind(null, startTime, circle, index),
       );
@@ -171,15 +175,16 @@ CircleShow.prototype.stop = function () {
 /**
  * 移除覆盖物.
  */
-CircleShow.prototype.remove = function () {
+CircleShow.prototype.remove = function (map) {
   // 停止动画
   for (const caf of this.clock) {
     window.cancelAnimationFrame(caf);
   }
 
-  map.remove(this.circle);
+  // map.remove(this.circle);
   for (const circle of this.circles) {
     map.remove(circle);
   }
 };
 /* 地图水波扩散特效 End */
+export { CircleShow };

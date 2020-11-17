@@ -10,6 +10,7 @@ import 'echarts/lib/chart/line';
 import 'echarts/lib/component/grid';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/legend';
+import 'echarts/lib/component/dataZoom';
 const color = ['#E6688A', '#70B0Bf', '#FDD775', '#8DBE6E', '#4b5966'];
 let dataLength;
 export default {
@@ -38,18 +39,18 @@ export default {
       const data = [];
       const xData = [];
       const data1 = [];
-      dataLength = chartData.length >= 6 ? 6 : chartData.length;
+      // dataLength = chartData.length >= 6 ? 6 : chartData.length;
+      dataLength = chartData.length;
       for (let i = 0; i < dataLength; i++) {
         xData.push(chartData[i].date);
         data.push(this.creatSeries1Data(chartData[i], i));
         data1.push(this.creatSeriesData(chartData[i]));
       }
-
       const seriesOption = [
         {
           name: '计划月份',
           type: 'bar',
-          barMaxWidth: '20%',
+          barMaxWidth: '20',
           data: data,
         },
         {
@@ -101,7 +102,7 @@ export default {
           },
         },
       ];
-      this.addInterval();
+      // this.addInterval();
       return {
         xAxis: {
           show: true,
@@ -123,6 +124,20 @@ export default {
             show: false,
             type: 'value',
           },
+        ],
+        dataZoom: [
+          {
+            // 这个dataZoom组件，默认控制x轴。
+            type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: 50, // 左边在 10% 的位置。
+            end: 100, // 右边在 60% 的位置。
+          },
+          // {
+          //   // 这个dataZoom组件，默认控制x轴。
+          //   type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+          //   start: 50, // 左边在 10% 的位置。
+          //   end: 100, // 右边在 60% 的位置。
+          // },
         ],
         series: seriesOption,
       };

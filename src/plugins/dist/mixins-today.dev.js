@@ -21,6 +21,11 @@ var _default = {
 
       return (0, _moment["default"])().format('YYYY-MM-DD');
     },
+    getCurrentMonth: function getCurrentMonth() {
+      _moment["default"].updateLocale('zh-cn');
+
+      return (0, _moment["default"])().format('YYYY-MM');
+    },
     changeDateRange: function changeDateRange() {
       this.$store.commit('changeDateRange', this.date);
     },

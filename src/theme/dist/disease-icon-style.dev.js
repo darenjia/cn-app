@@ -13,19 +13,19 @@ var baseUrl = '/image'; // const baseUrl = 'http://47.103.63.36:8084/FtpFile';
 function createStyle() {
   return [{
     // 0
-    url: baseUrl + '/images/point3.png',
-    anchor: new AMap.Pixel(3, 3),
-    size: new AMap.Size(6, 6)
+    url: baseUrl + '/images/cicle_yellow.png',
+    anchor: new AMap.Pixel(7, 7),
+    size: new AMap.Size(14, 14)
   }, {
     // 1
     url: baseUrl + '/images/Marker9.svg',
-    anchor: new AMap.Pixel(3, 3),
-    size: new AMap.Size(20, 20)
+    anchor: new AMap.Pixel(8, 16),
+    size: new AMap.Size(16, 16)
   }, {
     // 2
-    url: baseUrl + '/images/point4.png',
-    anchor: new AMap.Pixel(3, 3),
-    size: new AMap.Size(6, 6)
+    url: baseUrl + '/images/cicle_green.png',
+    anchor: new AMap.Pixel(7, 7),
+    size: new AMap.Size(14, 14)
   }];
 }
 

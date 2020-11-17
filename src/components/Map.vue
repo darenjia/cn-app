@@ -20,8 +20,8 @@ import diseaseStyleObject from '../theme/disease-icon-style';
 // eslint-disable-next-line no-undef
 /* global AMap */
 /* global Loca */
+import { CircleShow } from '../theme/map-animation';
 
-// 创建一个 icon
 let personLoaction;
 let viewInstance;
 let massMarks;
@@ -30,25 +30,17 @@ let heatmap;
 let lineLayer;
 let polygonLayer;
 let overlay;
-// var colors = [
-//   '#07E8E4',
-//   '#1f78b4',
-//   '#b2df8a',
-//   '#33a02c',
-//   '#fb9a99',
-//   '#e31a1c',
-//   '#fdbf6f',
-//   '#ff7f00',
-// ];
-const colors = ['#E6688A', '#70B0Bf', '#FDD775', '#8DBE6E', '#4b5966'];
+const colors = ['#ffd11a', '#00ff80', '#FDD775', '#8DBE6E', '#4b5966'];
+const polylineColors = ['#ffd11a', '#ff6666'];
 export default {
   name: 'amap',
   data() {
     return {
-      map: {},
+      map: undefined,
       Icon: {},
       facilityPoints: [],
       showMassMark: false,
+      circle: undefined,
     };
   },
   methods: {
@@ -125,6 +117,8 @@ export default {
       // massMarks.hide();
     },
     addDiseasePoints(data) {
+      this.cancelAnimation();
+      this.showDiseasePoints();
       if (!diseaseMassMarks) {
         diseaseMassMarks = new AMap.MassMarks(
           //  'https://a.amap.com/jsapi_demos/static/citys.js',
@@ -138,6 +132,13 @@ export default {
         );
         diseaseMassMarks.setMap(this.map);
         diseaseMassMarks.on('click', function (e) {
+          // e.data.style = 2;
+          const lnglat = e.data.lnglat;
+          console.log(lnglat);
+          overlay.clearOverlays();
+          viewInstance.startAnimation(
+            viewInstance.createLnglats(lnglat.lng, lnglat.lat),
+          );
           viewInstance.showPointDetail(e.data.guid);
         });
       }
@@ -151,6 +152,27 @@ export default {
       //   const point = data[key];
       //   this.map.add(this.createMarker(this.createLnglat(point.lnglat)));
       // }
+    },
+    cancelAnimation() {
+      if (this.circle) {
+        this.circle.remove(this.map);
+        this.circle = undefined;
+      }
+    },
+    startAnimation(lnglat) {
+      this.cancelAnimation();
+      this.circle = new CircleShow(
+        100,
+        2,
+        lnglat,
+        {
+          fillColor: '#00ff80',
+          fillOpacity: 0.8, // 默认初始透明度0.3
+        },
+        this.icon,
+        this.map,
+      );
+      this.circle.start(200, 1000);
     },
     setPersonLocation() {
       // 将 icon 传入 marker
@@ -198,7 +220,7 @@ export default {
           // });
           overlay.addOverlay(line);
         });
-        if (data[0] !== 'null') {
+        if (data[0].repairData) {
           data[0].repairData.forEach(element => {
             const point = viewInstance.createMarker(
               viewInstance.createLnglat(element.lnglat),
@@ -212,6 +234,12 @@ export default {
         }
 
         overlay.show();
+        viewInstance.map.setFitView(
+          overlay.getOverlays(),
+          true,
+          [200, 300, 200, 300],
+          18,
+        );
       }
     },
     addPolygon(data) {
@@ -230,7 +258,7 @@ export default {
       return new AMap.Marker({
         position: lnglat,
         icon: viewInstance.createDiffIcon(style),
-        offset: new AMap.Pixel(0, 0),
+        offset: new AMap.Pixel(-12, -12),
         animation: 'AMAP_ANIMATION_DROP',
         zIndex: 9999,
         extData: guid,
@@ -257,10 +285,11 @@ export default {
     createLine(lnglats) {
       return new AMap.Polyline({
         path: lnglats,
-        strokeColor: '#7168bb',
-        strokeWeight: 2,
+        strokeColor: '#8533ff',
+        strokeWeight: 3,
         lineJoin: 'round',
         cursor: 'pointer',
+        isOutline: true,
       });
     },
     createPolygon(lnglats) {
@@ -291,9 +320,14 @@ export default {
         heatmap.hide();
       }
     },
-    hideDiseasePoint() {
+    hideDiseasePoints() {
       if (diseaseMassMarks !== undefined) {
         diseaseMassMarks.hide();
+      }
+    },
+    showDiseasePoints() {
+      if (diseaseMassMarks !== undefined) {
+        diseaseMassMarks.show();
       }
     },
     showPolyline() {
@@ -391,8 +425,10 @@ export default {
     async getDiseasePosition(params) {
       const param = Object.assign(params, this.dateRange);
       const data = await this.$Http.getDiseasePosition({ params: param });
-      console.log('getDiseasePosition', data.length);
-      this.addDiseasePoints(data);
+      if (this.map) {
+        console.log('getDiseasePosition', data.length, param);
+        this.addDiseasePoints(data);
+      }
     },
     async getRoadPlanPathByMonth(params) {
       const data = await this.$Http.Map_GetRoadPlanPathByMonth({
@@ -460,12 +496,11 @@ export default {
         });
         lineLayer.setOptions({
           style: {
-            borderWidth: 1,
+            borderWidth: 2,
             opacity: 1,
             color: function (v) {
               const id = v.value.style ?? 0;
-              const len = colors.length;
-              return colors[id % len];
+              return polylineColors[id % 2];
             },
           },
           selectStyle: {
@@ -508,18 +543,20 @@ export default {
       polygonLayer.render();
     },
     clearMap() {
-      this.hideDiseasePoint();
+      this.hideDiseasePoints();
       this.hidePolylineLayer();
       this.hidePolygonLayer();
       this.hidePoint();
       overlay.clearOverlays();
+      this.cancelAnimation();
+      this.$store.commit('changePointDetailState', false);
     },
     showRoadPlan() {
       let params;
       if (this.planMonth === '0') {
         params = {};
       } else {
-        const months = this.planMonth.split('');
+        const months = this.planMonth.split('-');
         params = {
           month: months[months.length - 1],
         };
@@ -538,8 +575,11 @@ export default {
     },
     showDiseasePoint() {
       const data = this.diseaseDetail;
+      overlay.clearOverlays();
+      viewInstance.cancelAnimation();
       if (data.tempgaodexy) {
-        console.log(data.tempgaodexy);
+        console.log('point location:', data.tempgaodexy);
+        this.changePageMode(0);
         const pos = data.tempgaodexy.split(',');
         let style = 0;
         if (data.fstatues === '未维修') {
@@ -556,20 +596,24 @@ export default {
           parseFloat(x < y ? x : y),
         );
 
-        overlay.clearOverlays();
         const marker = this.createMarker(lnglat, data.patrolpointguid, style);
         marker.on('click', function (e) {
           viewInstance.showPointDetail(e.target.getExtData());
         });
-        console.log(this.isShowPointDetail);
-        if (this.isShowPointDetail) {
-          console.log('sss');
-          viewInstance.showPointDetail(data.patrolpointguid);
-        }
+        this.moveMap(lnglat);
+        viewInstance.showPointDetail(data.patrolpointguid);
         overlay.addOverlay(marker);
       } else {
+        this.changePageMode(1);
         viewInstance.showPointDetail(data.patrolpointguid);
       }
+    },
+    moveMap(lnglat) {
+      viewInstance.map.setZoom(16);
+      viewInstance.map.panTo(lnglat);
+    },
+    changePageMode(mode) {
+      this.$store.commit('changeDetailMode', mode);
     },
   },
   computed: {
@@ -640,23 +684,23 @@ export default {
     },
     showDiseaseMassMarks: function (newState, oldState) {
       if (!newState) {
-        this.hideDiseasePoint();
+        this.hideDiseasePoints();
       }
     },
     facilityType: function (newData) {
       this.getFacilitiesPoint(this.$store.state.facilityType);
     },
     tabMode: function (newState, oldState) {
-      console.log(newState);
+      console.log('tab has changed.current tab is ', newState);
       this.clearMap();
     },
     dateRange: function () {
-      if (this.showDiseaseMassMarks) {
+      if (this.showDiseaseMassMarks && this.tabMode === 0) {
         this.getDiseasePosition(this.diseaseType);
       }
     },
     diseaseType: function (newData) {
-      if (this.showDiseaseMassMarks) {
+      if (this.showDiseaseMassMarks && this.tabMode === 0) {
         this.getDiseasePosition(newData);
       }
     },
@@ -682,6 +726,11 @@ export default {
     },
     diseaseDetail() {
       this.showDiseasePoint();
+    },
+    isShowPointDetail(newValue) {
+      if (!newValue) {
+        this.cancelAnimation();
+      }
     },
   },
   mounted: function () {

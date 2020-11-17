@@ -3,52 +3,58 @@
     <div class="page-content-detail">
       <div class="box-with-border-image">
         <date-view :currentMode="1"></date-view>
-        <div class="road-news-list">
-          <!-- Nav tabs -->
-          <ul class="nav">
-            <li @click="tabClick(0)">
-              <!-- <span class="sort-type sort-type-active sort-type1"></span> -->
-              <span
-                :class="['sort-text', { 'sort-active': currentActive === 0 }]"
-                >设施巡视</span
-              >
-            </li>
-            <li @click="tabClick(1)">
-              <span
-                :class="['sort-text', { 'sort-active': currentActive === 1 }]"
-                >网格热线</span
-              >
-            </li>
-          </ul>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div :class="['tab-pane', { active: currentActive === 0 }]">
-              <div class="news-content">
-                <list-card
-                  :listData="DiseaseInspectDataList"
-                  :type="0"
-                  ref="child0"
-                  @clickItem="clickItem"
+        <a-spin :spinning="DataLoading">
+          <div class="road-news-list">
+            <!-- Nav tabs -->
+            <ul class="nav">
+              <li @click="tabClick(0)">
+                <!-- <span class="sort-type sort-type-active sort-type1"></span> -->
+                <span
+                  :class="['sort-text', { 'sort-active': currentActive === 0 }]"
+                  >设施巡视</span
                 >
-                </list-card>
+              </li>
+              <li @click="tabClick(1)">
+                <span
+                  :class="['sort-text', { 'sort-active': currentActive === 1 }]"
+                  >网格热线</span
+                >
+              </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div :class="['tab-pane', { active: currentActive === 0 }]">
+                <div class="news-content">
+                  <list-card
+                    :listData="DiseaseInspectDataList"
+                    :type="0"
+                    ref="child0"
+                    @clickItem="clickItem"
+                  >
+                  </list-card>
+                </div>
               </div>
-            </div>
-            <div :class="['tab-pane', { active: currentActive === 1 }]">
-              <div class="news-content">
-                <list-card
-                  :listData="DiseaseGridDataList"
-                  :type="1"
-                  ref="child1"
-                  @clickItem="clickItem"
-                >
-                </list-card>
+              <div :class="['tab-pane', { active: currentActive === 1 }]">
+                <div class="news-content">
+                  <list-card
+                    :listData="DiseaseGridDataList"
+                    :type="1"
+                    ref="child1"
+                    @clickItem="clickItem"
+                  >
+                  </list-card>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </a-spin>
       </div>
       <div class="box-with-border-image">
-        <h3 class="title-with-bg">年度养护计划</h3>
+        <h3 class="title-with-bg">
+          <a href="javascript:;" class="title-text" @click="showAllYearPlan"
+            >年度养护计划</a
+          >
+        </h3>
         <plan-bar :chartData="PlanDataList"></plan-bar>
       </div>
     </div>
@@ -59,10 +65,11 @@ import DateView from '../DateView';
 import ListCard from './RightListItemCard';
 import mixin from '../../plugins/mixins-today';
 import PlanBar from './ChartBar';
+import Listener from '../../plugins/mixins-listener';
 
 export default {
   name: 'SecondLeftPage',
-  mixins: [mixin],
+  mixins: [mixin, Listener],
   components: {
     DateView,
     ListCard,
@@ -74,6 +81,8 @@ export default {
       DiseaseGridData: [],
       PlanData: [],
       active: 0,
+      GridDataLoading: false,
+      InspectDataLoading: false,
     };
   },
   computed: {
@@ -89,22 +98,30 @@ export default {
     currentActive() {
       return this.active;
     },
+    DataLoading() {
+      return this.InspectDataLoading && this.GridDataLoading;
+      // return true;
+    },
   },
   methods: {
     async getDiseaseInspectData() {
+      this.InspectDataLoading = true;
       console.log(this.dateRange);
       const data = await this.$Http.Road_GetRoadFacilitiesInspect({
         params: this.dateRange,
       });
       console.log('Road_GetRoadFacilitiesInspect', data, this.dateRange);
       this.DiseaseInspectData = data;
+      this.InspectDataLoading = false;
     },
     async getDiseaseGridData() {
+      this.GridDataLoading = true;
       const data = await this.$Http.Road_GetRoadFacilitiesGrid({
         params: this.dateRange,
       });
       console.log('Road_GetRoadFacilitiesGrid', data, this.dateRange);
       this.DiseaseGridData = data;
+      this.GridDataLoading = false;
     },
     async getRoadPlanSchedule() {
       const data = await this.$Http.Road_GetRoadPlanSchedule();
@@ -112,6 +129,7 @@ export default {
       this.PlanData = data;
     },
     updateData() {
+      console.log('refresh data Road.');
       this.getDiseaseInspectData();
       this.getDiseaseGridData();
       this.getRoadPlanSchedule();
@@ -126,16 +144,15 @@ export default {
       }
     },
     clickItem(item) {
-      console.log(item);
       this.$store.commit('changeDiseaseDetail', item);
     },
     tabClick(i) {
       this.active = i;
       this.startScroll();
     },
-    click(item) {},
-    over() {},
-    leave() {},
+    showAllYearPlan() {
+      this.$store.commit('changeRoadPlanMonth', '0');
+    },
   },
   mounted() {
     // this.updateData();
@@ -218,5 +235,13 @@ export default {
     rgba(72, 227, 247, 0),
     rgba(72, 227, 247, 0)
   );
+}
+
+.title-with-bg {
+  z-index: 999;
+}
+.title-text {
+  color: #d6a20d;
+  cursor: pointer;
 }
 </style>

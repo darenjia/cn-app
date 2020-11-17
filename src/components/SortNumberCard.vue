@@ -10,16 +10,14 @@
           :key="index"
           class="type"
         >
-          <div class="type-bg">
-            <!-- <div
-              :class="[
-                'type-color-bg',
-                { 'chart-active': currentActive === index },
-              ]"
-              :style="{ backgroundColor: colors[index] }"
-            ></div> -->
+          <a
+            class="type-bg"
+            href="javascript:;"
+            @click="clickSection(index)"
+            @mouseout="leaveSection(index)"
+            @mouseover="overSection(index)"
+          >
             <div class="type-content">
-              <!-- <div class="type-title-text">{{ item.name + '标段' }}</div> -->
               <div
                 class="type-content-box type-content-box1"
                 :style="{ backgroundPosition: '' + index * -43.5 + 'px 0px' }"
@@ -39,29 +37,9 @@
                 >
               </div>
             </div>
-          </div>
+          </a>
         </div>
-        <!-- <div class="outer-circle">
-          <div class="inner-circle"></div>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <span class="center-title">设施分类</span> -->
       </div>
-      <!-- <div class="sort">
-        <ul>
-          <li v-for="(item, index) in formatedDataList" :key="index">
-            <div
-              class="li-after"
-              :class="[{ 'active-type': currentActive === index }]"
-              :style="{ backgroundColor: colors[index] }"
-            ></div>
-            <span>{{ item.name + '标段' }}</span>
-          </li>
-        </ul>
-      </div> -->
     </div>
     <div class="sort-detail">
       <div class="sort-image-box">
@@ -168,6 +146,7 @@ export default {
       colors: ['#aa89bd', '#FACD89', '#acd598', '#f29c9f', '#4b5966'],
       option: {},
       currentActive: 0,
+      sectionIndex: 0,
       sortDetailData: { type1: '', type2: '', type3: '', type4: '', type5: '' },
     };
   },
@@ -201,63 +180,43 @@ export default {
     creatChildObject() {
       return { num: 0, unit: 'm', name: '', width: 0 };
     },
-    startInterval() {
-      let index = 0;
+    clickSection(index) {
+      this.setSectionData(index);
+    },
+    leaveSection(index) {
+      console.log('hover');
+      this.startInterval();
+    },
+    overSection(index) {
+      this.setSectionData(index);
+      this.stopInterval();
+    },
+    stopInterval() {
       if (interval) {
         clearInterval(interval);
+        console.log(interval);
       }
+    },
+    startInterval() {
+      this.stopInterval();
       interval = setInterval(() => {
-        const data = this.formatedData;
-        index++;
-        if (index > 3) {
-          index = 0;
+        this.sectionIndex++;
+        if (this.sectionIndex > 3) {
+          this.sectionIndex = 0;
         }
-        this.currentActive = index;
-        this.sortDetailData = {
-          type1: data[index].type[3].num,
-          type2: data[index].type[4].num,
-          type3: data[index].type[1].num,
-          type4: data[index].type[0].num,
-          type5: data[index].type[2].num,
-        };
+        this.setSectionData(this.sectionIndex);
       }, 5000);
     },
-    createOption(chartData) {
-      const data = [];
-      for (let index = 0; index < chartData.length; index++) {
-        const element = chartData[index];
-        data.push({ name: element.name + '标段', value: element.type[5].num });
-      }
-      const colorList = this.colors;
-      return {
-        tooltip: {
-          trigger: 'item',
-        },
-        series: [
-          {
-            type: 'pie',
-            center: ['50%', '50%'],
-            radius: ['24%', '36%'],
-            clockwise: true,
-            avoidLabelOverlap: true,
-            hoverOffset: 1,
-            itemStyle: {
-              normal: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              },
-            },
-
-            label: {
-              show: false,
-            },
-            tooltip: {
-              show: true,
-            },
-            data: data,
-          },
-        ],
+    setSectionData(index) {
+      const data = this.formatedData;
+      this.currentActive = index;
+      this.sectionIndex = index;
+      this.sortDetailData = {
+        type1: data[index].type[3].num,
+        type2: data[index].type[4].num,
+        type3: data[index].type[1].num,
+        type4: data[index].type[0].num,
+        type5: data[index].type[2].num,
       };
     },
     initDataNumber(result) {
@@ -344,7 +303,6 @@ export default {
       }
       console.log(data);
       this.formatedData = data;
-      // this.option = this.createOption(data);
       this.startInterval();
       this.sortDetailData = {
         type1: data[0].type[3].num,
@@ -356,7 +314,7 @@ export default {
     },
   },
   beforeDestroy() {
-    clearInterval(interval);
+    this.stopInterval();
   },
 };
 </script>
@@ -463,26 +421,22 @@ export default {
 }
 .line2 {
   bottom: 0px;
-  left: 160px;
+  left: 170px;
 }
 .line3 {
   bottom: 0px;
-  left: 220px;
+  left: 234px;
 }
 .line4 {
   bottom: 0px;
-  left: 270px;
+  left: 280px;
 }
 .line-style {
   position: absolute;
   width: 3px;
   height: 50px;
-  transition: all 2s ease;
-  background: linear-gradient(
-    to top,
-    rgba(255, 0, 0, 0),
-    rgba(253, 254, 13, 1)
-  );
+  transition: all 0.5s ease;
+  background: linear-gradient(to top, transparent, rgba(253, 254, 13, 1));
 }
 .show-line {
   opacity: 1;
@@ -689,6 +643,7 @@ export default {
     .type-bg {
       // background: url('../assets/img/first_statistic_border.png');
       // background-size: 100% 100%;
+      display: inline-block;
       position: relative;
       width: 100%;
       height: 100%;
@@ -721,7 +676,7 @@ export default {
           background-size: 412% 100%;
           background-position: 0px 0px;
           background-repeat: no-repeat;
-          animation: rotate 60s ease-in-out infinite;
+          animation: rotate 2s linear infinite;
         }
         .type-content-box2 {
           top: -4px;
@@ -773,14 +728,12 @@ export default {
   }
 }
 @keyframes rotate {
-  0% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
     transform: translateY(2px);
-  }
-  100% {
-    transform: translateY(0px);
   }
 }
 </style>

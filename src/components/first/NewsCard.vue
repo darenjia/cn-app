@@ -4,13 +4,13 @@
       <transition-group name="list-complete" tag="ul">
         <li
           v-for="item in news"
-          :key="item.patrolPointGuid"
+          :key="item.id"
           class="list-complete-item"
           @click="click(item)"
           @mouseover="over"
           @mouseleave="leave"
         >
-          <span class="time">{{ item.dateTime }}</span
+          <span class="time">{{ item.datetime }}</span
           ><span
             :class="[
               { statusFinish: item.statues === '维修' },
@@ -20,10 +20,16 @@
             >{{ item.statues === '维修' ? '维修完成' : '发现问题' }}</span
           >
           <br />
-          <span>{{ item.address }}</span>
-          <span class="type"
-            >{{ item.diseaseType }}&nbsp;{{ item.diseasename }}</span
-          >
+          <span>{{
+            item.facilityposition == null
+              ? item.anjiandidian
+              : item.facilityposition
+          }}</span>
+          <span class="type">{{
+            item.patroltasktype === '网格'
+              ? item.anjianleixing
+              : item.facilitiesname + item.diseaseType
+          }}</span>
         </li>
       </transition-group>
     </list-card>
@@ -31,12 +37,12 @@
 </template>
 <script>
 import ListCard from '../ListCard';
-let temp;
-let interval;
 export default {
   data() {
     return {
       infos: [],
+      temp: undefined,
+      interval: undefined,
     };
   },
   components: {
@@ -45,32 +51,39 @@ export default {
   methods: {
     async getNewestInfo() {
       const data = await this.$Http.recentlyOfRepair();
+      console.log('First_recentlyOfRepair', data);
       this.infos = data;
-      temp = undefined;
+      this.temp = undefined;
+      this.setScroll();
     },
     setScroll() {
-      if (interval) {
-        clearInterval(interval);
+      this.stopInterval();
+      if (this.infos.length < 5) {
+        return;
       }
-      interval = setInterval(() => {
+      this.interval = setInterval(() => {
         if (this.infos.length > 0) {
-          if (temp) {
-            this.infos.push(temp);
+          if (this.temp) {
+            this.infos.push(this.temp);
           }
-          temp = this.infos.shift();
+          this.temp = this.infos.shift();
         }
       }, 3000);
     },
     over() {
-      if (interval) {
-        clearInterval(interval);
+      this.stopInterval();
+    },
+    stopInterval() {
+      if (this.interval) {
+        clearInterval(this.interval);
       }
     },
     leave() {
       this.setScroll();
     },
     click(item) {
-      this.$store.commit('changeCurrentPointLocation', item.patrolPointGuid);
+      console.log('click first item:', item);
+      this.$store.commit('changeDiseaseDetail', item);
     },
   },
   computed: {
@@ -80,6 +93,8 @@ export default {
   },
   mounted() {
     this.getNewestInfo();
+  },
+  beforeDestroy() {
     this.setScroll();
   },
 };

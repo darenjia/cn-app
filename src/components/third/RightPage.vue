@@ -6,22 +6,23 @@
         <div class="date-view">
           <date-view :currentMode="1"></date-view>
         </div>
-
-        <div class="road-news-list">
-          <div class="news-content">
-            <list-card
-              :listData="DiseaseGridDataList"
-              :type="1"
-              ref="child"
-              @clickItem="clickItem"
-            >
-            </list-card>
+        <a-spin :spinning="DataLoading">
+          <div class="road-news-list">
+            <div class="news-content">
+              <list-card
+                :listData="DiseaseGridDataList"
+                :type="1"
+                ref="child"
+                @clickItem="clickItem"
+              >
+              </list-card>
+            </div>
           </div>
-        </div>
-        <div class="title-with-bg">案件类型</div>
-        <div class="disease-chart">
-          <chart-bar :chartData="DiseaseTypeData"></chart-bar>
-        </div>
+          <div class="title-with-bg">案件类型</div>
+          <div class="disease-chart">
+            <chart-bar :chartData="DiseaseTypeData"></chart-bar>
+          </div>
+        </a-spin>
       </div>
     </div>
   </div>
@@ -31,10 +32,11 @@ import DateView from '../DateView';
 import ListCard from '../second/RightListItemCard';
 import mixin from '../../plugins/mixins-today';
 import ChartBar from './ChartBar';
+import Listener from '../../plugins/mixins-listener';
 
 export default {
   name: 'ThirdRightPage',
-  mixins: [mixin],
+  mixins: [mixin, Listener],
   components: {
     DateView,
     ListCard,
@@ -45,6 +47,8 @@ export default {
       DiseaseGridData: [],
       active: 0,
       DiseaseTypeData: [],
+      GridDataLoading: false,
+      TypeDataLoading: false,
     };
   },
   computed: {
@@ -54,23 +58,31 @@ export default {
     DiseaseTypeDataList() {
       return this.DiseaseTypeData;
     },
+    DataLoading() {
+      return this.GridDataLoading && this.TypeDataLoading;
+    },
   },
   methods: {
     async getDiseaseGridData() {
+      this.GridDataLoading = true;
       const data = await this.$Http.Grid_GetSewerFacilitiesGrid({
         params: this.dateRange,
       });
       console.log('Grid_GetSewerFacilitiesGrid', data, this.dateRange);
       this.DiseaseGridData = data;
+      this.GridDataLoading = false;
     },
     async getSewerTypeCount() {
+      this.TypeDataLoading = true;
       const data = await this.$Http.Sewer_GetSewerTypeCount({
         params: this.dateRange,
       });
       console.log('Sewer_GetSewerTypeCount', data, this.dateRange);
       this.DiseaseTypeData = data;
+      this.TypeDataLoading = false;
     },
     updateData() {
+      console.log('refresh data Sewer.');
       this.getDiseaseGridData();
       this.getSewerTypeCount();
     },

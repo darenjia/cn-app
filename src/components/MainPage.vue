@@ -15,10 +15,21 @@
         ></router-view
       ></transition>
 
-      <router-view
+      <!-- <router-view
         :class="['detail-content', { 'hide-detail': !isShowPointDetail }]"
         name="center"
-      ></router-view>
+      ></router-view> -->
+      <div
+        :class="[
+          'detail-content',
+          {
+            'hide-detail': !isShowPointDetail,
+            'detail-content-big': detailMode === 1,
+          },
+        ]"
+      >
+        <detail-card></detail-card>
+      </div>
 
       <div class="setting"><setting-view /></div>
       <!-- <div class="legend">
@@ -32,6 +43,7 @@ import Map from './Map.vue';
 import PageHeader from './header/PageHeader';
 import SettingView from './SettingView';
 import minxins from '../plugins/mixins';
+import DetailCard from './first/DetailCard';
 
 export default {
   name: 'app',
@@ -47,6 +59,7 @@ export default {
     Map,
     PageHeader,
     SettingView,
+    DetailCard,
   },
   created() {
     const tab = this.$store.state.tabMode;
@@ -64,6 +77,9 @@ export default {
     },
     isShowPointDetail() {
       return this.$store.state.showPointDetail;
+    },
+    detailMode() {
+      return this.$store.state.detailMode;
     },
   },
   methods: {
@@ -102,15 +118,21 @@ export default {
 }
 
 .detail-content {
+  width: 300px;
   bottom: 0px;
   position: absolute;
   top: 50%;
   margin-top: -245px;
-  right: 0px;
+  right: 22%;
   height: 600px;
-  margin-right: 22%;
+  //margin-right: 22%;
   //   background: @primaryColor;
-  transition: all ease 0.2s 0.2s;
+}
+.detail-content-big {
+  right: 0;
+  left: 0;
+  width: 50%;
+  transform: translateX(50%);
 }
 .boxall {
   //   border: 1px solid rgba(25, 186, 139, 0.17);

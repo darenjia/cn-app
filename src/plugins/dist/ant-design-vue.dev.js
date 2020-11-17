@@ -2,14 +2,13 @@
 
 var _vue = _interopRequireDefault(require("vue"));
 
-require("ant-design-vue/dist/antd.css");
-
 require("./my-antd.css");
 
 var _antDesignVue = require("ant-design-vue");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+// import 'ant-design-vue/dist/antd.css';
 _vue["default"].component(_antDesignVue.LocaleProvider.name, _antDesignVue.LocaleProvider);
 
 _vue["default"].component(_antDesignVue.Button.name, _antDesignVue.Button);
@@ -60,20 +59,6 @@ _vue["default"].component(_antDesignVue.Radio.Button.name, _antDesignVue.Radio.B
 
 _vue["default"].component(_antDesignVue.Skeleton.name, _antDesignVue.Skeleton);
 
-_vue["default"].component(_antDesignVue.Descriptions.name, _antDesignVue.Descriptions);
-
-_vue["default"].component(_antDesignVue.Descriptions.Item.name, _antDesignVue.Descriptions.Item);
-
-_vue["default"].component(_antDesignVue.Steps.name, _antDesignVue.Steps);
-
-_vue["default"].component(_antDesignVue.Steps.Step.name, _antDesignVue.Steps.Step);
+_vue["default"].component(_antDesignVue.Carousel.name, _antDesignVue.Carousel);
 
 _vue["default"].component(_antDesignVue.Spin.name, _antDesignVue.Spin);
-
-_vue["default"].component(_antDesignVue.Timeline.name, _antDesignVue.Timeline);
-
-_vue["default"].component(_antDesignVue.Timeline.Item.name, _antDesignVue.Timeline.Item);
-
-_vue["default"].component(_antDesignVue.Tabs.name, _antDesignVue.Tabs);
-
-_vue["default"].component(_antDesignVue.Tabs.TabPane.name, _antDesignVue.Tabs.TabPane);
