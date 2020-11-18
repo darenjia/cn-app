@@ -46,7 +46,12 @@ export default {
             fontSize: 16,
           },
           formatter(params) {
-            return (params.data.value * 100).toFixed(2) + '%';
+            return (
+              params.seriesName +
+              ' : ' +
+              (params.data.value * 100).toFixed(2) +
+              '%'
+            );
           },
         },
         legend: {

@@ -58,6 +58,7 @@
         <plan-bar :chartData="PlanDataList"></plan-bar>
       </div>
     </div>
+    <legend-card :type="1"></legend-card>
   </div>
 </template>
 <script>
@@ -66,6 +67,7 @@ import ListCard from './RightListItemCard';
 import mixin from '../../plugins/mixins-today';
 import PlanBar from './ChartBar';
 import Listener from '../../plugins/mixins-listener';
+import LegendCard from '../LegendCard';
 
 export default {
   name: 'SecondLeftPage',
@@ -74,6 +76,7 @@ export default {
     DateView,
     ListCard,
     PlanBar,
+    LegendCard,
   },
   data() {
     return {

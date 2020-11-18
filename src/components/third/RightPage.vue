@@ -65,10 +65,10 @@ export default {
   methods: {
     async getDiseaseGridData() {
       this.GridDataLoading = true;
-      const data = await this.$Http.Grid_GetSewerFacilitiesGrid({
+      const data = await this.$Http.Sewer_GetSewerFacilitiesGrid({
         params: this.dateRange,
       });
-      console.log('Grid_GetSewerFacilitiesGrid', data, this.dateRange);
+      console.log('Sewer_GetSewerFacilitiesGrid', data, this.dateRange);
       this.DiseaseGridData = data;
       this.GridDataLoading = false;
     },

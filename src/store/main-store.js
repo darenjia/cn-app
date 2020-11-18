@@ -24,6 +24,7 @@ const store = new Vuex.Store({
     currentPointGuid: '',
     updateDataFlag: 0,
     roadPlanMonth: '0',
+    roadPlanMonthStatus: 0,
     roadPlanGuid: '',
     sewerPlanData: {},
     diseaseDetail: {},
@@ -144,6 +145,7 @@ const store = new Vuex.Store({
     },
     changeRoadPlanMonth(state, type) {
       state.roadPlanMonth = type;
+      state.roadPlanMonthStatus++;
     },
     changeRoadPlanGuid(state, type) {
       state.roadPlanGuid = type;
@@ -153,6 +155,7 @@ const store = new Vuex.Store({
     },
     changeDiseaseDetail(state, type) {
       state.diseaseDetail = type;
+      state.showPointDetail = true;
     },
     changeDetailMode(state, type) {
       state.detailMode = type;

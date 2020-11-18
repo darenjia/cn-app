@@ -215,10 +215,10 @@ export default {
       };
     },
     clickChart(chart) {
-      this.$parent.showDetail('');
+      this.$emit('showDetail', '');
     },
     clickDetail(type) {
-      this.$parent.showDetail(type);
+      this.$emit('showDetail', type);
     },
     startToggleTitle() {
       const chart = this.options;

@@ -136,7 +136,8 @@ export default {
       timeline: {},
       index: null,
       options: {
-        fullscreen: true,
+        fullscreen: false,
+        sizesProperty: '(min-width: 800px) 800px, 100vw',
       },
       repairIndex: null,
       dataLoading: true,
@@ -227,7 +228,7 @@ export default {
     },
     repairImages() {
       if (!this.disease.repairPaths) {
-        return ['/image/images/repair_waiting2.png'];
+        return ['/image/images/repair_waiting1.png'];
       }
       const array = this.disease.repairPaths.split(',');
       // for (let index = 0; index < 2; index++) {
@@ -328,9 +329,10 @@ export default {
   overflow: hidden;
 }
 .image-style {
-  width: 100%;
+  width: auto;
   height: 100%;
   max-height: 400px;
+  margin: auto;
 }
 .base-detail {
   height: 40px;

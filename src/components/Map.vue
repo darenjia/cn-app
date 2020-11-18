@@ -197,6 +197,7 @@ export default {
     addPolyline(data) {
       console.log('加载line', data.length);
       this.showPolyline();
+      overlay.clearOverlays();
       this.addLineLayer(data);
       // data.forEach(element => {
       //   viewInstance.overlay.addOverlay(
@@ -225,6 +226,7 @@ export default {
             const point = viewInstance.createMarker(
               viewInstance.createLnglat(element.lnglat),
               element.guid,
+              element.style,
             );
             point.on('click', function (e) {
               viewInstance.showPointDetail(e.target.getExtData());
@@ -509,6 +511,7 @@ export default {
         });
         lineLayer.on('click', function (e) {
           console.log(e.rawData);
+          viewInstance.$store.commit('changeRoadPlanGuid', e.rawData.guid);
         });
       }
       lineLayer.setData(lines, {
@@ -647,6 +650,9 @@ export default {
     planMonth() {
       return this.$store.state.roadPlanMonth;
     },
+    planMonthState() {
+      return this.$store.state.roadPlanMonthStatus;
+    },
     planGuid() {
       return this.$store.state.roadPlanGuid;
     },
@@ -709,7 +715,12 @@ export default {
         this.getDiseaseDetailInfo(newData);
       }
     },
-    planMonth() {
+    // planMonth() {
+    //   if (this.showRoad) {
+    //     this.showRoadPlan();
+    //   }
+    // },
+    planMonthState() {
       if (this.showRoad) {
         this.showRoadPlan();
       }

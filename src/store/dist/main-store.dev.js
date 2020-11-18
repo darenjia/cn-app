@@ -37,6 +37,7 @@ var store = new _vuex["default"].Store({
     currentPointGuid: '',
     updateDataFlag: 0,
     roadPlanMonth: '0',
+    roadPlanMonthStatus: 0,
     roadPlanGuid: '',
     sewerPlanData: {},
     diseaseDetail: {},
@@ -160,6 +161,7 @@ var store = new _vuex["default"].Store({
     },
     changeRoadPlanMonth: function changeRoadPlanMonth(state, type) {
       state.roadPlanMonth = type;
+      state.roadPlanMonthStatus++;
     },
     changeRoadPlanGuid: function changeRoadPlanGuid(state, type) {
       state.roadPlanGuid = type;
@@ -169,6 +171,7 @@ var store = new _vuex["default"].Store({
     },
     changeDiseaseDetail: function changeDiseaseDetail(state, type) {
       state.diseaseDetail = type;
+      state.showPointDetail = true;
     },
     changeDetailMode: function changeDetailMode(state, type) {
       state.detailMode = type;

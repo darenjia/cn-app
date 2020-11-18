@@ -135,7 +135,7 @@ const DATA_API = {
     method: 'get',
     url: '/getRoadPlanSchedule',
   },
-  Grid_GetSewerFacilitiesGrid: {
+  Sewer_GetSewerFacilitiesGrid: {
     method: 'get',
     url: '/getSewerFacilitiesGrid',
   },

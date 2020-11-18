@@ -161,6 +161,9 @@ export default {
       position: relative;
       background-repeat: no-repeat;
     }
+    .list-type2 {
+      color: #87c38f;
+    }
   }
   .disease-list::after {
     width: 100%;

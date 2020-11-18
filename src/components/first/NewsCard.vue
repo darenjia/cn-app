@@ -13,11 +13,11 @@
           <span class="time">{{ item.datetime }}</span
           ><span
             :class="[
-              { statusFinish: item.statues === '维修' },
-              { statusDiscover: item.statues !== '维修' },
+              { statusFinish: item.fstatues === '合格' },
+              { statusDiscover: item.fstatues !== '合格' },
               'type',
             ]"
-            >{{ item.statues === '维修' ? '维修完成' : '发现问题' }}</span
+            >{{ item.fstatues === '合格' ? '维修完成' : '发现问题' }}</span
           >
           <br />
           <span>{{

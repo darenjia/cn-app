@@ -1,20 +1,69 @@
 <template>
-  <div class="progress">
-    <div
-      class="progress-bar"
-      :style="{ width: width, backgroundColor: color }"
-    ></div>
+  <div class="progress-box">
+    <a href="javascript:;" @click="click">
+      <div class="progress-title">
+        <span :style="{ color: fontColor }">{{ indexNum }}</span
+        ><span>{{ name }}</span
+        ><span>{{ count }}</span>
+      </div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          :style="{ width: width, backgroundColor: color }"
+        ></div>
+      </div>
+    </a>
   </div>
 </template>
 <script>
 export default {
-  props: ['width', 'color'],
+  props: ['barData', 'color', 'index', 'fontColor'],
   data() {
     return {};
+  },
+  computed: {
+    name() {
+      return this.barData.name;
+    },
+    indexNum() {
+      return '0' + (this.index + 1);
+    },
+    count() {
+      return this.barData.value;
+    },
+    width() {
+      return this.barData.count * 100 + '%';
+    },
+  },
+  methods: {
+    click() {
+      console.log('??');
+      this.$emit('clickItem', this.name);
+    },
   },
 };
 </script>
 <style lang="less" scoped>
+.progress-box {
+  a {
+    display: block;
+    padding: 4px;
+  }
+  a:hover {
+    background-color: rgba(90, 90, 90, 0.438);
+  }
+}
+.progress-title {
+  color: #fff;
+  font-size: 12px;
+  margin: 6px 0px;
+  span {
+    margin-right: 10px;
+  }
+  span:nth-child(1) {
+    font-family: 'HY';
+  }
+}
 .progress {
   height: auto;
   margin-bottom: 0px;
@@ -29,8 +78,8 @@ export default {
 .progress-bar {
   background-color: antiquewhite;
   position: relative;
-  height: 2px;
-  border-radius: 1px;
+  height: 6px;
+  border-radius: 10px;
   -webkit-transition: 0.4s linear;
   -moz-transition: 0.4s linear;
   -o-transition: 0.4s linear;

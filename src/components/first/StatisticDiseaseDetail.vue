@@ -8,6 +8,7 @@
             <div class="header-content">
               <statistic-right-header
                 :chartData="diseaseCountData"
+                @showDetail="showDetail"
               ></statistic-right-header>
             </div>
           </div>
@@ -25,6 +26,7 @@
         <news-card></news-card>
       </div>
     </div>
+    <legend-card :type="0"></legend-card>
   </div>
 </template>
 <script>
@@ -34,6 +36,7 @@ import StatisticRightHeader from './StatisticRightHeader';
 import NewsCard from './NewsCard';
 import mixin from '../../plugins/mixins-today';
 import listener from '../../plugins/mixins-listener';
+import LegendCard from '../LegendCard';
 
 export default {
   components: {
@@ -41,6 +44,7 @@ export default {
     StatisticRightHeader,
     NewsCard,
     DateView,
+    LegendCard,
   },
   mixins: [mixin, listener],
   data() {
