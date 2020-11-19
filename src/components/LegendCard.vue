@@ -3,17 +3,17 @@
     <div v-if="type === 0">
       <span
         ><img src="../assets/img/point3.png" class="image" /><i class="des"
+          >待维修</i
+        ></span
+      >
+      <span
+        ><img src="../assets/img/Marker8.png" class="image" /><i class="des"
           >维修中</i
         ></span
       >
       <span
         ><img src="../assets/img/point4.png" class="image" /><i class="des"
           >已维修</i
-        ></span
-      >
-      <span
-        ><img src="../assets/img/Marker8.png" class="image" /><i class="des"
-          >待维修</i
         ></span
       >
     </div>

@@ -136,8 +136,7 @@ export default {
       timeline: {},
       index: null,
       options: {
-        fullscreen: false,
-        sizesProperty: '(min-width: 800px) 800px, 100vw',
+        fullscreen: true,
       },
       repairIndex: null,
       dataLoading: true,

@@ -94,10 +94,12 @@ export default {
     },
     async getNewestTask() {
       const data = await this.$Http.Grid_GetNewCaseByDay();
+      console.log('Grid_GetNewCaseByDay', data);
       this.newestTask = data;
     },
     async getNewestFinishedTask() {
       const data = await this.$Http.Grid_GetNewFinallyByDay();
+      console.log('Grid_GetNewFinallyByDay', data);
       this.newestFinishedTask = data;
     },
     async getWarningTask() {

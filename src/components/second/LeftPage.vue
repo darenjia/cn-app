@@ -20,6 +20,7 @@
                 </div>
               </li>
             </ul>
+            <span class="unit">(单位：平方米)</span>
           </div>
           <div class="plan-detail">
             <div class="tab-content" v-if="PlanData">
@@ -176,6 +177,15 @@ export default {
 }
 .plan-statistic {
   min-height: 244px;
+  .unit {
+    position: relative;
+    font-size: 12px;
+    color: #9e9e9e;
+    font-size: 12px;
+    top: -54px;
+    display: block;
+    text-align: center;
+  }
   .title-with-bg::after {
     margin-left: 46px;
   }

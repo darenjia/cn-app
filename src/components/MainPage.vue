@@ -132,7 +132,8 @@ export default {
   right: 0;
   left: 0;
   width: 50%;
-  transform: translateX(50%);
+  // transform: translateX(50%);
+  margin-left: 25%;
 }
 .boxall {
   //   border: 1px solid rgba(25, 186, 139, 0.17);

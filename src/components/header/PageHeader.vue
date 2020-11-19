@@ -4,7 +4,7 @@
       <div class="bg_header">
         <div class="header_nav fl t_title">
           <!-- <img src="../../assets/img/长宁区市政设施养护展示平台.png" class="title" /> -->
-          <span class="title-txt">长宁区市政署市政设施养护管理平台</span>
+          <span class="title-txt">长宁区市政设施养护展示平台</span>
         </div>
         <div class="tabs">
           <main-tab-view></main-tab-view>

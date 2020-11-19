@@ -59,7 +59,7 @@ export default {
       return this.DiseaseTypeData;
     },
     DataLoading() {
-      return this.GridDataLoading && this.TypeDataLoading;
+      return this.GridDataLoading || this.TypeDataLoading;
     },
   },
   methods: {

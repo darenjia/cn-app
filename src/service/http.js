@@ -4,7 +4,7 @@ import service from './dataApi';
 
 const instance = axios.create({
   baseURL: '/api',
-  timeout: 8000,
+  timeout: 20000,
 });
 const Http = {};
 for (const key in service) {
