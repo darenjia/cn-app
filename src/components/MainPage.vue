@@ -1,149 +1,143 @@
 <template>
   <div>
-    <div>
-      <div class="content-main">
-        <Map></Map>
-        <!-- <div class="map-container"></div> -->
-        <div
-          :class="[
-            IsHideRank ? 'statistic1-hide' : '',
-            'statistic1',
-            'boxall',
-            'statistic-box',
-          ]"
-        >
-          <!-- <statistic-table-one></statistic-table-one> -->
-          <rank-list :title="'病害类型排行'" :list="rankList"></rank-list>
-          <!-- <statistic-table-three></statistic-table-three> -->
-          <rank-list :title="'病害道路排行'" :list="rankList"></rank-list>
-          <div class="boxfoot"></div>
-        </div>
-
-        <div
-          :class="[
-            IsHideRank ? 'statistic3-hide' : '',
-            'statistic3',
-            'boxall',
-            'statistic-box',
-          ]"
-        >
-          <div class="bg">
-              <rank-list :title="'病害标段排行'" :list="rankList"></rank-list>
-              <!-- <statistic-table-four></statistic-table-four> -->
-              <rank-list :title="'考核分数排行'" :list="rankList"></rank-list>
-          </div>
-          <!-- <statistic-table-two></statistic-table-two> -->
-          <div class="boxfoot"></div>
-        </div>
-        <div
-          :class="['detail-content', 'boxall', { 'show-detail': !IsHideRank }]"
-        >
-          <detail-card />
-          <div class="boxfoot"></div>
-        </div>
+    <div class="content-main">
+      <Map></Map>
+      <div class="header">
+        <page-header></page-header>
       </div>
-    </div>
-    <div class="header">
-      <page-header></page-header>
-      <statistic-header></statistic-header>
+      <transition name="slide-left">
+        <router-view class="statistic1 statistic-box" name="left"></router-view>
+      </transition>
+      <transition name="slide-right"
+        ><router-view
+          class="statistic3 statistic-box"
+          name="right"
+        ></router-view
+      ></transition>
+
+      <!-- <router-view
+        :class="['detail-content', { 'hide-detail': !isShowPointDetail }]"
+        name="center"
+      ></router-view> -->
+      <div
+        :class="[
+          'detail-content',
+          {
+            'hide-detail': !isShowPointDetail,
+            'detail-content-big': detailMode === 1,
+          },
+        ]"
+      >
+        <detail-card></detail-card>
+      </div>
+
+      <div class="setting"><setting-view /></div>
+      <!-- <div class="legend">
+        <legend-card></legend-card>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
-import Map from "./Map.vue";
-// import StatisticTableOne from "./components/StatisticTableOne";
-// import StatisticTableTwo from "./components/StatisticTableTwo";
-// import StatisticTableThree from "./components/StatisticTableThree";
-// import StatisticTableFour from "./components/StatisticTableFour";
-import StatisticHeader from "./StatisticHeader";
-import PageHeader from "./PageHeader";
-import RankList from "./RankingList";
-import DetailCard from "./DetailCard";
+import Map from './Map.vue';
+import PageHeader from './header/PageHeader';
+import SettingView from './SettingView';
+import minxins from '../plugins/mixins';
+import DetailCard from './first/DetailCard';
 
 export default {
-  name: "app",
+  name: 'app',
+  mixins: [minxins],
+  openMqTT: true,
   data() {
+    this.theme = this.$ChartTheme;
     return {
-      rankList: [
-        { name: 1, total: 50 },
-        { name: 2, total: 48 },
-        { name: 3, total: 40 },
-      ],
       RankState: true,
     };
   },
   components: {
     Map,
-    // StatisticTableOne,
-    // StatisticTableTwo,
-    // StatisticTableThree,
-    // StatisticTableFour,
-    StatisticHeader,
     PageHeader,
-    RankList,
+    SettingView,
     DetailCard,
   },
+  created() {
+    const tab = this.$store.state.tabMode;
+    const path = parseInt(this.$route.name);
+    if (path !== tab) {
+      this.$store.commit('changeTabMode', path - 1);
+    }
+  },
   computed: {
-    IsHideRank: function () {
-      return !this.$store.state.showRankList;
+    isShowRank: function () {
+      return this.$store.state.showRankList;
+    },
+    isShowStatistic() {
+      return this.$store.state.showStatisticGraph;
+    },
+    isShowPointDetail() {
+      return this.$store.state.showPointDetail;
+    },
+    detailMode() {
+      return this.$store.state.detailMode;
     },
   },
   methods: {
     changeRankShow: function () {
       this.RankState = !this.RankState;
     },
+    receiveMessageSuccess() {
+      this.$store.commit('changeUpdateDataFlag');
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-@primaryColor: #06095d;
-.map-bg {
-  width: 100%;
-  float: left;
-  top: 0px;
-  position: absolute;
-}
 .statistic1 {
-  bottom: 0px;
   left: 0px;
-  transition: all ease 0.2s;
 }
 .statistic2 {
-  bottom: 10px;
-  left: 0px;
-  transition: all ease 0.2s;
+  left: 21%;
 }
 .statistic3 {
-  bottom: 0px;
   right: 0px;
-  transition: all ease 0.2s;
 }
 .statistic4 {
-  bottom: 10px;
-  right: 0px;
-  transition: all ease 0.2s;
+  right: 21%;
 }
 .statistic-box {
   position: absolute;
-  width: 25%;
-  height: 70%;
-  margin: 10px;
+  width: 384px;
+  margin: 0px 10px;
+  bottom: 0px;
+  top: 50%;
+  height: 800px;
+  margin-top: -345px;
+  transition: all ease 0.2s;
 }
 
 .detail-content {
-  width: 25%;
+  width: 300px;
   bottom: 0px;
   position: absolute;
-  top: 85px;
-  right: 10px;
-  bottom: 10px;
+  top: 50%;
+  margin-top: -245px;
+  right: 22%;
+  height: 600px;
+  //margin-right: 22%;
   //   background: @primaryColor;
-  transition: all ease 0.2s 0.2s;
+}
+.detail-content-big {
+  right: 0;
+  left: 0;
+  width: 50%;
+  // transform: translateX(50%);
+  margin-left: 25%;
 }
 .boxall {
-  border: 1px solid rgba(25, 186, 139, 0.17);
-  background: rgba(255, 255, 255, 0.04) url("../assets/img/line.png");
+  //   border: 1px solid rgba(25, 186, 139, 0.17);
+  background: url('../assets/img/line.png');
   background-size: 100% auto;
   margin-bottom: 0.15rem;
 }
@@ -152,9 +146,10 @@ export default {
   position: absolute;
   width: 1.1rem;
   height: 1.1rem;
-  content: "";
+  content: '';
   border-top: 2px solid #02a6b5;
   top: 0;
+  z-index: 2;
 }
 .boxall:before,
 .boxfoot:before {
@@ -177,29 +172,19 @@ export default {
   position: absolute;
   width: 1.1rem;
   height: 1.1rem;
-  content: "";
+  content: '';
   border-bottom: 2px solid #02a6b5;
   bottom: 0;
 }
-.show-detail {
+.hide-detail {
   display: none;
 }
-// .bg:after {
-//   content: "";
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: #808080;
-//   filter: blur(20px);
-//   z-index: 2;
-// }
+
 .header {
+  width: 100%;
+  width: 100%;
   position: absolute;
   top: 0px;
-  left: 0px;
-  width: 100%;
 }
 .first-row {
   margin-top: 80px;
@@ -210,7 +195,7 @@ export default {
 .content-main {
   overflow: hidden;
   height: 100%;
-  // position: relative;
+  width: 100%;
 }
 .map-container {
   position: absolute;
@@ -231,5 +216,27 @@ export default {
   // width: 0px;
   // height: 0px;
   display: none;
+}
+.setting {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  margin-left: -40px;
+  width: 80px;
+  height: 36px;
+}
+.legend {
+  position: absolute;
+  bottom: 2px;
+  right: 20%;
+  width: 100px;
+  height: 100px;
+}
+.statistic-header {
+  position: absolute;
+  top: 120px;
+  width: 50%;
+  left: 50%;
+  margin-left: -25%;
 }
 </style>
